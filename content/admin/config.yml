@@ -1,0 +1,25 @@
+
+backend:
+  name: git-gateway
+  branch: master # Branch to update (optional; defaults to master)
+media_folder: static/img
+public_folder: /img
+collections:
+  - name: 'blog'
+    label: 'Blog'
+    folder: 'content/posts/'
+    create: true
+    slug: '{{year}}-{{month}}-{{slug}}'
+    editor:
+      preview: true
+    fields:
+      - { label: '标题', name: 'title', widget: 'string' }
+      - { label: '发布时间', name: 'date', widget: 'string',required: false }
+      - { label: '最后更改', name: 'lastmod', widget: 'string',required: false }
+      - { label: '描述', name: 'description', widget: 'string',required: false }
+      # - { label: 'Description', name: 'd', widget: 'bool',required: false }
+      - { label: 'tag', name: 'tags', widget: 'list',required: false }
+      # - { label: '分类', name: 'description', widget: 'string',required: false }
+      # - { label: 'Description', name: 'description', widget: 'string',required: false }
+
+      - { label: 'Body', name: 'body', widget: 'markdown' }

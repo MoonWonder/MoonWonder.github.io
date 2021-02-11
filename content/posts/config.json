@@ -1,0 +1,22 @@
+{
+    "alias": {
+        "./OI/algorithm/dsu/dsu_on_tree.md": "dsu_on_tree"
+    },
+    "refrence": {
+        "./OI/algorithm/dsu/dsu_on_tree.md": [
+            "../../problems/CF600E.md"
+        ],
+        "./OI/contests/CF1480.md": [
+            "../problems/CF1480B.md",
+            "../problems/CF1479B1.md",
+            "../problems/CF1479C.md",
+            "../problems/CF1479B2.md",
+            "../problems/CF1480A.md",
+            "../problems/CF1479A.md"
+        ],
+        "./diary/2021-02-07.md": [
+            "../OI/contests/CF1480.md",
+            "../OI/algorithm/dsu/dsu_on_tree.md"
+        ]
+    }
+}
