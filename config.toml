@@ -4,7 +4,7 @@ baseURL = "https://hugo.ybw051114.cf"
 defaultContentLanguage = "zh-cn"
 # theme
 # 主题
-theme = "Loveit"
+theme = "LoveIt"
 # themes directory
 # 主题目录
 themesDir = "./themes"
