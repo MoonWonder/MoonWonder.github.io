@@ -21,9 +21,9 @@ share: {enable: true}
 comment: true
 ---
 
-[上一篇笔记](https:\/\/www.luogu.com.cn\/blog\/Troverld\/dp-shua-ti-bi-ji)因为写的太多已经卡了起来……不得不另开新坑了。
+[上一篇笔记](https://www.luogu.com.cn/blog/Troverld/dp-shua-ti-bi-ji)因为写的太多已经卡了起来……不得不另开新坑了。
 
-# LI.[CF115E Linear Kingdom Races](https:\/\/www.luogu.com.cn\/problem\/CF115E)
+# LI.[CF115E Linear Kingdom Races](https://www.luogu.com.cn/problem/CF115E)
 
 思路1.
 
@@ -33,22 +33,22 @@ comment: true
 
 则有
 
-$f[i][i]=\\max\\limits\_{j=0}^{i-1}f[i-1][j]$
+$f[i][i]=\max\limits_{j=0}^{i-1}f[i-1][j]$
 
 这是在$i$号路不修的情况。
 
-对于其它的情况，有$f[i][j]=f[i-1][j]-a_i$，其中$a_i$表示修路的代价，且有$0\\leq j&lt;i$。
+对于其它的情况，有$f[i][j]=f[i-1][j]-a_i$，其中$a_i$表示修路的代价，且有$0\leq j<i$。
 
 然后考虑举办的比赛。
 
-对于一场比赛$(l,i,x)$，所有的$f[i][j](j&lt;l)$都能获得$x$的收益。比赛可以直接在右端点处开`vector`储存。
+对于一场比赛$(l,i,x)$，所有的$f[i][j](j<l)$都能获得$x$的收益。比赛可以直接在右端点处开`vector`储存。
 
 这样时空复杂度都是$O(n^2)$的。
 
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 #define int long long
 int n,m,f[2][200100],val[200100],res;
@@ -61,7 +61,7 @@ inline void read(int &x){
 }
 inline void print(int x){
 	if(x<=9)putchar('0'+x);
-	else print(x\/10),putchar('0'+x%10);
+	else print(x/10),putchar('0'+x%10);
 }
 signed main(){
 	read(n),read(m),memset(f,0x80,sizeof(f));
@@ -73,7 +73,7 @@ signed main(){
 		for(int j=0;j<i;j++)f[i&1][i]=max(f[i&1][i],f[!(i&1)][j]);
 		for(int j=0;j<i;j++)f[i&1][j]=f[!(i&1)][j]-val[i];
 		for(auto j:v[i])for(int k=0;k<j.first;k++)f[i&1][k]+=j.second;
-\/\/		for(int j=0;j<=i;j++)printf("%lld ",f[i&1][j]);puts("");
+//		for(int j=0;j<=i;j++)printf("%lld ",f[i&1][j]);puts("");
 	}
 	for(int i=0;i<=n;i++)res=max(res,f[n&1][i]);
 	print(res);
@@ -98,7 +98,7 @@ signed main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 #define int long long
 int n,m,f[200100],val[200100],res;
@@ -111,7 +111,7 @@ inline void read(int &x){
 }
 inline void print(int x){
 	if(x<=9)putchar('0'+x);
-	else print(x\/10),putchar('0'+x%10);
+	else print(x/10),putchar('0'+x%10);
 }
 signed main(){
 	read(n),read(m),memset(f,0x80,sizeof(f));
@@ -122,7 +122,7 @@ signed main(){
 		for(int j=0;j<i;j++)f[i]=max(f[i],f[j]);
 		for(int j=0;j<i;j++)f[j]-=val[i];
 		for(auto j:v[i])for(int k=0;k<j.first;k++)f[k]+=j.second;
-\/\/		for(int j=0;j<=i;j++)printf("%lld ",f[i&1][j]);puts("");
+//		for(int j=0;j<=i;j++)printf("%lld ",f[i&1][j]);puts("");
 	}
 	for(int i=0;i<=n;i++)res=max(res,f[i]);
 	print(res);
@@ -132,16 +132,16 @@ signed main(){
 
 思路3.
 
-发现所有操作只有三种：单点赋值（1），区间求$\\max$（1），区间加\\/减（2,3）。
+发现所有操作只有三种：单点赋值（1），区间求$\\max$（1），区间加/减（2,3）。
 
 而这些都是线段树的常规操作。
 
-于是大力往上一套完事。复杂度$O(n\\log n)$
+于是大力往上一套完事。复杂度$O(n\log n)$
 
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 #define int long long
 #define lson x<<1
@@ -157,7 +157,7 @@ inline void read(int &x){
 }
 inline void print(int x){
 	if(x<=9)putchar('0'+x);
-	else print(x\/10),putchar('0'+x%10);
+	else print(x/10),putchar('0'+x%10);
 }
 struct SegTree{
 	int mx,tag;
@@ -200,14 +200,14 @@ signed main(){
 		setup(1,1,n+1,i+1,query(1,1,n,1,i));
 		modify(1,1,n+1,1,i,-val[i]);
 		for(auto j:v[i])modify(1,1,n+1,1,j.first,j.second);
-\/\/		for(int j=0;j<=i;j++)printf("%lld ",f[i&1][j]);puts("");
+//		for(int j=0;j<=i;j++)printf("%lld ",f[i&1][j]);puts("");
 	}
 	print(query(1,1,n+1,1,n+1));
 	return 0;
 } 
 ```
 
-# LII.[CF264B Good Sequences](https:\/\/www.luogu.com.cn\/problem\/CF264B)
+# LII.[CF264B Good Sequences](https://www.luogu.com.cn/problem/CF264B)
 
 状态很显然。设$f[i]$表示位置$i$的最长长度。
 
@@ -224,7 +224,7 @@ signed main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 const int N=1e5;
 int n,pri[N+10],pre[N+10],mx[N+10],f[N+10],res;
@@ -242,9 +242,9 @@ int main(){
 	for(int i=1,x,t;i<=n;i++){
 		scanf("%d",&x),f[i]=1;
 		t=x;
-		while(t!=1)f[i]=max(f[i],mx[pre[t]]+1),t\/=pri[pre[t]];
+		while(t!=1)f[i]=max(f[i],mx[pre[t]]+1),t/=pri[pre[t]];
 		t=x;
-		while(t!=1)mx[pre[t]]=f[i],t\/=pri[pre[t]];
+		while(t!=1)mx[pre[t]]=f[i],t/=pri[pre[t]];
 		res=max(res,f[i]);
 	}
 	printf("%d\n",res);
@@ -252,7 +252,7 @@ int main(){
 }
 ```
 
-# LIII.[CF285E Positions in Permutations](https:\/\/www.luogu.com.cn\/problem\/CF285E)
+# LIII.[CF285E Positions in Permutations](https://www.luogu.com.cn/problem/CF285E)
 
 神题orz……
 
@@ -280,7 +280,7 @@ int main(){
 
 考虑DP求$F$。
 
-我们设$f[i][j][k=0\\/1][l=0\/1]$表示：
+我们设$f[i][j][k=0\/1][l=0/1]$表示：
 
 前$i$位，有$j$个完美数，并且数字$i$选没选的状态是$k$，数字$i+1$选没选的状态是$l$的方案数。
 
@@ -343,7 +343,7 @@ $G(m)=\\sum\\limits\_{i=m}^n(-1)^{i-m}\\dbinom{i}{m}F(i)$
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 const int mod=1e9+7;
 int n,m,f[1010][1010][2][2],fac[1010],inv[1010],F[1010],res;
@@ -378,7 +378,7 @@ int main(){
 } 
 ```
 
-# LIV.[CF559C Gerald and Giant Chess](https:\/\/www.luogu.com.cn\/problem\/CF559C)
+# LIV.[CF559C Gerald and Giant Chess](https://www.luogu.com.cn/problem/CF559C)
 
 DP只要一与排列组合或是容斥等等东西结合在一起就会变得极其毒瘤……
 
@@ -393,7 +393,7 @@ DP只要一与排列组合或是容斥等等东西结合在一起就会变得极
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 const int N=2e5;
 const int mod=1e9+7;
@@ -424,7 +424,7 @@ int main(){
 }
 ```
 
-# LV.[CF621E Wet Shark and Blocks](https:\/\/www.luogu.com.cn\/problem\/CF621E)
+# LV.[CF621E Wet Shark and Blocks](https://www.luogu.com.cn/problem/CF621E)
 
 一眼，$b\\leq 10^9$，矩阵快速幂。
 
@@ -437,7 +437,7 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 const int mod=1e9+7;
 int n,m,p,q,cnt[10];
@@ -461,13 +461,13 @@ int main(){
 } 
 ```
 
-# LVI.[The Chocolate Spree](https:\/\/www.luogu.com.cn\/problem\/CF633F)
+# LVI.[The Chocolate Spree](https://www.luogu.com.cn/problem/CF633F)
 
 ~~奇奇怪怪的直径题~~
 
 思路1.用多种东西拼出来直径
 
-我们设$f[i][0\/1\/2\/3]$表示：
+我们设$f[i][0/1/2/3]$表示：
 
 $0$：子树内一条路径的最大值
 
@@ -504,14 +504,14 @@ $f[x][3]=f[p][2]+f[q][1]+val_x$
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 #define int long long 
 int n,val[100100],head[100100],f[100100][4],cnt,res;
-\/\/0:a chain in the subtree
-\/\/1:two chains in the subtree
-\/\/2:a chain in the subtree with x is the starting point
-\/\/3:two chains in the subtree with x is one of the staring points
+//0:a chain in the subtree
+//1:two chains in the subtree
+//2:a chain in the subtree with x is the starting point
+//3:two chains in the subtree with x is one of the staring points
 struct node{
 	int to,next;
 }edge[200100];
@@ -519,7 +519,7 @@ void ae(int u,int v){
 	edge[cnt].next=head[u],edge[cnt].to=v,head[u]=cnt++;
 	edge[cnt].next=head[v],edge[cnt].to=u,head[v]=cnt++;
 }
-void match(int x,int a,int b,int c){\/\/use half chains from A and B to form a complete chain, and use a full chain from C.
+void match(int x,int a,int b,int c){//use half chains from A and B to form a complete chain, and use a full chain from C.
 	if(a!=b&&b!=c&&c!=a)f[x][1]=max(f[x][1],f[a][2]+f[b][2]+val[x]+f[c][0]);
 }
 void dfs(int x,int fa){
@@ -593,7 +593,7 @@ $h[x]$可以选择继承父亲的，也可以选择另一个兄弟的$f$，即�
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 #define int long long
 int n,f[100100],g[100100],h[100100],d[100100],head[100100],cnt,res,val[100100];
@@ -632,7 +632,7 @@ void dfs2(int x,int fa){
 		if((y=edge[i].to)==fa)continue;
 		d[y]=max({d[x],max(h[x],(y==v[0]||y==v[1]?f[v[2]]:f[v[1]]))+(y==v[0]?f[v[1]]:f[v[0]])+val[x],(y==u[0]?g[u[1]]:g[u[0]])});
 		res=max(res,g[y]+d[y]);
-\/\/		printf("(%d,%d):%d,%d,%d,%d\n",x,y,g[y],max(h[x],(y==v[0]||y==v[1]?f[v[2]]:f[v[1]])),(y==v[0]?f[v[1]]:f[v[0]]),val[x]);
+//		printf("(%d,%d):%d,%d,%d,%d\n",x,y,g[y],max(h[x],(y==v[0]||y==v[1]?f[v[2]]:f[v[1]])),(y==v[0]?f[v[1]]:f[v[0]]),val[x]);
 		h[y]=max(h[x],(y==v[0]?f[v[1]]:f[v[0]]))+val[x];
 		dfs2(y,x);
 	}
@@ -642,15 +642,15 @@ signed main(){
 	for(int i=1;i<=n;i++)scanf("%lld",&val[i]);
 	for(int i=1,x,y;i<n;i++)scanf("%lld%lld",&x,&y),ae(x,y),ae(y,x);
 	dfs1(1,0),dfs2(1,0);
-\/\/	for(int i=1;i<=n;i++)printf("%lld ",f[i]);puts("");
-\/\/	for(int i=1;i<=n;i++)printf("%lld ",g[i]);puts("");
-\/\/	for(int i=1;i<=n;i++)printf("%lld ",h[i]);puts("");
+//	for(int i=1;i<=n;i++)printf("%lld ",f[i]);puts("");
+//	for(int i=1;i<=n;i++)printf("%lld ",g[i]);puts("");
+//	for(int i=1;i<=n;i++)printf("%lld ",h[i]);puts("");
 	printf("%lld\n",res);
 	return 0;
 }
 ```
 
-# LVII.[CF809D Hitchhiking in the Baltic States](https:\/\/www.luogu.com.cn\/problem\/CF809D)
+# LVII.[CF809D Hitchhiking in the Baltic States](https://www.luogu.com.cn/problem/CF809D)
 
 设$f_i$表示长度为$i$的LIS结尾的最小值。为了方便，设$g_i$表示前一个物品的$f_i$（即滚动数组）；
 
@@ -673,7 +673,7 @@ signed main(){
 操作采取fhq treap实现（因为要区间修改）。splay也可以实现。
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 #define lson t[x].ch[0]
 #define rson t[x].ch[1]
@@ -704,7 +704,7 @@ int merge(int x,int y){
 	if(t[x].rad>t[y].rad){t[x].ch[1]=merge(t[x].ch[1],y),pushup(x);return x;}
 	else{t[y].ch[0]=merge(x,t[y].ch[0]),pushup(y);return y;}
 }
-void split(int x,int val,int &u,int &v){\/\/u:the subtree which <val;v:the subtree which >=val
+void split(int x,int val,int &u,int &v){//u:the subtree which <val;v:the subtree which >=val
 	if(!x){u=v=0;return;}
 	pushdown(x);
 	if(t[x].val<val)u=x,split(rson,val,rson,v);
@@ -720,7 +720,7 @@ int kth(int x,int k){
 		else return x;
 	}
 }
-int suf(int val){\/\/the largest node >= val
+int suf(int val){//the largest node >= val
 	int u=0,v=0,res;
 	split(root,val,u,v);
 	if(!v)return 0;
@@ -749,9 +749,9 @@ void add(int l,int r){
 	split(root,l,a,b);
 	split(b,r,c,d);
 	if(c)ADD(c,1);
-\/\/	printf("A "),iterate(a),puts("");
-\/\/	printf("B "),iterate(c),puts("");
-\/\/	printf("C "),iterate(d),puts("");
+//	printf("A "),iterate(a),puts("");
+//	printf("B "),iterate(c),puts("");
+//	printf("C "),iterate(d),puts("");
 	root=merge(a,merge(c,d));
 }
 int main(){
@@ -769,20 +769,20 @@ int main(){
 } 
 ```
 
-# LVIII.[CF767C Garland](https:\/\/www.luogu.com.cn\/problem\/CF767C)
+# LVIII.[CF767C Garland](https://www.luogu.com.cn/problem/CF767C)
 
 有两种可行方法：
 
-1.  对于一个点，它存在两个儿子，使得这两个儿子的子树中个存在一棵子树，它们的$size$都是$1\\/3$。
+1.  对于一个点，它存在两个儿子，使得这两个儿子的子树中个存在一棵子树，它们的$size$都是$1\/3$。
 
-2.  对于一个点，它的$size$是$2\\/3$，并且它的子树中存在一个子树，它的$size$是$1\\/3$。
+2.  对于一个点，它的$size$是$2\/3$，并且它的子树中存在一个子树，它的$size$是$1\/3$。
 
-然后我们只需要对于每个节点记录$has1[x]$表示子树中是否有一个$size=1\\/3$的节点即可。复杂度$O(n)$。
+然后我们只需要对于每个节点记录$has1[x]$表示子树中是否有一个$size=1\/3$的节点即可。复杂度$O(n)$。
 
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int n,rt,head[1001000],sum[1001000],all,val[1001000],cnt,has1[1001000];
 struct node{
@@ -811,20 +811,20 @@ int main(){
 		else ae(x,i);
 	}
 	if(all%3!=0){puts("-1");return 0;}
-	all\/=3;
+	all/=3;
 	dfs(rt);
 	puts("-1");
 	return 0;
 }
 ```
 
-# LIX.[CF815C Karen and Supermarket](https:\/\/www.luogu.com.cn\/problem\/CF815C)
+# LIX.[CF815C Karen and Supermarket](https://www.luogu.com.cn/problem/CF815C)
 
 思路：一看就是树DP。
 
-设$f[i][j][0\/1]$表示：
+设$f[i][j][0/1]$表示：
 
-在以$i$为根的子树中，选了$j$个物品，并且从$i$到$1$的路径上的点 没有\\/有 全部选上的最小花费。
+在以$i$为根的子树中，选了$j$个物品，并且从$i$到$1$的路径上的点 没有\/有 全部选上的最小花费。
 
 则初始$f[i][0][0]=0$，$f[i][1][1]=c_i-d_i$，$f[i][1][0]=d_i$。其它全赋成$\\infty$。
 
@@ -835,10 +835,10 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 #define int long long
-int n,m,f[5010][5010][2],head[5010],cnt,c[5010],d[5010],sz[5010],g[5010];\/\/0:anything in the subtree 1:path from root must hold
+int n,m,f[5010][5010][2],head[5010],cnt,c[5010],d[5010],sz[5010],g[5010];//0:anything in the subtree 1:path from root must hold
 struct node{
 	int to,next;
 }edge[5010];
@@ -865,7 +865,7 @@ signed main(){
 		if(i>1)scanf("%lld",&x),ae(x,i);
 	}
 	dfs(1);
-\/\/	for(int i=1;i<=n;i++)printf("%d ",sz[i]);puts("");
+//	for(int i=1;i<=n;i++)printf("%d ",sz[i]);puts("");
 	for(int i=1;i<=n+1;i++){
 		if(min(f[1][i][0],f[1][i][1])<=m)continue;
 		printf("%lld\n",i-1);break;
@@ -874,7 +874,7 @@ signed main(){
 } 
 ```
 
-# LX.[CF837D Round Subset](https:\/\/www.luogu.com.cn\/problem\/CF837D)
+# LX.[CF837D Round Subset](https://www.luogu.com.cn/problem/CF837D)
 
 思路：
 
@@ -897,7 +897,7 @@ signed main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int n,m,f[210][13000],lim,res;
 pair<int,int>p[210];
@@ -905,7 +905,7 @@ pair<int,int>read(){
 	long long x;
 	scanf("%I64d",&x);
 	pair<int,int>ret=make_pair(0,0);
-	while(!(x%5))x\/=5,ret.first++;
+	while(!(x%5))x/=5,ret.first++;
 	while(!(x&1))x>>=1,ret.second++;
 	return ret;
 }
@@ -920,7 +920,7 @@ int main(){
 }
 ```
 
-# LXI.[CF868F Yet Another Minimization Problem](https:\/\/www.luogu.com.cn\/problem\/CF868F)
+# LXI.[CF868F Yet Another Minimization Problem](https://www.luogu.com.cn/problem/CF868F)
 
 这种题一般来说只有决策单调性一种优化方法。不过，决策单调性可以有很多种应用，例如单调队列或是斜率优化。这题可以选择比较少见的分治优化。
 
@@ -971,7 +971,7 @@ $w[j_1+1,i_1]-w[j_2+1,i_1]&lt;w[j_1+1,i_2]-w[j_2+1,i_2]$
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 #define int long long
 int n,m,num[101000],cnt[101000],res,f[100100],g[100100];
@@ -1010,7 +1010,7 @@ signed main(){
 }
 ```
 
-# LXII.[CF908D New Year and Arbitrary Arrangement](https:\/\/www.luogu.com.cn\/problem\/CF908D)
+# LXII.[CF908D New Year and Arbitrary Arrangement](https://www.luogu.com.cn/problem/CF908D)
 
 思路：
 
@@ -1113,7 +1113,7 @@ $f[i][j]=f[i+1][j]_A+f[i][i+j]_B$
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int n,a,b,A,B,f[1010][1010],c;
 const int mod=1e9+7;
@@ -1137,19 +1137,19 @@ int main(){
 }
 ```
 
-# LXIII.[CF1029E Tree with Small Distances](https:\/\/www.luogu.com.cn\/problem\/CF1029E)
+# LXIII.[CF1029E Tree with Small Distances](https://www.luogu.com.cn/problem/CF1029E)
 
 我们发现，如果一个点与$1$连了边，那么它的儿子们以及它的父亲都会变成合法的。
 
-因此我们可以设$f[i][0\/1\/2]$表示：$i$的某个儿子中有边\\/$i$自己有边\\/$i$的父亲**应该**有边的最小值。
+因此我们可以设$f[i][0/1/2]$表示：$i$的某个儿子中有边\/$i$自己有边\/$i$的父亲**应该**有边的最小值。
 
 转移：
 
 $0$：可以从儿子的$0$或$1$转移，且儿子中至少有一个为$1$（即，找到$1$与$0$差最小的那个换成$1$）
 
-$1$：$0\\/1\\/2$皆可，取$\\min$即可。
+$1$：$0\/1\/2$皆可，取$\\min$即可。
 
-$2$：$0\\/1$取$\\min$。
+$2$：$0\/1$取$\\min$。
 
 复杂度$O(n)$。
 
@@ -1158,9 +1158,9 @@ $2$：$0\\/1$取$\\min$。
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-int n,head[1001000],cnt,f[1001000][3],res;\/\/0:have a son;1:itself;2:have a father 
+int n,head[1001000],cnt,f[1001000][3],res;//0:have a son;1:itself;2:have a father 
 struct node{
 	int to,next;
 }edge[2001000];
@@ -1189,7 +1189,7 @@ int main(){
 } 
 ```
 
-# LXIV.[CF1059E Split the Tree](https:\/\/www.luogu.com.cn\/problem\/CF1059E)
+# LXIV.[CF1059E Split the Tree](https://www.luogu.com.cn/problem/CF1059E)
 
 我们假设对于每个位置，已经求出了它可以往上延伸的长度$len[x]$，然后考虑DP。
 
@@ -1210,7 +1210,7 @@ $f[x]=\\max\\limits_{y\\in Sons_x}{f[y]}-1,g[x]=\\sum\\limits_{y\\in Sons_x}g[y]
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 #define int long long
 int n,L,S,val[100100],len[100100],anc[100100][20],sum[100100],dep[100100],f[100100],g[100100];
@@ -1238,19 +1238,19 @@ signed main(){
 	}
 	for(int i=2,x;i<=n;i++)scanf("%lld",&x),v[x].push_back(i);
 	dep[1]=1,sum[1]=val[1],dfs1(1),dfs2(1);
-\/\/	for(int i=1;i<=n;i++)printf("%lld ",len[i]);puts("");
+//	for(int i=1;i<=n;i++)printf("%lld ",len[i]);puts("");
 	printf("%lld\n",g[1]);
 	return 0;
 } 
 ```
 
-# LXV.[\[USACO20OPEN\]Sprinklers 2: Return of the Alfalfa P](https:\/\/www.luogu.com.cn\/problem\/P6275)
+# LXV.[\[USACO20OPEN\]Sprinklers 2: Return of the Alfalfa P](https://www.luogu.com.cn/problem/P6275)
 
 首先，一个合法的方案，肯定是有一条从左到右向下延伸的轮廓线：
 
 例如：
 
-![](https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/rc3xmkc2.png)
+![](https://cdn.luogu.com.cn/upload/image_hosting/rc3xmkc2.png)
 
 其中，蓝色系格子是玉米，红色系格子是苜蓿；浅蓝色位置必须放玉米喷射器，深红色格子必须放苜蓿喷射器。深蓝和浅红格子放不放均可。更一般地说，所有的转角处，都是必须放喷射器的位置。
 
@@ -1260,7 +1260,7 @@ signed main(){
 
 我们思考一下，当位置$(i,j)$已经被放入玉米后，有哪些位置的发射器种类以及决定了：
 
-![](https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/w5kcqce3.png)
+![](https://cdn.luogu.com.cn/upload/image_hosting/w5kcqce3.png)
 
 如图，五角星格子就是$(i,j)$，
 
@@ -1276,7 +1276,7 @@ signed main(){
 
 1.  位置$(i,j)$中$i\\neq 1$，即不位于第$1$行。
 
-![](https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/i5vqytt6.png)
+![](https://cdn.luogu.com.cn/upload/image_hosting/i5vqytt6.png)
 
 如图，则位置$(i-1,1)$必有一个苜蓿。显然，只有位置$(i-1,1)$不是牛，该位置才可以作为起始点。
 
@@ -1298,7 +1298,7 @@ $f[i][j]=2^{s_{1,1}-s_{i,j+1}-1}$。
 
 则位置$(i-1,l+1)$肯定有个苜蓿。如果位置$(i-1,l+1)$没有牛，则可以转移。
 
-![](https:\/\/cdn.luogu.com.cn\/upload\/image_hosting\/bvew8aib.png)
+![](https://cdn.luogu.com.cn/upload/image_hosting/bvew8aib.png)
 
 如图，黄星要想从紫星转移来，那么深红位置是必须放置苜蓿的。
 
@@ -1307,7 +1307,7 @@ $f[i][j]=2^{s_{1,1}-s_{i,j+1}-1}$。
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 const int mod=1e9+7;
 int n,s[2010][2010],f[2020][2020],bin[4001000],res;
@@ -1318,7 +1318,7 @@ int main(){
 	for(int i=n;i;i--)for(int j=n;j;j--)s[i][j]=s[i+1][j]+s[i][j+1]-s[i+1][j+1]+(g[i][j]=='.');
 	bin[0]=1;
 	for(int i=1;i<=s[1][1];i++)bin[i]=(bin[i-1]<<1)%mod;
-\/\/	for(int i=1;i<=n;i++){for(int j=1;j<=n;j++)printf("%d ",s[i][j]);puts("");}
+//	for(int i=1;i<=n;i++){for(int j=1;j<=n;j++)printf("%d ",s[i][j]);puts("");}
 	for(int i=1;i<=n;i++)for(int j=1;j<=n;j++){
 		if(g[i][j]=='W')continue;
 		if(g[i-1][1]=='.')f[i][j]=bin[s[1][1]-s[i][j+1]-2];
@@ -1330,7 +1330,7 @@ int main(){
 		if(g[n][j+1]=='.')(res+=1ll*f[i][j]*bin[s[i][j+1]-1]%mod)%=mod;
 		if(j==n)(res+=f[i][j])%=mod;
 	}
-\/\/	for(int i=1;i<=n;i++){for(int j=1;j<=n;j++)printf("%d ",f[i][j]);puts("");}
+//	for(int i=1;i<=n;i++){for(int j=1;j<=n;j++)printf("%d ",f[i][j]);puts("");}
 	if(g[n][1]=='.')(res+=bin[s[1][1]-1])%=mod;
 	printf("%d\n",res);
 	return 0;
@@ -1366,7 +1366,7 @@ $f[i][j]=\\dfrac{\\sum\\limits_{l=1}^{j-1}[(i-1,l+1)\text{没有牛}]\*sum1[i-1]
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 const int mod=1e9+7;
 const int inv2=5e8+4;
@@ -1378,7 +1378,7 @@ int main(){
 	for(int i=n;i;i--)for(int j=n;j;j--)s[i][j]=s[i+1][j]+s[i][j+1]-s[i+1][j+1]+(g[i][j]=='.');
 	bin[0]=inv[0]=1;
 	for(int i=1;i<=s[1][1];i++)bin[i]=(bin[i-1]<<1)%mod,inv[i]=(1ll*inv[i-1]*inv2)%mod;
-\/\/	for(int i=1;i<=n;i++){for(int j=1;j<=n;j++)printf("%d ",s[i][j]);puts("");}
+//	for(int i=1;i<=n;i++){for(int j=1;j<=n;j++)printf("%d ",s[i][j]);puts("");}
 	for(int i=1;i<=n;i++)for(int j=1;j<=n;j++){
 		if(g[i][j]!='W'){
 			if(g[i-1][1]=='.')f[i][j]=bin[s[1][1]-s[i][j+1]-2];
@@ -1392,7 +1392,7 @@ int main(){
 		}
 		sum[i][j]=(1ll*f[i][j]*bin[s[i][j+1]]+sum[i-1][j])%mod;
 	}
-\/\/	for(int i=1;i<=n;i++){for(int j=1;j<=n;j++)printf("%d ",f[i][j]);puts("");}
+//	for(int i=1;i<=n;i++){for(int j=1;j<=n;j++)printf("%d ",f[i][j]);puts("");}
 	if(g[n][1]=='.')(res+=bin[s[1][1]-1])%=mod;
 	printf("%d\n",res);
 	return 0;
@@ -1414,7 +1414,7 @@ $f[i][j]=\\dfrac{\\sum\\limits_{l=1}^{j-1}[(i-1,l+1)\text{没有牛}]\*sum1[i-1]
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 const int mod=1e9+7;
 const int inv2=5e8+4;
@@ -1426,7 +1426,7 @@ int main(){
 	for(int i=n;i;i--)for(int j=n;j;j--)s[i][j]=s[i+1][j]+s[i][j+1]-s[i+1][j+1]+(g[i][j]=='.');
 	bin[0]=inv[0]=1;
 	for(int i=1;i<=s[1][1];i++)bin[i]=(bin[i-1]<<1)%mod,inv[i]=(1ll*inv[i-1]*inv2)%mod;
-\/\/	for(int i=1;i<=n;i++){for(int j=1;j<=n;j++)printf("%d ",s[i][j]);puts("");}
+//	for(int i=1;i<=n;i++){for(int j=1;j<=n;j++)printf("%d ",s[i][j]);puts("");}
 	for(int i=1;i<=n;i++)for(int j=1;j<=n;j++){
 		if(g[i][j]!='W'){
 			if(g[i-1][1]=='.')f[i][j]=bin[s[1][1]-s[i][j+1]-2];
@@ -1438,14 +1438,14 @@ int main(){
 		sum1[i][j]=(1ll*f[i][j]*bin[s[i][j+1]]+sum1[i-1][j])%mod;
 		sum2[i][j]=(sum2[i][j-1]+(g[i][j+1]=='W'?0:sum1[i][j]))%mod;
 	}
-\/\/	for(int i=1;i<=n;i++){for(int j=1;j<=n;j++)printf("%d ",f[i][j]);puts("");}
+//	for(int i=1;i<=n;i++){for(int j=1;j<=n;j++)printf("%d ",f[i][j]);puts("");}
 	if(g[n][1]=='.')(res+=bin[s[1][1]-1])%=mod;
 	printf("%d\n",res);
 	return 0;
 }
 ```
 
-# LXVI.[\[USACO09MAR\]Cleaning Up G](https:\/\/www.luogu.com.cn\/problem\/P2943)
+# LXVI.[\[USACO09MAR\]Cleaning Up G](https://www.luogu.com.cn/problem/P2943)
 
 $n^2$的DP非常eazy，考虑如何优化。
 
@@ -1466,13 +1466,13 @@ $n^2$的DP非常eazy，考虑如何优化。
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int a[40100],n,m,f[40100],lim,pre[40100],suf[40100],pos[40100],val[40100],cnt[40100];
 int main(){
 	scanf("%d%d",&n,&m),lim=sqrt(n),memset(f,0x3f3f3f3f,sizeof(f)),f[0]=0;
 	for(int i=1;i<=n;i++)scanf("%d",&a[i]),pre[i]=val[a[i]],suf[pre[i]]=i,suf[i]=n+1,val[a[i]]=i;
-\/\/	for(int i=1;i<=n;i++)printf("(%d %d)\n",pre[i],suf[i]);
+//	for(int i=1;i<=n;i++)printf("(%d %d)\n",pre[i],suf[i]);
 	for(int i=1;i<=lim;i++)pos[i]=1;
 	for(int i=1;i<=n;i++)for(int j=1;j<=lim;j++){
 		cnt[j]+=(pre[i]<pos[j]);
@@ -1483,13 +1483,13 @@ int main(){
 		}
 		f[i]=min(f[i],f[pos[j]-1]+j*j);
 	}
-\/\/	for(int i=1;i<=n;i++)printf("%d ",f[i]);puts("");
+//	for(int i=1;i<=n;i++)printf("%d ",f[i]);puts("");
 	printf("%d\n",f[n]);
 	return 0;
 }
 ```
 
-# LXVII.[\[USACO15JAN\]Moovie Mooving G](https:\/\/www.luogu.com.cn\/problem\/P3118)
+# LXVII.[\[USACO15JAN\]Moovie Mooving G](https://www.luogu.com.cn/problem/P3118)
 
 思路1.
 
@@ -1500,7 +1500,7 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int n,m,len[20],sum[20],dis[30000],id[30000];
 vector<int>v[20],g[30000],res[30000];
@@ -1511,7 +1511,7 @@ int main(){
 		scanf("%d%d",&len[i],&x),sum[i+1]=sum[i]+x;
 		for(int j=0;j<x;j++)scanf("%d",&y),v[i].push_back(y),id[sum[i]+j]=i;
 	}
-\/\/	for(int i=0;i<=n;i++)printf("%d ",sum[i]);puts("");
+//	for(int i=0;i<=n;i++)printf("%d ",sum[i]);puts("");
 	id[sum[n]]=n;
 	for(int i=0;i<n;i++)for(int k=0;k<v[i].size();k++){
 		int x=v[i][k];
@@ -1527,14 +1527,14 @@ int main(){
 			g[sum[i]+k].push_back(sum[j]+it-v[j].begin());
 		}
 	}
-\/\/	for(int i=0;i<n;i++){for(int j=0;j<v[i].size();j++){printf("%d:",sum[i]+j);for(auto x:g[sum[i]+j])printf("%d ",x);puts("");}puts("");}
-\/\/	for(int i=0;i<=sum[n];i++)printf("%d ",id[i]);puts("");
+//	for(int i=0;i<n;i++){for(int j=0;j<v[i].size();j++){printf("%d:",sum[i]+j);for(auto x:g[sum[i]+j])printf("%d ",x);puts("");}puts("");}
+//	for(int i=0;i<=sum[n];i++)printf("%d ",id[i]);puts("");
 	while(!q.empty()){
 		int x=q.front();q.pop();
-\/\/		printf("%d:\n",x);
+//		printf("%d:\n",x);
 		for(auto y:g[x]){
 			if(dis[y]<=dis[x])continue;
-\/\/			printf("%d\n",y);
+//			printf("%d\n",y);
 			for(auto i:res[x])if(!(i&(1<<id[y]))){
 				if(dis[y]!=dis[x]+1)dis[y]=dis[x]+1,res[y].clear();
 				break;	
@@ -1562,7 +1562,7 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int n,m,f[1<<20],len[20],res=0x3f3f3f3f;
 vector<int>v[20];
@@ -1587,7 +1587,7 @@ int main(){
 } 
 ```
 
-# LXVIII.[\[USACO17JAN\]Subsequence Reversal P](https:\/\/www.luogu.com.cn\/problem\/P3607)
+# LXVIII.[\[USACO17JAN\]Subsequence Reversal P](https://www.luogu.com.cn/problem/P3607)
 
 思路：
 
@@ -1622,7 +1622,7 @@ $f[l+1][r][L][R]$和$f[l][r-1][L][R]$
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int n,f[60][60][60][60],a[60];
 int solve(int l,int r,int L,int R){
@@ -1637,7 +1637,7 @@ int solve(int l,int r,int L,int R){
 	if(a[r]<=R)res=max(res,solve(l,r-1,L,a[r])+1);
 	if(a[l]<=R&&l!=r)res=max(res,solve(l+1,r-1,L,a[l])+1);
 	if(a[l]<=R&&a[r]>=L&&l!=r)res=max(res,solve(l+1,r-1,a[r],a[l])+2);
-\/\/	printf("(%d,%d):(%d,%d):%d\n",l,r,L,R,res);
+//	printf("(%d,%d):(%d,%d):%d\n",l,r,L,R,res);
 	return res;
 }
 int main(){
@@ -1648,7 +1648,7 @@ int main(){
 }
 ```
 
-# LXIX.[\[USACO18JAN\]Stamp Painting G](https:\/\/www.luogu.com.cn\/problem\/P4187)
+# LXIX.[\[USACO18JAN\]Stamp Painting G](https://www.luogu.com.cn/problem/P4187)
 
 思路：
 
@@ -1667,7 +1667,7 @@ $f[i]=\\begin{cases}M^i(1\\leq i&lt;K)\\(\\sum\\limits\_{j=i-K+1}^{i-1}f[j])(M-1
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 const int mod=1e9+7;
 int n,m,p,f[1001000],res=1;
@@ -1679,7 +1679,7 @@ int main(){
 		for(int j=i-p+1;j<i;j++)(f[i]+=f[j])%=mod;
 		f[i]=1ll*f[i]*(m-1)%mod;
 	}
-\/\/	for(int i=1;i<=n;i++)printf("%d ",f[i]);
+//	for(int i=1;i<=n;i++)printf("%d ",f[i]);
 	printf("%d\n",(mod+res-f[n])%mod);
 	return 0;
 }
@@ -1690,7 +1690,7 @@ int main(){
 代码:
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 const int mod=1e9+7;
 int n,m,p,f[1001000],res=1,s[1001000];
@@ -1704,7 +1704,7 @@ int main(){
 }
 ```
 
-# LXX.[\[USACO5.5\]贰五语言Two Five](https:\/\/www.luogu.com.cn\/problem\/P2750)
+# LXX.[\[USACO5.5\]贰五语言Two Five](https://www.luogu.com.cn/problem/P2750)
 
 ~~这题已经在我的收藏夹里面吃了大半年的灰了~~
 
@@ -1719,7 +1719,7 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int f[6][6][6][6][6],n;
 char tp[2],s[100],t[100];
@@ -1735,7 +1735,7 @@ int dfs(int a,int b,int c,int d,int e){
 	if(c<b&&che(s[c+10],a+b+c+d+e))ret+=dfs(a,b,c+1,d,e);
 	if(d<c&&che(s[d+15],a+b+c+d+e))ret+=dfs(a,b,c,d+1,e);
 	if(e<d&&che(s[e+20],a+b+c+d+e))ret+=dfs(a,b,c,d,e+1);
-\/\/	printf("%d %d %d %d %d:%d\n",a,b,c,d,e,res);
+//	printf("%d %d %d %d %d:%d\n",a,b,c,d,e,res);
 	return ret;
 }
 bool used[100];
@@ -1767,7 +1767,7 @@ int main(){
 }
 ```
 
-# LXXI.[\[ABC163F\]path pass i](https:\/\/atcoder.jp\/contests\/abc163\/tasks\/abc163_f)
+# LXXI.[\[ABC163F\]path pass i](https://atcoder.jp/contests/abc163/tasks/abc163_f)
 
 思路：
 
@@ -1786,7 +1786,7 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 #define sqr(x) 1ll*x*(x+1)>>1ll
 typedef long long ll;
@@ -1821,7 +1821,7 @@ int main(){
 }
 ```
 
-# LXXII.[\[HEOI2016\\/TJOI2016\]序列](https:\/\/www.luogu.com.cn\/problem\/P4093)
+# LXXII.[\[HEOI2016\/TJOI2016\]序列](https://www.luogu.com.cn/problem/P4093)
 
 ~~说实话我对于这道题应该归到DP还是树套树时曾经纠结了很久~~
 
@@ -1838,7 +1838,7 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int n,m,a[100100],mn[100100],mx[100100],f[100100],res;
 int main(){
@@ -1861,7 +1861,7 @@ int main(){
 ~~我吹爆树状数组套权值线段树！！！好写到爆！！！~~
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 const int N=100000;
 #define mid ((l+r)>>1)
@@ -1903,7 +1903,7 @@ int main(){
 }
 ```
 
-# LXXIII.[\[USACO19DEC\]Greedy Pie Eaters P](https:\/\/www.luogu.com.cn\/problem\/P5851)
+# LXXIII.[\[USACO19DEC\]Greedy Pie Eaters P](https://www.luogu.com.cn/problem/P5851)
 
 考场上写了个暴力贪心（因为看到题面中的 `greedy` ……）然后光荣爆炸……
 
@@ -1934,7 +1934,7 @@ $f[i][j]=\\max\\limits\_{k=i}^{j}f[i][k-1]+???+f[k+1][j]$
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int n,m,f[510][510],g[510][510][510];
 int main(){
@@ -1950,7 +1950,7 @@ int main(){
 }
 ```
 
-# LXXIV.[\[USACO18DEC\]Sort It Out P](https:\/\/www.luogu.com.cn\/problem\/P5156)
+# LXXIV.[\[USACO18DEC\]Sort It Out P](https://www.luogu.com.cn/problem/P5156)
 
 集合中的数一定是某一条LIS的补集，这点还是比较好想的。
 
@@ -1967,7 +1967,7 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 #define pii pair<int,ll>
@@ -2009,7 +2009,7 @@ int main(){
 }
 ```
 
-# LXXV.[\[USACO20FEB\]Help Yourself G](https:\/\/www.luogu.com.cn\/problem\/P6146)
+# LXXV.[\[USACO20FEB\]Help Yourself G](https://www.luogu.com.cn/problem/P6146)
 
 思路：
 
@@ -2030,7 +2030,7 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 const int mod=1e9+7;
 int n,sum[200100],bin[100100],f[100100];
@@ -2046,7 +2046,7 @@ int main(){
 }
 ```
 
-# LXXVI.[高速公路](https:\/\/www.luogu.com.cn\/problem\/P3994)
+# LXXVI.[高速公路](https://www.luogu.com.cn/problem/P3994)
 
 简直恶心到爆炸……
 
@@ -2059,7 +2059,7 @@ $$f_x=\\min\\limits_{y\\text{ is an ancestor of }x}f_y+p_x(dis_x-dis_y)+q_x$$
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 int n,head[1001000],cnt,a[1001000],b[1001000],dis[1001000];
@@ -2111,7 +2111,7 @@ $$\\dfrac{f_j-f_k}{dis_j-dis_k}\\geq p_i$$
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 int n,head[1001000],cnt,a[1001000],b[1001000],q[1001000],l[1001000],r[1001000],cha[100100];
@@ -2153,7 +2153,7 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 int n,head[1001000],cnt,a[1001000],b[1001000],q[1001000],l[1001000],r[1001000],cha[1001000];
@@ -2200,9 +2200,9 @@ int main(){
 }
 ```
 
-# LXXVII.[\[CmdOI2019\]任务分配问题](https:\/\/www.luogu.com.cn\/problem\/P5574)
+# LXXVII.[\[CmdOI2019\]任务分配问题](https://www.luogu.com.cn/problem/P5574)
 
-这道题与LXI.[CF868F Yet Another Minimization Problem](https:\/\/www.luogu.com.cn\/problem\/CF868F)长得很像。实际算法也类似。
+这道题与LXI.[CF868F Yet Another Minimization Problem](https://www.luogu.com.cn/problem/CF868F)长得很像。实际算法也类似。
 
 首先，题意就是把所有数划分成$k$段，使得每段内部**正序对**数量之和最少。设$w(i,j)$表示区间$(i,j)$内部正序对数量。则很轻松就能得到
 
@@ -2215,7 +2215,7 @@ $$w(i-1,j+1)+w(i,j)\\geq w(i,j+1)+w(i-1,j)$$
 代码（将正序对转换成了逆序对）：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 typedef long long lol;
 int n,m,t[25010],a[25010],ll,rr;
@@ -2254,7 +2254,7 @@ int main(){
 }
 ```
 
-# LXXVIII.[\[USACO12OPEN\]Bookshelf G](https:\/\/www.luogu.com.cn\/problem\/P1848)
+# LXXVIII.[\[USACO12OPEN\]Bookshelf G](https://www.luogu.com.cn/problem/P1848)
 
 转移很简单，直接设$f[i]$表示前$i$个位置书架的最小高度和即可。
 
@@ -2275,7 +2275,7 @@ $$f[i]=\\min\\limits_{j=1}^{i}\\Big{f_{j-1}+\\max{h_j,\\dots,h_i}\\Big}$$
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 #define lson x<<1
 #define rson x<<1|1
@@ -2322,7 +2322,7 @@ signed main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 #define int long long
 int n,m,s[100100],h[100100],f[100100],q[100100],p[100100],l,r;
@@ -2345,7 +2345,7 @@ signed main(){
 }
 ```
 
-# LXXIX.[\[AGC013D\] Piling Up](https:\/\/www.luogu.com.cn\/problem\/AT2370)
+# LXXIX.[\[AGC013D\] Piling Up](https://www.luogu.com.cn/problem/AT2370)
 
 一个很naive的思路就是设$f[i][j]$表示当前进行了$i$步，并且盒子中剩下了$j$个白球的方案数，然后直接DP即可。
 
@@ -2359,7 +2359,7 @@ signed main(){
 
 为了避免重复计算，我们可以强制要求**只有过程中出现过$0$的序列**才是合法序列。
 
-于是我们可以设$f[i][j][0\/1]$表示进行$i$步，盒子中剩下$j$个白球，且（没有\\/有）到过$0$的方案数。则答案即为$\\sum\\limits\_{i=0}^nf[m][i][1]$。
+于是我们可以设$f[i][j][0/1]$表示进行$i$步，盒子中剩下$j$个白球，且（没有\/有）到过$0$的方案数。则答案即为$\\sum\\limits\_{i=0}^nf[m][i][1]$。
 
 要注意的是，这里的转移过程必须保证**任意时刻球的数量必须在$[0,n]$范围之内**，因此对于不合法的状态要记得特判掉。
 
@@ -2368,18 +2368,18 @@ signed main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 const int mod=1e9+7;
-int n,m,f[3010][3010][2],res;\/\/0: haven't reached 0; 1:have reached 0
+int n,m,f[3010][3010][2],res;//0: haven't reached 0; 1:have reached 0
 int main(){
 	scanf("%d%d",&n,&m);
 	for(int i=0;i<=n;i++)f[0][i][i==0]=1;
 	for(int i=0;i<m;i++)for(int j=0;j<=n;j++){
-		if(j)(f[i+1][j][j==1]+=f[i][j][0])%=mod,(f[i+1][j][1]+=f[i][j][1])%=mod;\/\/-+
-		if(j)(f[i+1][j-1][j==1]+=f[i][j][0])%=mod,(f[i+1][j-1][1]+=f[i][j][1])%=mod;\/\/--;
-		if(j<n)(f[i+1][j][0]+=f[i][j][0])%=mod,(f[i+1][j][1]+=f[i][j][1])%=mod;\/\/+-;
-		if(j<n)(f[i+1][j+1][0]+=f[i][j][0])%=mod,(f[i+1][j+1][1]+=f[i][j][1])%=mod;\/\/++;
+		if(j)(f[i+1][j][j==1]+=f[i][j][0])%=mod,(f[i+1][j][1]+=f[i][j][1])%=mod;//-+
+		if(j)(f[i+1][j-1][j==1]+=f[i][j][0])%=mod,(f[i+1][j-1][1]+=f[i][j][1])%=mod;//--;
+		if(j<n)(f[i+1][j][0]+=f[i][j][0])%=mod,(f[i+1][j][1]+=f[i][j][1])%=mod;//+-;
+		if(j<n)(f[i+1][j+1][0]+=f[i][j][0])%=mod,(f[i+1][j+1][1]+=f[i][j][1])%=mod;//++;
 	}
 	for(int i=0;i<=n;i++)(res+=f[m][i][1])%=mod;
 	printf("%d\n",res);
@@ -2387,7 +2387,7 @@ int main(){
 }
 ```
 
-# LXXX.[\[AGC024E\] Sequence Growing Hard](https:\/\/www.luogu.com.cn\/problem\/AT2370)
+# LXXX.[\[AGC024E\] Sequence Growing Hard](https://www.luogu.com.cn/problem/AT2370)
 
 首先，我们肯定能想到从第一个序列开始，**依次加入一个新数得到下一个序列**，同时还要保证字典序递增。我们如果让新数递增的话，就可以DP了。
 
@@ -2422,27 +2422,27 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int n,m,p,f[310][310][310];
-\/\/f[i][j][k]:we've finished constructing the first i sequences, now we're going to add the number j into the i+1-th sqeuence, and there're k places to add j into
+//f[i][j][k]:we've finished constructing the first i sequences, now we're going to add the number j into the i+1-th sqeuence, and there're k places to add j into
 int main(){
 	scanf("%d%d%d",&n,&m,&p),f[0][1][0]=1;
 	for(int i=0;i<=n;i++)for(int j=1;j<=m;j++)for(int k=i;k>=0;k--){
-		if(k)(f[i][j][k-1]+=f[i][j][k])%=p;\/\/we decide not to add j to the k-th place, so we could add it to the (k-1)-th place.
-		else(f[i][j+1][i]+=f[i][j][k])%=p;\/\/we have tried every place j could be added to, now it's time to try j+1, which could be added into any place
-		(f[i+1][j][k]+=1ll*f[i][j][k]*(k+1)%p)%=p;\/\/we decide to add j to the k-th place, and there are (k+1) places for us to add (including the last one)
+		if(k)(f[i][j][k-1]+=f[i][j][k])%=p;//we decide not to add j to the k-th place, so we could add it to the (k-1)-th place.
+		else(f[i][j+1][i]+=f[i][j][k])%=p;//we have tried every place j could be added to, now it's time to try j+1, which could be added into any place
+		(f[i+1][j][k]+=1ll*f[i][j][k]*(k+1)%p)%=p;//we decide to add j to the k-th place, and there are (k+1) places for us to add (including the last one)
 	}
-	printf("%d\n",f[n][m+1][n]);\/\/all n sequences've been constructed, and all number've been tried
+	printf("%d\n",f[n][m+1][n]);//all n sequences've been constructed, and all number've been tried
 	return 0;
 }
 ```
 
-# LXXXI.[CF1312G Autocompletion](https:\/\/www.luogu.com.cn\/problem\/CF1312G)
+# LXXXI.[CF1312G Autocompletion](https://www.luogu.com.cn/problem/CF1312G)
 
-[题解](https:\/\/www.luogu.com.cn\/blog\/Troverld\/solution-cf1312g)
+[题解](https://www.luogu.com.cn/blog/Troverld/solution-cf1312g)
 
-# LXXXII.[UOJ#11. 【UTR #1】ydc的大树](http:\/\/uoj.ac\/problem\/11)
+# LXXXII.[UOJ#11. 【UTR #1】ydc的大树](http://uoj.ac/problem/11)
 
 很明显，如果我们令一个黑点$x$为树根，设它的"好朋友"集合为$\\mathbb{S}$，则路径$(x,\\operatorname{LCA}{\\mathbb{S}})$中所有白节点均可以使$x$不开心。这个可以用**树上差分**来进行路径加。现在关键是求出$\\operatorname{LCA}{\\mathbb{S}}$。
 
@@ -2517,11 +2517,11 @@ void dfs2(int x,int fa){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int n,m,anc[100100][20],dep[100100],sum[100100],mx,cnt;
 vector<pair<int,int> >v[100100];
-pair<int,int>f[100100],g[100100];\/\/first:the maximum route length; second:the lca of all the 'good friends'
+pair<int,int>f[100100],g[100100];//first:the maximum route length; second:the lca of all the 'good friends'
 bool bla[100100];
 void dfs1(int x,int fa){
 	if(bla[x])f[x]=make_pair(0,x);else f[x]=make_pair(-1,0);
@@ -2579,7 +2579,7 @@ int main(){
 	dfs1(1,0),dfs2(1,0),dfs3(1,0);
 	for(int j=1;j<=19;j++)for(int i=1;i<=n;i++)anc[i][j]=anc[anc[i][j-1]][j-1];
 	for(int i=1;i<=n;i++){
-\/\/		printf("%d:(%d,%d),(%d,%d)\n",i,f[i].first,f[i].second,g[i].first,g[i].second);
+//		printf("%d:(%d,%d),(%d,%d)\n",i,f[i].first,f[i].second,g[i].first,g[i].second);
 		if(!bla[i]||f[i].first==g[i].first)continue;
 		int x,y=i;
 		if(f[i].first>g[i].first)x=f[i].second;
@@ -2596,7 +2596,7 @@ int main(){
 }
 ```
 
-# LXXXIII.[CF261D Maxim and Increasing Subsequence](https:\/\/www.luogu.com.cn\/problem\/CF261D)
+# LXXXIII.[CF261D Maxim and Increasing Subsequence](https://www.luogu.com.cn/problem/CF261D)
 
 首先，我们可以发现，当这个重复次数很大的时候，答案就**等于序列中出现的不同权值个数**。实际上，这个"很大"就可以被当作"大于等于不同权值个数"。
 
@@ -2607,7 +2607,7 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int T,n,lim,m,a[100100],f[100100];
 vector<int>v;
@@ -2631,7 +2631,7 @@ int main(){
 }
 ```
 
-# LXXXIV.[CF51F Caterpillar](https:\/\/www.luogu.com.cn\/problem\/CF51F)
+# LXXXIV.[CF51F Caterpillar](https://www.luogu.com.cn/problem/CF51F)
 
 也不知道算不算DP，反正就放这吧。
 
@@ -2656,7 +2656,7 @@ $$(\\text{节点数}-\\text{边双数})+(\\text{联通块数}-1)+\\sum(\\text{�
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int n,m,col[20100],c,res,mx,leaf,sz;
 namespace ECC{
@@ -2690,7 +2690,7 @@ int main(){
 	for(int i=1,x,y;i<=m;i++)scanf("%d%d",&x,&y),ECC::v[x].push_back(y),ECC::v[y].push_back(x);
 	for(int i=1;i<=n;i++)if(!ECC::dfn[i])ECC::Tarjan(i,0);
 	res=n-c-1;
-\/\/	for(int i=1;i<=n;i++)printf("%d ",col[i]);puts("");
+//	for(int i=1;i<=n;i++)printf("%d ",col[i]);puts("");
 	for(int i=1;i<=n;i++)for(auto j:ECC::v[i])if(col[i]!=col[j])Tree::v[col[i]].push_back(col[j]);
 	for(int i=1;i<=c;i++){
 		if(Tree::vis[i])continue;
@@ -2704,7 +2704,7 @@ int main(){
 }
 ```
 
-# LXXXV.[CF401D Roman and Numbers](https:\/\/www.luogu.com.cn\/problem\/CF401D)
+# LXXXV.[CF401D Roman and Numbers](https://www.luogu.com.cn/problem/CF401D)
 
 思路：
 
@@ -2715,32 +2715,32 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 int m,num[10],a[10],pov[10],all,dig,dd;
 ll n,f[1<<18][110],ten[20];
 void teg(int ip){
 	dig=0;
-	for(int i=9;i>=0;i--)a[i]=ip%num[i],ip\/=num[i],dig+=a[i];
+	for(int i=9;i>=0;i--)a[i]=ip%num[i],ip/=num[i],dig+=a[i];
 }
 int main(){
 	scanf("%lld%d",&n,&m);
-	while(n)num[n%10]++,n\/=10,dd++;
+	while(n)num[n%10]++,n/=10,dd++;
 	ten[0]=1;
 	for(int i=1;i<=dd;i++)ten[i]=ten[i-1]*10;
 	for(int i=0;i<10;i++)num[i]++;
 	pov[9]=1;
 	for(int i=8;i>=0;i--)pov[i]=pov[i+1]*num[i+1];
-\/\/	for(int i=0;i<10;i++)printf("%d ",num[i]);puts("");
-\/\/	for(int i=0;i<10;i++)printf("%d ",pov[i]);puts("");
+//	for(int i=0;i<10;i++)printf("%d ",num[i]);puts("");
+//	for(int i=0;i<10;i++)printf("%d ",pov[i]);puts("");
 	all=pov[0]*num[0];
 	for(int i=1;i<10;i++)if(num[i]>1)f[pov[i]][(ten[dd-1]*i)%m]=1;
 	for(int i=1;i<all;i++){
 		teg(i);
-\/\/		printf("QWQ:%d:::",i);for(int j=0;j<10;j++)printf("%d ",a[j]);puts("");
+//		printf("QWQ:%d:::",i);for(int j=0;j<10;j++)printf("%d ",a[j]);puts("");
 		for(int j=0;j<m;j++){
-\/\/			printf("%d:%d\n",j,f[i][j]);
+//			printf("%d:%d\n",j,f[i][j]);
 			if(!f[i][j])continue;
 			for(int k=0;k<10;k++)if(num[k]-a[k]>1)f[i+pov[k]][(ten[dd-dig-1]*k+j)%m]+=f[i][j];		
 		}
@@ -2750,11 +2750,11 @@ int main(){
 }
 ```
 
-# LXXXVI.[CF295D Greg and Caves](https:\/\/www.luogu.com.cn\/problem\/CF295D)
+# LXXXVI.[CF295D Greg and Caves](https://www.luogu.com.cn/problem/CF295D)
 
-[题解](https:\/\/www.luogu.com.cn\/blog\/Troverld\/solution-cf295d)
+[题解](https://www.luogu.com.cn/blog/Troverld/solution-cf295d)
 
-# LXXXVII.[CF938F Erasing Substrings](https:\/\/www.luogu.com.cn\/problem\/CF938F)
+# LXXXVII.[CF938F Erasing Substrings](https://www.luogu.com.cn/problem/CF938F)
 
 一个naive的想法是设$f\_{i,j}$表示在位置$[1,i]$中，我们删去了长度为$2^k(k\\in j)$的一些串，所能得到的最小字典序。使用二分+hash可以做到$O(n^2\\log^2 n)$，无法承受。
 
@@ -2769,27 +2769,27 @@ int main(){
 **注意到代码实现与此处描述有一些区别------描述中的递推式是刷表法，而代码中的递推式是填表法；同时，代码中的DP顺序上文已经提到，是$i-j$递增的顺序。**
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int n,m,all;
-bool f[5010][5010];\/\/f[i][j]:after erasing strings in j from the section [1,i-1], whether the (i-j) prefix can be the minimum or not
+bool f[5010][5010];//f[i][j]:after erasing strings in j from the section [1,i-1], whether the (i-j) prefix can be the minimum or not
 char s[5010];
 int main(){
 	scanf("%s",s+1),n=strlen(s+1);
 	while((2<<m)<=n)m++;all=(1<<m);
-	for(int i=0;i<all;i++)f[i][i]=true;\/\/initial state:erasing all i characters in the prefix
+	for(int i=0;i<all;i++)f[i][i]=true;//initial state:erasing all i characters in the prefix
 	for(int i=1;i<=n-all+1;i++){
 		char lim=127;
-		for(int j=i;j<i+all;j++)if(f[j-1][j-i])lim=min(lim,s[j]);\/\/find the minimum on the (i+1)-th character
+		for(int j=i;j<i+all;j++)if(f[j-1][j-i])lim=min(lim,s[j]);//find the minimum on the (i+1)-th character
 		putchar(lim);
-		for(int j=i;j<i+all;j++)f[j][j-i]=(f[j-1][j-i]&&(s[j]==lim));\/\/leave j+1 empty
-		for(int j=i;j<i+all;j++)for(int k=0;k<m;k++)if((j-i)&(1<<k))f[j][j-i]|=f[j-(1<<k)][j-i-(1<<k)];\/\/put something on j+1
+		for(int j=i;j<i+all;j++)f[j][j-i]=(f[j-1][j-i]&&(s[j]==lim));//leave j+1 empty
+		for(int j=i;j<i+all;j++)for(int k=0;k<m;k++)if((j-i)&(1<<k))f[j][j-i]|=f[j-(1<<k)][j-i-(1<<k)];//put something on j+1
 	}
 	return 0;
 } 
 ```
 
-# LXXXVIII.[CF543D Road Improvement](https:\/\/www.luogu.com.cn\/problem\/CF543D)
+# LXXXVIII.[CF543D Road Improvement](https://www.luogu.com.cn/problem/CF543D)
 
 常规换根DP题。
 
@@ -2808,7 +2808,7 @@ $$f_i=\\prod\\limits_{j\\in son_i}(f_j+1)$$
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 const int mod=1e9+7;
 int n,f[200100];
@@ -2838,11 +2838,11 @@ int main(){
 } 
 ```
 
-# LXXXIX.[CF288E Polo the Penguin and Lucky Numbers](https:\/\/www.luogu.com.cn\/problem\/CF288E)
+# LXXXIX.[CF288E Polo the Penguin and Lucky Numbers](https://www.luogu.com.cn/problem/CF288E)
 
-[题解](https:\/\/www.luogu.com.cn\/blog\/Troverld\/solution-cf288e)
+[题解](https://www.luogu.com.cn/blog/Troverld/solution-cf288e)
 
-# LC.[CF GYM100739J.Longest cheap palindrome](https:\/\/codeforces.ml\/gym\/100739\/problem\/J)
+# LC.[CF GYM100739J.Longest cheap palindrome](https://codeforces.ml/gym/100739/problem/J)
 
 我们设$f[i,j,k,l,r]$表示：
 
@@ -2859,11 +2859,11 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 typedef long long ll;
 int n,m,lim,res;
-ll cost[34][34],f[2][34][34][34][34];\/\/f[k,i,j,l,r]:leftmost at i, rightmost at j, length of 2k, [i,l] and [r,j] have been chosen
+ll cost[34][34],f[2][34][34][34][34];//f[k,i,j,l,r]:leftmost at i, rightmost at j, length of 2k, [i,l] and [r,j] have been chosen
 char s[50];
 int main(){
 	scanf("%d%d%d",&n,&m,&lim),memset(f,0x3f,sizeof(f));
@@ -2899,7 +2899,7 @@ int main(){
 }
 ```
 
-# LCI.[CF979E Kuro and Topological Parity](https:\/\/www.luogu.com.cn\/problem\/CF979E)
+# LCI.[CF979E Kuro and Topological Parity](https://www.luogu.com.cn/problem/CF979E)
 
 我们考虑在一张染色完成的图里，我们连上了一条边，会有何影响？
 
@@ -2911,7 +2911,7 @@ int main(){
 
 于是我们就可以构造出如下的DP：
 
-设$f[i,j,k,l]$表示当前DP到了位置$i$，总路径数是$j$（$0\\/1$），且无\\/有奇黑点，无\\/有奇白点。
+设$f[i,j,k,l]$表示当前DP到了位置$i$，总路径数是$j$（$0\/1$），且无\/有奇黑点，无\/有奇白点。
 
 下面以位置$i+1$填入白色为例：
 
@@ -2923,11 +2923,11 @@ int main(){
 代码
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 const int mod=1e9+7;
 int n,p,a[100],f[100][2][2][2],bin[100],res;
-\/\/f[i][j][k][l]:the number of situations where there're odd\/even roads which ends in i, there has(not) an odd black, has(not) an odd white
+//f[i][j][k][l]:the number of situations where there're odd/even roads which ends in i, there has(not) an odd black, has(not) an odd white
 int main(){
 	scanf("%d%d",&n,&p),bin[0]=1;
 	for(int i=1;i<=n;i++)scanf("%d",&a[i]),bin[i]=(bin[i-1]<<1)%mod;
@@ -2935,11 +2935,11 @@ int main(){
 	for(int i=0;i<n;i++)for(int j=0;j<2;j++)for(int k=0;k<2;k++)for(int l=0;l<2;l++){
 		if(!f[i][j][k][l])continue;
 		int tmp=f[i][j][k][l];
-		if(a[i+1]!=0){\/\/can be white
+		if(a[i+1]!=0){//can be white
 			if(k)(f[i+1][j][k][l]+=1ll*tmp*bin[i-1]%mod)%=mod,(f[i+1][j^1][k][true]+=1ll*tmp*bin[i-1]%mod)%=mod;
 			else (f[i+1][j^1][k][true]+=1ll*tmp*bin[i]%mod)%=mod;
 		}
-		if(a[i+1]!=1){\/\/can be black
+		if(a[i+1]!=1){//can be black
 			if(l)(f[i+1][j][k][l]+=1ll*tmp*bin[i-1]%mod)%=mod,(f[i+1][j^1][true][l]+=1ll*tmp*bin[i-1]%mod)%=mod;
 			else (f[i+1][j^1][true][l]+=1ll*tmp*bin[i]%mod)%=mod;
 		}
@@ -2950,7 +2950,7 @@ int main(){
 }
 ```
 
-# LCII.[GYM102082E Eulerian Flight Tour](https:\/\/vjudge.net\/problem\/Gym-102082E)
+# LCII.[GYM102082E Eulerian Flight Tour](https://vjudge.net/problem/Gym-102082E)
 
 （原题是PDF，没有题面的直接页面，就放一个vjudge的链接罢）
 
@@ -2971,7 +2971,7 @@ int main(){
 代码（带花树部分来自网络，TLE）：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 void read(int &x){
 	x=0;
@@ -3028,7 +3028,7 @@ int dis[N][N],TOT;
 int main(){
 	read(n),read(m);
 	for (int i=1,x,y;i<=m;++i)read(x),read(y),g[x][y]=true;
-	TOT=n*(n-1)\/2-m;
+	TOT=n*(n-1)/2-m;
 	if(n&1){
 		printf("%d\n",TOT);
 		for(int i=1;i<=n;i++)for(int j=i+1;j<=n;j++)if(!g[i][j])printf("%d %d\n",i,j);
@@ -3076,7 +3076,7 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 void read(int &x){
 	x=0;
@@ -3109,7 +3109,7 @@ bool dfs(int x,int fa){
 int main(){
 	read(n),read(m);
 	for (int i=1,x,y;i<=m;++i)read(x),read(y),g[x][y]=true;
-	TOT=n*(n-1)\/2-m;
+	TOT=n*(n-1)/2-m;
 	if(n&1){
 		printf("%d\n",TOT);
 		for(int i=1;i<=n;i++)for(int j=i+1;j<=n;j++)if(!g[i][j])printf("%d %d\n",i,j);
@@ -3142,7 +3142,7 @@ int main(){
 }
 ```
 
-# LCIII.[\[CERC2014\]Outer space invaders](https:\/\/www.luogu.com.cn\/problem\/P4766)
+# LCIII.[\[CERC2014\]Outer space invaders](https://www.luogu.com.cn/problem/P4766)
 
 一种错误的思路是观察到一定可以构造出一种最优状态使得每次射击都发生在外星人消失的时刻，然后就将所有外星人按照消失时刻排序并设$f[i,j]$表示在第$i$个外星人消失的时刻如果你开了一炮高为（离散化后）$j$的最小费用------但很快就会发现这种DP需要记录下在这之前每一个高度上次被打的时间，于是就DP不了了。
 
@@ -3153,7 +3153,7 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 #define all(v) v.begin(),v.end()
 int T,n,m,f[610][610],l[310],r[310],d[310];
@@ -3178,7 +3178,7 @@ int main(){
 }
 ```
 
-# LCIV.[\[NOI2005\]瑰丽华尔兹](https:\/\/www.luogu.com.cn\/problem\/P2254)
+# LCIV.[\[NOI2005\]瑰丽华尔兹](https://www.luogu.com.cn/problem/P2254)
 
 思路1.$O(N^2T)$暴力DP------设$f[t,i,j]$表示$t$时刻在位置$(i,j)$时的最长路径。显然会T。
 
@@ -3189,7 +3189,7 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int f[2][210][210],n,m,p,sx,sy,res;
 char s[210][210];
@@ -3200,7 +3200,7 @@ int main(){
 	int now=1,las=0;
 	for(int len,dir;p--;now^=1,las^=1){
 		scanf("%d%d",&len,&dir),len=dir-len+1,scanf("%d",&dir);
-\/\/		printf("%d %d\n",len,dir);
+//		printf("%d %d\n",len,dir);
 		if(dir==1){
 			for(int j=1;j<=m;j++){
 				deque<int>q;
@@ -3249,7 +3249,7 @@ int main(){
 				}
 			}
 		}
-\/\/		for(int i=1;i<=n;i++){for(int j=1;j<=m;j++)printf("%11d ",f[now][i][j]);puts("");}
+//		for(int i=1;i<=n;i++){for(int j=1;j<=m;j++)printf("%11d ",f[now][i][j]);puts("");}
 	}
 	for(int i=1;i<=n;i++)for(int j=1;j<=m;j++)res=max(res,f[las][i][j]);
 	printf("%d\n",res);
@@ -3257,11 +3257,11 @@ int main(){
 }
 ```
 
-# LCV.[\[SDOI2008\]山贼集团](https:\/\/www.luogu.com.cn\/problem\/P2465)
+# LCV.[\[SDOI2008\]山贼集团](https://www.luogu.com.cn/problem/P2465)
 
-[题解](https:\/\/www.luogu.com.cn\/blog\/Troverld\/solution-p2465)
+[题解](https://www.luogu.com.cn/blog/Troverld/solution-p2465)
 
-# LCVI.[\[HNOI2007\]梦幻岛宝珠](https:\/\/www.luogu.com.cn\/problem\/P3188)
+# LCVI.[\[HNOI2007\]梦幻岛宝珠](https://www.luogu.com.cn/problem/P3188)
 
 好题。
 
@@ -3278,7 +3278,7 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int n,m;
 vector<pair<int,int> >v[40];
@@ -3299,9 +3299,9 @@ int main(){
 			for(auto k:v[i]){
 				for(int j=lim[i];j>=0;j--)chmx(f[i][j+k.first],f[i][j]+k.second);
 				lim[i]+=k.first;
-\/\/				printf("(%d,%d)\n",k.first,k.second);
+//				printf("(%d,%d)\n",k.first,k.second);
 			}
-\/\/			for(int j=0;j<=lim[i];j++)printf("%d ",f[i][j]);puts("");
+//			for(int j=0;j<=lim[i];j++)printf("%d ",f[i][j]);puts("");
 		}
 		for(int i=0;i<=lim[0];i++)g[0][i]=f[0][i];
 		for(int i=0;i<=30;i++){
@@ -3314,7 +3314,7 @@ int main(){
 }
 ```
 
-# LCVII.[\[POI2013\]LUK-Triumphal arch](https:\/\/www.luogu.com.cn\/problem\/P3554)
+# LCVII.[\[POI2013\]LUK-Triumphal arch](https://www.luogu.com.cn/problem/P3554)
 
 明显题目具有可二分性。
 
@@ -3333,7 +3333,7 @@ $$f_x=\\max\\Bigg(0,\\Big(\\sum\\limits_{y\\in son_x}(f_y+1)\\Big)-mid\\Bigg)$$
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int n,f[1001000],mid;
 vector<int>v[1001000];
@@ -3360,7 +3360,7 @@ int main(){
 }
 ```
 
-# LCVIII.[\[POI2006\]PRO-Professor Szu](https:\/\/www.luogu.com.cn\/problem\/P3436)
+# LCVIII.[\[POI2006\]PRO-Professor Szu](https://www.luogu.com.cn/problem/P3436)
 
 我要举报……本题数据与题面不符（事实上我已经举报了……），会有到不了主楼的情形，要特别考虑。
 
@@ -3371,7 +3371,7 @@ int main(){
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 const int lim=36500;
 int n,m,dfn[1001000],low[1001000],tot,f[1001000],col[1001000],c,in[1001000],res,cnt;
@@ -3430,7 +3430,7 @@ int main(){
 }
 ```
 
-# IC.[\[POI2007\]ATR-Tourist Attractions](https:\/\/www.luogu.com.cn\/problem\/P3451)
+# IC.[\[POI2007\]ATR-Tourist Attractions](https://www.luogu.com.cn/problem/P3451)
 
 这题我一年半之前初学状压DP时就写了份没卡空间的做法，今天终于A了……
 
@@ -3449,7 +3449,7 @@ $$f[i,j]+dis[j,k]\\rightarrow f[i\lor k,k]$$
 代码 ：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int n,m,p,r,dis[24][20100],d[25][25],d1[25],dn[25],id[(1<<20)+5],f[2][200000][21],mus[25],res=0x3f3f3f3f;
 namespace Graph{
@@ -3479,10 +3479,10 @@ int main(){
 	}
 	for(int i=2;i<=p+1;i++)Graph::Dijkstra(i);
 	for(int i=0;i<p;i++)for(int j=0;j<p;j++)d[i][j]=dis[i+2][j+2];
-\/\/	for(int i=0;i<p;i++){for(int j=0;j<p;j++)printf("%d ",d[i][j]);puts("");}
+//	for(int i=0;i<p;i++){for(int j=0;j<p;j++)printf("%d ",d[i][j]);puts("");}
 	for(int i=0;i<p;i++)d1[i]=dis[i+2][1],dn[i]=dis[i+2][n];
 	for(int i=0;i<(1<<p);i++)id[i]=v[__builtin_popcount(i)].size(),v[__builtin_popcount(i)].push_back(i);
-\/\/	for(int i=0;i<=p;i++)printf("%d\n",v[i].size());
+//	for(int i=0;i<=p;i++)printf("%d\n",v[i].size());
 	for(int i=0;i<p;i++)if(!mus[i])f[1][id[1<<i]][i]=d1[i]; 
 	for(int i=1;i<p;i++)for(int j=0;j<v[i].size();j++)for(int k=0;k<p;k++){
 		if(!(v[i][j]&(1<<k)))continue;
@@ -3495,24 +3495,24 @@ int main(){
 }
 ```
 
-# C.[\[POI2013\]BAJ-Bytecomputer](https:\/\/www.luogu.com.cn\/problem\/P3558)
+# C.[\[POI2013\]BAJ-Bytecomputer](https://www.luogu.com.cn/problem/P3558)
 
 本博客的最后一题，献给一道~~大力猜结论~~的题。
 
 首先先说猜想：最终序列中所有数都是$-1,0,1$，且不存在先改后面，后改前面的状态。
 
-有了这个猜想，就可以DP了。我们设$f_{i,j}$表示要使位置$i$出现数$j$，且前$i$个位置单调不降的最小费用。则我们枚举往$a_{i+1}$上加多少个$j$（明显只能加$0\\/1\\/2$个），判断往$a\_{i+1}$上加上这么多$j$后是否仍满足单调不降，如果可以那就直接转移没问题了。
+有了这个猜想，就可以DP了。我们设$f_{i,j}$表示要使位置$i$出现数$j$，且前$i$个位置单调不降的最小费用。则我们枚举往$a_{i+1}$上加多少个$j$（明显只能加$0\/1\/2$个），判断往$a\_{i+1}$上加上这么多$j$后是否仍满足单调不降，如果可以那就直接转移没问题了。
 
 下面来讲证明。全是$-1,0,1$很好证，因为原本所有数都在此值域内，你要加出这个值域肯定要耗费更多代价。
 
-不存在先改后面，后改前面的状态也很好证------首先，我们观察到执行`a[i]+=a[i-1]`，肯定有一种方案使得要么它在$a_{i-1}$符合要求之前执行，要么它在$a_{i-1}$符合要求之后执行。而两次执行，都是$+1\\/0\\/-1$，假如两次相同，那肯定可以看作一端执行两遍；有一个是$0$，不如不执行；则只剩下一次$+1$，一次$-1$的状况，但这样等价于没执行，所以也可以忽略。
+不存在先改后面，后改前面的状态也很好证------首先，我们观察到执行`a[i]+=a[i-1]`，肯定有一种方案使得要么它在$a_{i-1}$符合要求之前执行，要么它在$a_{i-1}$符合要求之后执行。而两次执行，都是$+1/0/-1$，假如两次相同，那肯定可以看作一端执行两遍；有一个是$0$，不如不执行；则只剩下一次$+1$，一次$-1$的状况，但这样等价于没执行，所以也可以忽略。
 
 则上述解法正确。
 
 代码：
 
 ```cpp
-#include<bits\/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
 int n,a[1000100],f[1001000][3],res=0x3f3f3f3f;
 int main(){
@@ -3528,6 +3528,6 @@ int main(){
 
 * * *
 
-到这里又是50题过去了。本博客又一次卡到敲一个字卡一秒的情形了。更多DP题请参见[下一篇笔记](https:\/\/www.luogu.com.cn\/blog\/Troverld\/dp-shua-ti-bi-ji-iii)。
+到这里又是50题过去了。本博客又一次卡到敲一个字卡一秒的情形了。更多DP题请参见[下一篇笔记](https://www.luogu.com.cn/blog/Troverld/dp-shua-ti-bi-ji-iii)。
 
 如果觉得本博客帮到了您，不妨点个赞罢！
