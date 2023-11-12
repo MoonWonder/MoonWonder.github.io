@@ -259,6 +259,7 @@ enableEmoji = true
       #     clientSecret = ""
       #   # Valine 评论系统设置 (https://github.com/xCss/Valine)
         [languages.zh-cn.params.comment.valine]
+          enable = true
           appId = "nA33RPesYCAjgg6Reduilpym-MdYXbMMI"
           appKey = "XKvTqUMBbJ42ZXUsFZFypxqP"
           placeholder = "欢迎大佬留言"
