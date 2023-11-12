@@ -266,7 +266,7 @@ enableEmoji = true
           visitor = true
           recordIP = true
           avatar = "monsterid"
-          serverURLs = "https://leancloud.cn"
+        # serverURLs = "https://leancloud.cn"
       #   # Facebook 评论系统设置 (https://developers.facebook.com/docs/plugins/comments)
       #   [languages.zh-cn.params.comment.facebook]
       #     enable = false
