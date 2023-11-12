@@ -245,19 +245,19 @@ enableEmoji = true
       #   # Trello = true
       #   # Mix = true
       # 评论系统设置
-      [languages.zh-cn.params.comment]
-        enable = true
+      # [languages.zh-cn.params.comment]
+      #  enable = true
       #   # Disqus 评论系统设置 (https://disqus.com/)
       #   [languages.zh-cn.params.comment.disqus]
       #     # Disqus 的 shortname，用来在文章中启用 Disqus 评论系统
       #     shortname = ""
       #   # Gitalk 评论系统设置 (https://github.com/gitalk/gitalk)
-        [languages.zh-cn.params.comment.gitalk]
-          enable = true
-          owner = "ybw051114"
-          repo = "comment_of_my_blog"
-          clientId = "1bfe9c9ab7dcf166a5f5"
-          clientSecret = "be319b58195a09188ba83015ff8bcbb921df606a"
+        # [languages.zh-cn.params.comment.gitalk]
+        #  enable = true
+        #  owner = "ybw051114"
+        #  repo = "comment_of_my_blog"
+        #  clientId = "1bfe9c9ab7dcf166a5f5"
+        #  clientSecret = ""
       #   # Valine 评论系统设置 (https://github.com/xCss/Valine)
       #  [languages.zh-cn.params.comment.valine]
       #    enable = true
