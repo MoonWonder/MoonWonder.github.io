@@ -245,7 +245,7 @@ enableEmoji = true
       #   # Trello = true
       #   # Mix = true
       # 评论系统设置
-      # [languages.zh-cn.params.comment]
+      [languages.zh-cn.params.comment]
       #   enable = true
       #   # Disqus 评论系统设置 (https://disqus.com/)
       #   [languages.zh-cn.params.comment.disqus]
@@ -258,7 +258,13 @@ enableEmoji = true
       #     clientId = ""
       #     clientSecret = ""
       #   # Valine 评论系统设置 (https://github.com/xCss/Valine)
-      #   [languages.zh-cn.params.comment.valine]
+        [languages.zh-cn.params.comment.valine]
+          appId = "nA33RPesYCAjgg6Reduilpym-MdYXbMMI"
+          appKey = "XKvTqUMBbJ42ZXUsFZFypxqP"
+          placeholder = "欢迎大佬留言"
+          visitor = true
+          recordIP = true
+          avatar = "monsterid"
       #   # Facebook 评论系统设置 (https://developers.facebook.com/docs/plugins/comments)
       #   [languages.zh-cn.params.comment.facebook]
       #     enable = false
