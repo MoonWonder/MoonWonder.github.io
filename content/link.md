@@ -1,5 +1,13 @@
 ---
 title: link
 ---
-# 友链
-[MDuck](https://www.cnblogs.com/MagicDuck)
+# 一些博客
+
+
+[Seto76](seto76.com)
+
+[wnc](wncfht.github.io)
+
+[ZYM](zhuangyumin.dev)
+
+[laihaibin](www.haibinlaiblog.top)
