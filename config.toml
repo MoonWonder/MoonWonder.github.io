@@ -143,7 +143,7 @@ enableEmoji = true
           # 主页显示头像的 URL
           avatarURL = "/images/avatar.png"
           # 主页显示的网站副标题
-          subtitle = "一个菜鸡的博客"
+          subtitle = "一个有梦想的赌鬼的博客"
           # 是否为副标题显示打字机动画
           typeit = true
           # 是否显示社交账号
