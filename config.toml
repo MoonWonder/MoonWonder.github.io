@@ -95,7 +95,7 @@ enableEmoji = true
       # 网站描述
       description = "Ybw051114 Blog"
       # 网站关键词
-      keywords = ["OI", "Blog"]
+      keywords = ["AI", "Math", "Blog"]
       # 网站默认主题 ("light", "dark", "auto")
       defaultTheme = "auto"
       # 主页信息设置
