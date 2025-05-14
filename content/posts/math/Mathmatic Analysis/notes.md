@@ -1,7 +1,7 @@
 ---
 author: "ybw051114"
 author_link: "hugo.ybw051114.cf"
-title: "Notes"
+title: "数值分析笔记"
 date: 2025-05-14T17:22:15+08:00
 lastmod: 2025-05-14T17:22:15+08:00
 draft: false
@@ -117,8 +117,8 @@ comment: true
 将 $f(x)=0$ 转化为 $x=g(x)$ 的形式。迭代公式：$x_{i+1} = g(x_i)$。
 * **收敛条件**：若在根 $x^*$ 附近 $|g'(x)| \le L < 1$，则迭代收敛。
 * **例子**：$f(x) = x^2 - 2x - 3 = 0$。
-    若 $x = \sqrt{2x+3} = g_1(x)$，对于根 $x^*=3$，$g_1'(3)=1/3 < 1$，收敛。
-    若 $x = (x^2-3)/2 = g_2(x)$，对于根 $x^*=3$，$g_2'(3)=3 > 1$，发散。
+    若 $x = \sqrt{2x+3} = g_1(x)$，对于根 $x^\*=3$，$g_1'(3)=1/3 < 1$，收敛。
+    若 $x = (x^2-3)/2 = g_2(x)$，对于根 $x^\*=3$，$g_2'(3)=3 > 1$，发散。
 
 ### 2.4 牛顿-拉夫逊法 (Newton-Raphson Method)
 
@@ -132,18 +132,18 @@ comment: true
     * 缺点：需计算导数 $f'(x)$。若 $f'(x_i) \approx 0$ 或初值不好则可能不收敛。对重根收敛变慢。
 
 #### 2.4.1 牛顿法二次收敛性证明
-设 $x^*$ 为根，$f(x^*)=0$。误差 $e_i = x_i - x^*$。
+设 $x^\*$ 为根，$f(x^\*)=0$。误差 $e_i = x_i - x^\*$。
 迭代公式 $x_{i+1} = x_i - \frac{f(x_i)}{f'(x_i)}$，可得 $e_{i+1} = e_i - \frac{f(x_i)}{f'(x_i)}$。
-对 $f(x_i) = f(x^*+e_i)$ 在 $x^*$ 处泰勒展开：
-$f(x_i) = f(x^*) + e_i f'(x^*) + \frac{e_i^2}{2!} f''(x^*) + O(e_i^3) = e_i f'(x^*) + \frac{e_i^2}{2} f''(x^*) + O(e_i^3)$
-对 $f'(x_i) = f'(x^*+e_i)$ 在 $x^*$ 处泰勒展开：
-$f'(x_i) = f'(x^*) + e_i f''(x^*) + O(e_i^2)$
+对 $f(x_i) = f(x^\*+e_i)$ 在 $x^\*$ 处泰勒展开：
+$f(x_i) = f(x^\*) + e_i f'(x^\*) + \frac{e_i^2}{2!} f''(x^\*) + O(e_i^3) = e_i f'(x^\*) + \frac{e_i^2}{2} f''(x^\*) + O(e_i^3)$
+对 $f'(x_i) = f'(x^\*+e_i)$ 在 $x^\*$ 处泰勒展开：
+$f'(x_i) = f'(x^\*) + e_i f''(x^\*) + O(e_i^2)$
 将这些展开式代入 $e_{i+1}$ 的表达式并整理 (使用 $(1+u)^{-1} \approx 1-u$ 近似)：
-$$e_{i+1} = e_i - \frac{e_i f'(x^*) + \frac{e_i^2}{2} f''(x^*) + O(e_i^3)}{f'(x^*) + e_i f''(x^*) + O(e_i^2)}$$
-$$e_{i+1} \approx e_i - \frac{1}{f'(x^*)}\left(e_i f'(x^*) + \frac{e_i^2}{2} f''(x^*)\right) \left(1 - e_i \frac{f''(x^*)}{f'(x^*)}\right)$$
+$$e_{i+1} = e_i - \frac{e_i f'(x^\*) + \frac{e_i^2}{2} f''(x^\*) + O(e_i^3)}{f'(x^\*) + e_i f''(x^\*) + O(e_i^2)}$$
+$$e_{i+1} \approx e_i - \frac{1}{f'(x^\*)}\left(e_i f'(x^\*) + \frac{e_i^2}{2} f''(x^\*)\right) \left(1 - e_i \frac{f''(x^\*)}{f'(x^\*)}\right)$$
 进一步整理后得到：
-$$e_{i+1} \approx \frac{f''(x^*)}{2f'(x^*)} e_i^2 + O(e_i^3)$$
-这表明 $e_{i+1} \propto e_i^2$，即二次收敛（需 $f'(x^*) \neq 0$）。
+$$e_{i+1} \approx \frac{f''(x^\*)}{2f'(x^\*)} e_i^2 + O(e_i^3)$$
+这表明 $e_{i+1} \propto e_i^2$，即二次收敛（需 $f'(x^\*) \neq 0$）。
 
 ### 2.5 割线法 (Secant Method)
 
@@ -180,13 +180,13 @@ $f'(x_i) \approx \frac{f(x_i) - f(x_{i-1})}{x_i - x_{i-1}}$
     2.  **回代 (Back Substitution)**：从 $Ux=b'$ 中解出 $x$。
 * **基本行变换**：1) 交换两行；2) 一行乘以非零常数；3) 一行的倍数加到另一行。
 * **示例**：求解
-    $$ \begin{cases} 2x_1 + x_2 - x_3 = 8 \\ -3x_1 - x_2 + 2x_3 = -11 \\ -2x_1 + x_2 + 2x_3 = -3 \end{cases} $$
+    $$ \begin{cases} 2x_1 + x_2 - x_3 = 8 \\\\ -3x_1 - x_2 + 2x_3 = -11 \\\\ -2x_1 + x_2 + 2x_3 = -3 \end{cases} $$
     增广矩阵：
-    $$ \left( \begin{array}{ccc|c} 2 & 1 & -1 & 8 \\ -3 & -1 & 2 & -11 \\ -2 & 1 & 2 & -3 \end{array} \right) $$
+    $$ \left( \begin{array}{ccc|c} 2 & 1 & -1 & 8 \\\\ -3 & -1 & 2 & -11 \\\\ -2 & 1 & 2 & -3 \end{array} \right) $$
     $R_2 \leftarrow R_2 + 1.5 R_1$, $R_3 \leftarrow R_3 + 1 R_1$ 变为
-    $$ \left( \begin{array}{ccc|c} 2 & 1 & -1 & 8 \\ 0 & 0.5 & 0.5 & 1 \\ 0 & 2 & 1 & 5 \end{array} \right) $$
+    $$ \left( \begin{array}{ccc|c} 2 & 1 & -1 & 8 \\\\ 0 & 0.5 & 0.5 & 1 \\\\ 0 & 2 & 1 & 5 \end{array} \right) $$
     $R_3 \leftarrow R_3 - 4 R_2$ 变为
-    $$ \left( \begin{array}{ccc|c} 2 & 1 & -1 & 8 \\ 0 & 0.5 & 0.5 & 1 \\ 0 & 0 & -1 & 1 \end{array} \right) $$
+    $$ \left( \begin{array}{ccc|c} 2 & 1 & -1 & 8 \\\\ 0 & 0.5 & 0.5 & 1 \\\\ 0 & 0 & -1 & 1 \end{array} \right) $$
     回代得到 $x_3=-1, x_2=3, x_1=2$。
 
 ### 3.2 主元选择 (Pivoting)
@@ -195,9 +195,9 @@ $f'(x_i) \approx \frac{f(x_i) - f(x_{i-1})}{x_i - x_{i-1}}$
 * **部分选主元法 (Partial Pivoting)**：在第 $k$ 步消元前，从当前第 $k$ 列对角线及以下元素中选取绝对值最大的元素作为主元，并通过行交换将其移至主元位置。
 * **好处**：避免除零，减小舍入误差 (保证乘数 $|m_{ik}| \le 1$)，提高数值稳定性。
 * **示例**：
-    $$ \begin{cases} 0x_1 + x_2 + x_3 = 2 \\ 2x_1 + 2x_2 - x_3 = 3 \\ x_1 - x_2 + 3x_3 = 3 \end{cases} $$
+    $$ \begin{cases} 0x_1 + x_2 + x_3 = 2 \\\\ 2x_1 + 2x_2 - x_3 = 3 \\\\ x_1 - x_2 + 3x_3 = 3 \end{cases} $$
     初始 $a_{11}=0$. 搜索第1列，发现 $a_{21}=2$ 绝对值最大。交换 $R_1 \leftrightarrow R_2$:
-    $$ \left( \begin{array}{ccc|c} 2 & 2 & -1 & 3 \\ 0 & 1 & 1 & 2 \\ 1 & -1 & 3 & 3 \end{array} \right) $$
+    $$ \left( \begin{array}{ccc|c} 2 & 2 & -1 & 3 \\\\ 0 & 1 & 1 & 2 \\\\ 1 & -1 & 3 & 3 \end{array} \right) $$
     然后继续消元。
 
 ### 3.3 LU 分解 (LU Decomposition)
@@ -209,9 +209,9 @@ $f'(x_i) \approx \frac{f(x_i) - f(x_{i-1})}{x_i - x_{i-1}}$
     2.  解 $Ly=b$ (前向替换)。
     3.  解 $Ux=y$ (回代)。
 * **用途**：高效处理多个右端项 $b$；计算行列式 ($\det(A)=\det(U)$ for Doolittle)；计算逆矩阵。
-* **示例** (Doolittle): $A = \begin{pmatrix} 2 & 1 & -1 \\ -2 & 1 & 3 \\ 4 & -2 & 1 \end{pmatrix}$.
+* **示例** (Doolittle): $A = \begin{pmatrix} 2 & 1 & -1 \\\\ -2 & 1 & 3 \\\\ 4 & -2 & 1 \end{pmatrix}$.
     高斯消元得乘数 $m_{21}=-1, m_{31}=2, m_{32}=-2$.
-    $$ L = \begin{pmatrix} 1 & 0 & 0 \\ -1 & 1 & 0 \\ 2 & -2 & 1 \end{pmatrix}, \quad U = \begin{pmatrix} 2 & 1 & -1 \\ 0 & 2 & 2 \\ 0 & 0 & 7 \end{pmatrix} $$
+    $$ L = \begin{pmatrix} 1 & 0 & 0 \\\\ -1 & 1 & 0 \\\\ 2 & -2 & 1 \end{pmatrix}, \quad U = \begin{pmatrix} 2 & 1 & -1 \\\\ 0 & 2 & 2 \\\\ 0 & 0 & 7 \end{pmatrix} $$
 * **带主元选择的LU分解**：$PA=LU$，其中 $P$ 是置换矩阵，记录行交换。
     求解 $Ax=b \implies PAx=Pb$. 令 $y=Ux$.
     1. 解 $Ly=Pb$. 2. 解 $Ux=y$.
@@ -239,7 +239,7 @@ $f'(x_i) \approx \frac{f(x_i) - f(x_{i-1})}{x_i - x_{i-1}}$
 * $\|A\|_\infty$ (最大绝对行和): $\max_{i} \sum_{j} |a_{ij}|$
 * $\|A\|_2$ (谱范数): $A$ 的最大奇异值 $\sigma_{\max}(A)$.
 
-**示例**: $A = \begin{pmatrix} 1 & -2 \\ 3 & 0 \end{pmatrix}$.
+**示例**: $A = \begin{pmatrix} 1 & -2 \\\\ 3 & 0 \end{pmatrix}$.
 $\|A\|_1 = \max(|1|+|3|, |-2|+|0|) = \max(4,2) = 4$.
 $\|A\|_\infty = \max(|1|+|-2|, |3|+|0|) = \max(3,3) = 3$.
 
