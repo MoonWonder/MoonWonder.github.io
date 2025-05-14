@@ -1,0 +1,147 @@
+<!-- 引入 Cal-Heatmap 库及依赖 -->
+<div>
+    <h2>文章发布热力图</h2>
+    <div id="posts-heatmap" style="width: 100%; overflow-x: auto;"></div>
+    
+    <h2>字数统计热力图</h2>
+    <div id="words-heatmap" style="width: 100%; overflow-x: auto;"></div>
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://unpkg.com/cal-heatmap/dist/cal-heatmap.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/cal-heatmap/dist/cal-heatmap.css" />
+
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', async function() {
+    // 获取当前年份
+    const currentYear = new Date().getFullYear();
+    
+    // 收集文章数据 - 只收集当前年份的文章
+    const posts = [
+        {{ $currentYear := now.Year }}
+        {{ range (where (where .Site.Pages "Section" "posts") "Date.Year" $currentYear) }}
+            {
+                date: "{{ .Date.Format "2006-01-02" }}",
+                wordCount: {{ .WordCount }},
+            },
+        {{ end }}
+    ];
+
+    // 按日期整理数据
+    const postsByDate = {};
+    const wordsByDate = {};
+    
+    posts.forEach(post => {
+        if (postsByDate[post.date]) {
+            postsByDate[post.date]++;
+        } else {
+            postsByDate[post.date] = 1;
+        }
+        
+        if (wordsByDate[post.date]) {
+            wordsByDate[post.date] += post.wordCount;
+        } else {
+            wordsByDate[post.date] = post.wordCount;
+        }
+    });
+    
+    // 转换为热力图需要的格式
+    const postsData = [];
+    Object.keys(postsByDate).forEach(date => {
+        postsData.push({
+            date: date, // Unix timestamp in seconds
+            value: postsByDate[date]
+        });
+    });
+    
+    const wordsData = [];
+    Object.keys(wordsByDate).forEach(date => {
+        wordsData.push({
+            date: date, // Unix timestamp in seconds
+            value: wordsByDate[date]
+        });
+    });
+    
+    // 初始化文章热力图
+    const postsHeatmap = new CalHeatmap();
+    
+    // 设置年度时间范围
+    const startDate = new Date(currentYear, 0, 1); // 当前年份的1月1日
+    
+    await postsHeatmap.paint({
+        itemSelector: '#posts-heatmap',
+        range: 12,
+        domain: {
+            type: 'month',
+            gutter: 4,
+            label: { text: 'MMM', textAlign: 'start', position: 'top' }
+        },
+        subDomain: { 
+            type: 'day',
+            width: 12,
+            height: 12,
+            gutter: 2,
+            radius: 2
+        },
+        data: {
+            source: postsData,
+            type: 'json',
+            x: 'date',
+            y: 'value'
+        },
+        date: { start: startDate },
+        scale: {
+            color: {
+                type: 'threshold',
+                range: ['#efefef', '#c6e48b', '#7bc96f', '#239a3b', '#196127'],
+                domain: [1, 2, 3, 5]
+            }
+        },
+        tooltip: {
+            enabled: true,
+            text: function(date, value, dayjsDate) {
+                return `${dayjsDate.format('YYYY-MM-DD')}: ${value || 0} 篇文章`;
+            }
+        }
+    });
+    
+    // 初始化字数热力图
+    const wordsHeatmap = new CalHeatmap();
+    await wordsHeatmap.paint({
+        itemSelector: '#words-heatmap',
+        range: 12,
+        domain: {
+            type: 'month',
+            gutter: 4,
+            label: { text: 'MMM', textAlign: 'start', position: 'top' }
+        },
+        subDomain: { 
+            type: 'day',
+            width: 12,
+            height: 12,
+            gutter: 2,
+            radius: 2
+        },
+        data: {
+            source: wordsData,
+            type: 'json',
+            x: 'date',
+            y: 'value'
+        },
+        date: { start: startDate },
+        scale: {
+            color: {
+                type: 'threshold',
+                range: ['#efefef', '#fdcfcf', '#fc9898', '#f06060', '#d6001c'],
+                domain: [1000, 5000, 10000, 30000]
+            }
+        },
+        tooltip: {
+            enabled: true,
+            text: function(date, value, dayjsDate) {
+                return `${dayjsDate.format('YYYY-MM-DD')}: ${value || 0} 字`;
+            }
+        }
+    });
+});
+</script>

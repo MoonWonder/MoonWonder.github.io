@@ -78,12 +78,19 @@ enableEmoji = true
         title = ""
         weight = 5
       [[languages.zh-cn.menu.main]]
+        identifier = "heatmap"
+        name = "热力图"
+        url = "/heatmap/"
+        pre = ""
+        title = ""
+        weight = 6 
+      [[languages.zh-cn.menu.main]]
         identifier = "github"
         pre = "<i class='fab fa-github fa-fw'></i>"
         name = ""
         url = "https://github.com/ybw051114/hugo-blog"
         title = "GitHub"
-        weight = 6
+        weight = 7
     [languages.zh-cn.params]
       # 网站描述
       description = "Ybw051114 Blog"
