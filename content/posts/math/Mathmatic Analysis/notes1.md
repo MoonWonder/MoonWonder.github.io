@@ -1,7 +1,7 @@
 ---
 author: "ybw051114"
 author_link: "hugo.ybw051114.cf"
-title: "数值分析笔记"
+title: "数值分析笔记一"
 date: 2025-05-14T17:22:15+08:00
 lastmod: 2025-05-14T17:22:15+08:00
 draft: false
