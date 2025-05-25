@@ -1,6 +1,6 @@
 ---
-author: "ybw051114"
-author_link: "hugo.ybw051114.cf"
+author: "MoonWonder"
+author_link: "moonwonder.top"
 title: "SegmentTree_Divide"
 date: 2021-02-13T11:22:34+08:00
 lastmod: 2021-02-13T11:22:34+08:00

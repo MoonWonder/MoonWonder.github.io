@@ -1,6 +1,6 @@
 ---
-author: "ybw051114"
-author_link: "hugo.ybw051114.cf"
+author: "MoonWonder"
+author_link: "moonwonder.top"
 title: "化学复习笔记1"
 date: 2025-05-23T06:39:13+08:00
 lastmod: 2025-05-23T06:39:13+08:00

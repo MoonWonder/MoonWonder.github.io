@@ -1,6 +1,6 @@
 ---
-author: "ybw051114"
-author_link: "hugo.ybw051114.cf"
+author: "MoonWonder"
+author_link: "moonwonder.top"
 title: "{{ replace .TranslationBaseName "-" " " | title }}"
 date: {{ .Date }}
 lastmod: {{ .Date }}

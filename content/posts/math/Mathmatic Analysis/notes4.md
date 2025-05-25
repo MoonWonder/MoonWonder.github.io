@@ -1,6 +1,6 @@
 ---
-author: "ybw051114"
-author_link: "hugo.ybw051114.cf"
+author: "MoonWonder"
+author_link: "moonwonder.top"
 title: "数值分析笔记四——数值积分"
 date: 2025-05-19T14:44:23+08:00
 lastmod: 2025-05-19T14:44:23+08:00

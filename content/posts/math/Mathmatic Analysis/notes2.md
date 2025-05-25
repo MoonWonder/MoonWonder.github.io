@@ -1,6 +1,6 @@
 ---
-author: "ybw051114"
-author_link: "hugo.ybw051114.cf"
+author: "MoonWonder"
+author_link: "moonwonder.top"
 title: "数值分析笔记二"
 date: 2025-05-15T09:29:29+08:00
 lastmod: 2025-05-15T09:29:29+08:00
