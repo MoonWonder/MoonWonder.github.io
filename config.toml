@@ -1,4 +1,4 @@
-baseURL = "https://ybw051114.github.io/"
+baseURL = "https://moonwonder.top/"
 # [en, zh-cn, fr, ...] determines default content language
 # [en, zh-cn, fr, ...] 设置默认的语言
 defaultContentLanguage = "zh-cn"
@@ -9,7 +9,7 @@ theme = "LoveIt"
 # 主题目录
 themesDir = "./themes"
 
-title="ybw051114"
+title="MoonWonder"
 
 # whether to use robots.txt
 # 是否使用 robots.txt
@@ -27,7 +27,7 @@ enableEmoji = true
     # 网站语言, 仅在这里 CN 大写
     languageCode = "zh-CN"
     # 网站标题
-    title = "Ybw051114"
+    title = "MoonWonder"
     # 语言名称
     languageName = "简体中文"
     # 是否包括中日韩文字
@@ -88,12 +88,12 @@ enableEmoji = true
         identifier = "github"
         pre = "<i class='fab fa-github fa-fw'></i>"
         name = ""
-        url = "https://github.com/ybw051114/ybw051114.github.io"
+        url = "https://github.com/MoonWonder/MoonWonder.github.io"
         title = "GitHub"
         weight = 7
     [languages.zh-cn.params]
       # 网站描述
-      description = "Ybw051114 Blog"
+      description = "MoonWonder Blog"
       # 网站关键词
       keywords = ["AI", "Math", "Blog"]
       # 网站默认主题 ("light", "dark", "auto")
@@ -157,7 +157,7 @@ enableEmoji = true
           # defaultHiddenFromHomePage = false
       # 主页的社交信息设置
       [languages.zh-cn.params.social]
-        GitHub = "ybw051114"
+        GitHub = "MoonWonder"
         # Linkedin = "xxxx"
         # Twitter = "xxxx"
         # Instagram = "xxxx"
@@ -201,7 +201,7 @@ enableEmoji = true
         # Strava = "xxxx"
         # Skype = "xxxx"
         # Whatsapp = "xxxx"
-        Zhihu = "MoonWonder"
+        # Zhihu = "MoonWonder"
         # Douban = "xxxx"
         # Angellist = "xxxx"
         # Slidershare = "xxxx"
@@ -290,7 +290,7 @@ enableEmoji = true
   defaultTheme= "auto"
   # public git repo url only then enableGitInfo is true
   # 公共 git 仓库路径，仅在 enableGitInfo 设为 true 时有效
-  gitRepo = "https://github.com/ybw051114/ybw051114.github.io"
+  gitRepo = "https://github.com/MoonWonder/MoonWonder.github.io"
   # which hash function used for SRI, when empty, no SRI is used ("sha256", "sha384", "sha512", "md5")
   # 哪种哈希函数用来 SRI, 为空时表示不使用 SRI ("sha256", "sha384", "sha512", "md5")
   fingerprint = "md5"
@@ -311,7 +311,7 @@ enableEmoji = true
       logo = ""
       # title name
       # 标题名称
-      name = "ybw051114"
+      name = "MoonWonder"
       # you can add extra information before the name (HTML format is supported), such as icons
       # 你可以在名称 (允许 HTML 格式) 之前添加其他信息, 例如图标
       pre = "<i class='far fa-kiss-wink-heart fa-fw'></i>"
@@ -699,7 +699,7 @@ enableEmoji = true
 # Author Info
 # 作者信息
 [author]
-  name = "ybw051114"
+  name = "MoonWonder"
   link = ""
   email="ybw051114@qq.com"
 
