@@ -21,7 +21,7 @@ lightgallery: true
 linkToMarkdown: true
 share:
   enable: true
-comment: true
+
 ---
 
 ## 线段树分治

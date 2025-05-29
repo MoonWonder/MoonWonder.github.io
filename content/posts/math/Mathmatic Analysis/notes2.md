@@ -21,7 +21,7 @@ lightgallery: true
 linkToMarkdown: true
 share:
   enable: true
-comment: true
+
 ---
 
 # 数值分析学习笔记 (第六至十讲汇总)

@@ -21,7 +21,8 @@ lightgallery: true
 linkToMarkdown: true
 share:
   enable: true
-comment: true
+comment:
+  enable: true
 ---
 
 # 数值分析课程笔记 (详细版): 常微分方程数值解法

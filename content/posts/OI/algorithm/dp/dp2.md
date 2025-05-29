@@ -17,7 +17,7 @@ autoCollapseToc: true
 lightgallery: true
 linkToMarkdown: true
 share: {enable: true}
-comment: true
+
 ---
 
 [上一篇笔记](https://www.luogu.com.cn/blog/Troverld/dp-shua-ti-bi-ji)因为写的太多已经卡了起来……不得不另开新坑了。

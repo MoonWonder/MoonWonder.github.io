@@ -4,7 +4,7 @@ author_link: "moonwonder.top"
 title: "About"
 date: 2020-02-19T10:40:37+08:00
 lastmod: 2020-02-19T10:40:37+08:00
-comment: true
+
 toc: true
 auto_collapse_toc: true
 

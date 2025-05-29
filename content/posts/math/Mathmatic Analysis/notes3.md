@@ -21,7 +21,7 @@ lightgallery: true
 linkToMarkdown: true
 share:
   enable: true
-comment: true
+
 ---
 # 数值分析课程笔记 (详细版：切比雪夫节点 至 数值微分结束)
 

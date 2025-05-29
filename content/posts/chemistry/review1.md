@@ -21,7 +21,7 @@ lightgallery: true
 linkToMarkdown: true
 share:
   enable: true
-comment: true
+
 ---
 
 好的，这是一份根据您提供的PPT内容整理的详细中文笔记。
