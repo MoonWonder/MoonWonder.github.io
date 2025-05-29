@@ -57,13 +57,6 @@ jobs:
             --environment=production \
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/"
-      - name: Algolia Docsearch Uploader
-        uses: guzhongren/algolia-docsearch-upload-action@v2.0.0
-        env:
-          FILE_PATH: "./public/index.json"
-          APPLICATION_ID: ${{secrets.ALGOLIA_APPLICATION_ID}}
-          ADMIN_API_KEY: ${{secrets.ALGOLIA_API_KEY}}
-          INDEX_NAME: "index.zh-cn"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
