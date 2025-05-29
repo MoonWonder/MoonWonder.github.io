@@ -39,8 +39,6 @@ jobs:
           && sudo dpkg -i ${{ runner.temp }}/hugo.deb
       - name: Install Dart Sass
         run: sudo snap install dart-sass
-      - name: Install Algolia
-        run: npm init && npm install atomic-algolia --save
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -59,12 +57,17 @@ jobs:
             --environment=production \
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/"
-      - name: upload Algolia
-        run: npm run algolia
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./public
+      - name: Upload Records
+        uses: iChochy/Algolia-Upload-Records@main
+        env:
+          APPLICATION_ID: ${{secrets.APPLICATION_ID}}
+          ADMIN_API_KEY: ${{secrets.ADMIN_API_KEY}}
+          INDEX_NAME: ${{secrets.INDEX_NAME}}
+          FILE_PATH: ${{secrets.FILE_PATH}}
 
   # Deployment job
   deploy:
