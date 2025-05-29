@@ -40,7 +40,7 @@ jobs:
       - name: Install Dart Sass
         run: sudo snap install dart-sass
       - name: Install Algolia
-        run: npm install atomic-algolia -g
+        run: npm install atomic-algolia --save
       - name: Checkout
         uses: actions/checkout@v4
         with:
