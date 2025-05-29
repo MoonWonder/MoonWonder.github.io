@@ -57,10 +57,6 @@ jobs:
             --environment=production \
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/"
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./public
       - name: Upload Records
         uses: iChochy/Algolia-Upload-Records@main
         env:
@@ -68,6 +64,10 @@ jobs:
           ADMIN_API_KEY: ${{secrets.ADMIN_API_KEY}}
           INDEX_NAME: ${{secrets.INDEX_NAME}}
           FILE_PATH: ${{secrets.FILE_PATH}}
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
 
   # Deployment job
   deploy:
