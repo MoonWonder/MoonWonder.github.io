@@ -274,7 +274,7 @@ enableEmoji = true
           visitor = true
           recordIP = true
           avatar = "monsterid"
-      #  # serverURLs = "https://na33rpes.im.us-w1.lncldglobal.com"
+          serverURLs = "https://vpymw9bd.api.lncldglobal.com"
       #   # Facebook 评论系统设置 (https://developers.facebook.com/docs/plugins/comments)
       #   [languages.zh-cn.params.comment.facebook]
       #     enable = false
