@@ -4,7 +4,7 @@ author_link: hugo.ybw051114.cf
 title: dp2
 date: 2021-02-09T00:00:00.000Z
 lastmod: 2021-02-09T00:00:00.000Z
-draft: false
+draft: true
 description: ''
 license: ''
 tags: []
@@ -14,7 +14,6 @@ featuredImage: ''
 featuredImagePreview: ''
 toc: true
 autoCollapseToc: true
-math: true
 lightgallery: true
 linkToMarkdown: true
 share: {enable: true}

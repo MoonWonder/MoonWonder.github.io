@@ -17,7 +17,6 @@ featuredImagePreview: ""
 
 toc: true
 autoCollapseToc: true
-math: true
 lightgallery: true
 linkToMarkdown: true
 share:

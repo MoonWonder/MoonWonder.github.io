@@ -4,7 +4,7 @@ author_link: "moonwonder.top"
 title: "dp3"
 date: 2021-02-09T19:03:41+08:00
 lastmod: 2021-02-09T19:03:41+08:00
-draft: false
+draft: true
 description: ""
 license: ""
 
@@ -17,7 +17,6 @@ featuredImagePreview: ""
 
 toc: true
 autoCollapseToc: true
-math: true
 lightgallery: true
 linkToMarkdown: true
 share:

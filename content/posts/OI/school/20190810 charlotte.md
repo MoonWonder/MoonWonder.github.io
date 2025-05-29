@@ -9,7 +9,7 @@ tags:
 - 结论
 - 省中集训
 title: 20190810 夏洛特——charlotte
-math: true
+
 ---
 
 # 20190810 夏洛特——charlotte

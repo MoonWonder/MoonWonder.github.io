@@ -7,7 +7,7 @@ tags:
 title: CF85D-Sum of Medians
 date: '2021-01-27 19:06:58.581650'
 modified: '2021-01-27 19:06:58.581674'
-math: true
+
 ---
 # CF85D-Sum of Medians
 ## 题目:

@@ -7,7 +7,7 @@ tags:
 title: CF17E-Palisection
 date: '2021-01-31 14:27:28.677126'
 modified: '2021-01-31 14:27:28.677152'
-math: true
+
 ---
 # CF17E-Palisection
 ## 题目:

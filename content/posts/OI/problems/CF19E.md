@@ -7,7 +7,7 @@ tags:
 title: CF19E-Fairy
 date: '2021-01-06 21:43:14.891509'
 modified: '2021-01-06 21:43:14.891550'
-math: true
+
 ---
 # CF19E-Fairy
 ## 题目:
