@@ -130,8 +130,8 @@ enableEmoji = true
         absoluteURL = false
         [languages.zh-cn.params.search.algolia]
           index = "index.zh-cn"
-          appID = "QR2TG8E77K"
-          searchKey = "bf1e0d88a12ff341948a8e44233b8080"
+          appID = "XM9KAEGZQ3"
+          searchKey = "f3495abb7bf7e59b5a47427e6d0100f5"
       # 主页信息设置
       [languages.zh-cn.params.home]
         # 主页个人信息
