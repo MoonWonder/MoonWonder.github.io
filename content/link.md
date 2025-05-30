@@ -4,10 +4,10 @@ title: link
 # 一些博客
 
 
-[Seto76](seto76.com)
+[Seto76](http://seto76.com)
 
-[wnc](wncfht.github.io)
+[wnc](http://wncfht.github.io)
 
-[ZYM](zhuangyumin.dev)
+[ZYM](http://zhuangyumin.dev)
 
-[laihaibin](www.haibinlaiblog.top)
+[laihaibin](http://www.haibinlaiblog.top)
