@@ -42,7 +42,21 @@ bundle = false
   # Image resizing and optimisation
   # 图片缩放和优化
   optimise = true
-
+[pace]
+  enable = false
+  color = "blue"
+  theme = "minimal"
+[readingProgress]
+  enable = true
+  start = "left"
+  position = "top"
+  reversed = false
+  light = ""
+  dark = ""
+  height = "2px"
+[backToTop]
+  enable = true
+  scrollpercent = true
 # Header config
 # 页面头部导航栏配置
 [header]
@@ -227,23 +241,28 @@ bundle = false
     # 是否显示代码块标题
     header = true
     copy = true
+    edit = true
+
   # Table config
   # 表格配置
   [page.table]
     # whether to enable sorting in the tables
     # 是否开启表格排序
     sort = true
-  [page.header]
-    # whether to enable auto header numbering
-    # 是否开启标题自动编号
-    [page.header.number]
-      enable = true
-      [page.header.number.format]
-        h2 = "{h2} {title}"
-        h3 = "{h2}.{h3} {title}"
-        h4 = "{h2}.{h3}.{h4} {title}"
-        h5 = "{h2}.{h3}.{h4}.{h5} {title}"
-        h6 = "{h2}.{h3}.{h4}.{h5}.{h6} {title}"
+  [page.heading]
+      # FixIt 0.3.6 | 新增 是否自动大写标题
+      capitalize = false
+      # FixIt 0.3.12 | 更改 必须设置 `page.toc.ordered` 为 true
+      [page.heading.number]
+        # 是否启用自动标题编号
+        enable = false
+        [page.heading.number.format]
+          h1 = "{title}"
+          h2 = "{h2} {title}"
+          h3 = "{h2}.{h3} {title}"
+          h4 = "{h2}.{h3}.{h4} {title}"
+          h5 = "{h2}.{h3}.{h4}.{h5} {title}"
+          h6 = "{h2}.{h3}.{h4}.{h5}.{h6} {title}"
   # KaTeX mathematical formulas config (KaTeX https://katex.org/)
   # KaTeX 数学公式配置 (KaTeX https://katex.org/)
   [page.math]
@@ -525,6 +544,7 @@ bundle = false
   [page.related]
     enable = true
     count = 5
+    position = ["aside", "footer"]
 
 # Sponsor config
 # 赞助设置
