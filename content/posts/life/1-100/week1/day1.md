@@ -3,7 +3,7 @@ title: 希望的降临
 subtitle:
 date: 2025-06-04T21:13:13+08:00
 slug: faa2dff
-draft: true
+draft: false
 author:
   name:
   link:
@@ -15,9 +15,9 @@ license:
 comment: false
 weight: 0
 tags:
-  - draft
+  - life,4000d
 categories:
-  - draft
+  - Fighting
 hiddenFromHomePage: true
 hiddenFromSearch: false
 hiddenFromRelated: false
