@@ -1,25 +1,9 @@
 ---
-author: "MoonWonder"
-author_link: "moonwonder.top"
-title: "{{ replace .TranslationBaseName "-" " " | title }}"
+title: {{ replace .TranslationBaseName "-" " " | title }}
+subtitle:
 date: {{ .Date }}
-lastmod: {{ .Date }}
-draft: false
-description: ""
-license: ""
-
-tags: []
-categories: []
-hiddenFromHomePage: false
-
-featuredImage: ""
-featuredImagePreview: ""
-
-toc: true
-autoCollapseToc: true
-lightgallery: true
-linkToMarkdown: true
-share:
-  enable: true
-comment: true
+slug: {{ substr .File.UniqueID 0 7 }}
+description:
+keywords:
+draft: true
 ---

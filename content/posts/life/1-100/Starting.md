@@ -1,8 +1,8 @@
 ---
-title: 月亮将为我闪烁——第一章
+title: 希望的降临——序言
 subtitle:
-date: 2025-06-28T18:20:50+08:00
-slug: 11c4c54
+date: 2025-06-04T21:13:13+08:00
+slug: faa2dff
 draft: false
 author:
   name:
@@ -40,14 +40,13 @@ repost:
 # See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
 ---
 
-我的时间终于能和他同步了，我们能创造出一个奇迹吗？
+一个8岁的孩子来到了这个有趣的世界，会带来一个新神吗？
 
 <!--more-->
 
-今天看了看 hpc 感觉题目很有趣，但是为什么学校的ssh这么卡 :anger:
+这个哥哥的身体中仿佛有着无限的天赋与自信，但是没有被激发，没有找到正确的方向。
 
-继续读一读荣枯鉴，再次回味 新顺1730 仍然有很多收获。
+这个世界的LLM（一种问答机器）好有趣，似乎已经是大部分人类的超集了！
 
-之前他还在做一个同步 blog 的项目，小红书和知乎的api好麻烦 :nauseated_face:
+怎么有一大堆期末考试的科目还没预习，还好他有不错的计算力，压力有点大啊。
 
-又到一年OI夏令营了，4个题才想好两个，不知道这一届的学弟到底能有什么水平呢？
