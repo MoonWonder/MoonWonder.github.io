@@ -2,7 +2,6 @@
 title: {{ replace .TranslationBaseName "-" " " | title }}
 subtitle:
 date: {{ .Date }}
-slug: {{ substr .File.UniqueID 0 7 }}
 draft: true
 author:
   name:
@@ -12,7 +11,7 @@ author:
 description:
 keywords:
 license:
-comment: false
+comment: true
 weight: 0
 tags:
   - draft
@@ -33,9 +32,6 @@ math: false
 lightgallery: false
 password:
 message:
-repost:
-  enable: true
-  url:
 
 # See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
 ---

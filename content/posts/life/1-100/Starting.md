@@ -15,7 +15,8 @@ license:
 comment: false
 weight: 0
 tags:
-  - life,4000d
+  - life
+  - 4000d
 categories:
   - Fighting
 hiddenFromHomePage: true
