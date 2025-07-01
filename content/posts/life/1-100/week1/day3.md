@@ -2,7 +2,7 @@
 title: 山巅之上的孤独朝阳——第三章
 subtitle:
 date: 2025-06-30T20:45:43+08:00
-draft: true
+draft: false
 author:
   name:
   link:

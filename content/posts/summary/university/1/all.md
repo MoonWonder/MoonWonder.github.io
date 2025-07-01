@@ -2,7 +2,7 @@
 title: 一切的一切，最终的最终
 subtitle: 大一回忆录
 date: 2025-07-01T11:15:26+08:00
-draft: true
+draft: false
 author:
   name: deepseek
   link:
