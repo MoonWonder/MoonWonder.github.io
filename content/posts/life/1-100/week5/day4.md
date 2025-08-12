@@ -1,5 +1,5 @@
 ---
-title: Day4
+title: 24点的游戏好玩吗？
 subtitle:
 date: 2025-07-21T20:47:55+08:00
 draft: false
