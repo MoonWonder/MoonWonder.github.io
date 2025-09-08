@@ -1,6 +1,6 @@
 ---
-title: 第一节课
-subtitle: 数据库系统导论
+title: 数据库系统导论
+subtitle: 第一节课
 date: 2025-09-08T17:40:43+08:00
 draft: false
 author:
