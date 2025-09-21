@@ -49,7 +49,7 @@ $$msign(M)=(MM^T)^{-\frac{1}{2}}M=M(M^TM)^{-\frac{1}{2}}$$
 
 如果不可逆取伪逆。
 
-可以发现当 $M$ 为对角阵时Muon退化为SignSGD
+可以发现当 $M$ 为对角阵时 Muon 退化为 SignSGD
 
 ### 笔记：
 1. SGD+超球面
