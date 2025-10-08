@@ -1,8 +1,8 @@
 ---
-title: 2012-2025年 — 国家总体主义时代及未来展望
+title: Day2
 subtitle:
-date: 2025-10-03T21:58:12+08:00
-draft: true
+date: 2025-10-07T23:59:53+08:00
+draft: false
 author:
   name:
   link:
@@ -11,14 +11,14 @@ author:
 description:
 keywords:
 license:
-comment: true
+comment: false
 weight: 0
 tags:
-  - economy
-  - China
+  - life
+  - 4000d
 categories:
-  - economy
-hiddenFromHomePage: false
+  - Fighting
+hiddenFromHomePage: true
 hiddenFromSearch: false
 hiddenFromRelated: false
 hiddenFromFeed: false
@@ -37,4 +37,10 @@ message:
 # See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
 ---
 
+原来已经是我的第102天了。
 
+<!--more-->
+
+本来还以为是101天呢，原来101天是中秋。
+
+不管怎么说，大家中秋快乐！
