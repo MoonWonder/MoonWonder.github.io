@@ -127,7 +127,7 @@ bundle = false
   # recently updated posts settings
   # 最近更新文章设置
   [section.recentlyUpdated]
-    enable = flase
+    enable = false
     rss = true
     days = 30
     maxCount = 10
