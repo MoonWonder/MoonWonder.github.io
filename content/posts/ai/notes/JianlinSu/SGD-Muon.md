@@ -35,6 +35,7 @@ password:
 message:
 
 # See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
+lastmod: 2025-09-21T14:21:09+08:00
 ---
 
 读科学空间博客 流形上的最速下降 系列的笔记。

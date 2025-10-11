@@ -3,7 +3,7 @@ author: "MoonWonder"
 author_link: "moonwonder.top"
 title: "数值分析笔记一"
 date: 2025-05-14T17:22:15+08:00
-lastmod: 2025-05-14T17:22:15+08:00
+lastmod: 2025-05-29T19:15:44+08:00
 draft: false
 description: ""
 license: ""

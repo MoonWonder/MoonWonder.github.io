@@ -35,6 +35,7 @@ password:
 message:
 
 # See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
+lastmod: 2025-08-26T19:24:55+08:00
 ---
 
 前面两个月一直在疯狂摸鱼，看小说。从下周开始认真工作了。

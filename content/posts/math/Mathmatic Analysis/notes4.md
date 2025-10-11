@@ -3,7 +3,7 @@ author: "MoonWonder"
 author_link: "moonwonder.top"
 title: "数值分析笔记四——数值积分"
 date: 2025-05-19T14:44:23+08:00
-lastmod: 2025-05-19T14:44:23+08:00
+lastmod: 2025-05-29T19:15:44+08:00
 draft: false
 description: ""
 license: ""

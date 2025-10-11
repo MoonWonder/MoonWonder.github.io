@@ -35,6 +35,7 @@ password:
 message:
 
 # See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
+lastmod: 2025-09-11T21:55:13+08:00
 ---
 
 新的一周又开始了

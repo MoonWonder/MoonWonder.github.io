@@ -35,6 +35,7 @@ password:
 message:
 
 # See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
+lastmod: 2025-10-08T11:20:18+08:00
 ---
 
 原来已经是我的第102天了。

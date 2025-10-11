@@ -35,6 +35,7 @@ password:
 message:
 
 # See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
+lastmod: 2025-08-27T19:10:19+08:00
 ---
 
 昨天本来想ban，早点睡的，结果还是到了凌晨2点。输

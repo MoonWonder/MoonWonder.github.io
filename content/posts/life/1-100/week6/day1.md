@@ -35,6 +35,7 @@ password:
 message:
 
 # See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
+lastmod: 2025-08-12T13:08:50+08:00
 ---
 
 看到了一篇很好玩的文章：https://www.zhihu.com/question/19888447/answer/1930799480401293785

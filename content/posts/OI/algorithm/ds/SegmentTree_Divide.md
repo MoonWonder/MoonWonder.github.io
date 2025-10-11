@@ -3,7 +3,7 @@ author: "MoonWonder"
 author_link: "moonwonder.top"
 title: "SegmentTree_Divide"
 date: 2021-02-13T11:22:34+08:00
-lastmod: 2021-02-13T11:22:34+08:00
+lastmod: 2025-05-29T19:15:44+08:00
 draft: false
 description: ""
 license: ""

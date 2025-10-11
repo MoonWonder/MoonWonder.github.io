@@ -5,6 +5,7 @@ title: CF30E-Tricky and Clever Password
 date: '2021-01-31 17:22:00.908447'
 modified: '2021-01-31 17:22:00.909234'
 
+lastmod: 2025-05-29T17:38:45+08:00
 ---
 # CF30E-Tricky and Clever Password
 ## 题目:

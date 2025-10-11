@@ -35,6 +35,7 @@ password:
 message:
 
 # See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
+lastmod: 2025-09-21T14:21:09+08:00
 ---
 
 偶像，你自己选的吗

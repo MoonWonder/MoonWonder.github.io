@@ -35,6 +35,7 @@ password:
 message:
 
 # See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
+lastmod: 2025-07-15T21:49:15+08:00
 ---
 
 长达三周的假期结束了:anger:，又回到了这所大学。这还是我第一次亲自感受呢。

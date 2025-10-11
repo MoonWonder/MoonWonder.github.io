@@ -35,6 +35,7 @@ password:
 message:
 
 # See details front matter: https://fixit.lruihao.cn/documentation/content-management/introduction/#front-matter
+lastmod: 2025-10-09T21:28:20+08:00
 ---
 
 假期回来回到学校的第一天。
