@@ -35,6 +35,15 @@ bundle = false
   avatar = "/images/avatar.png"
   gravatarEmail = "ybw051114@qq.com"
 
+[recentlyUpdated]
+  archives = false
+  section = false
+  list = false
+  days = 30
+  maxCount = 10
+
+
+
 [image]
   # cache remote images for better optimisations
   # 缓存图片链接到本地
