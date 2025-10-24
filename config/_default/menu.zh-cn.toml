@@ -31,14 +31,14 @@
   url = "/categories/"
   title = ""
   weight = 3
-# [[main]]
-#   identifier = "series"
-#   pre = ""
-#   post = ""
-#   name = "系列"
-#   url = "/series/"
-#   title = ""
-#   weight = 4
+[[main]]
+  identifier = "books"
+  pre = ""
+  post = ""
+  name = "系列"
+  url = "/books/"
+  title = ""
+  weight = 4
 # [[main]]
 #   identifier = "authors"
 #   pre = ""
@@ -77,6 +77,7 @@
   pre = ""
   title = ""
   weight = 9 
+
 [[main]]
   identifier = "link"
   name = "友链"
