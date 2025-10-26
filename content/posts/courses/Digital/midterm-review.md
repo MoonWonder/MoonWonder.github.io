@@ -14,9 +14,10 @@ license:
 comment: true
 weight: 0
 tags:
-  - draft
+  - digital
+  - course
 categories:
-  - draft
+  - course
 hiddenFromHomePage: false
 hiddenFromSearch: false
 hiddenFromRelated: false
