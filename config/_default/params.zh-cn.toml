@@ -188,6 +188,9 @@ keywords = ["AI", "Computer Science", "Math"]
 #  [social.Diaspora]
 #    id = "@xxxx"
 #    prefix = "https://yyyy/"
+[footer]
+  custom = '<a href="/categories/">分类</a> · <a href="/tags/">标签</a> · <a href="/link/">友链</a>'
+
 # Sponsor config
 # 赞助设置
 [sponsor]
