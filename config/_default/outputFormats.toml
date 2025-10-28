@@ -10,3 +10,19 @@
   mediaType = "application/feed+json"
   isPlainText = true
   notAlternative = true
+
+[SearchIndexEn]
+  mediaType = "application/json"
+  baseName = "index.en"
+  isPlainText = true
+  notAlternative = true
+  rel = "search"
+  path = ""
+
+[SearchIndexZhCn]
+  mediaType = "application/json"
+  baseName = "index.zh-cn"
+  isPlainText = true
+  notAlternative = true
+  rel = "search"
+  path = ""

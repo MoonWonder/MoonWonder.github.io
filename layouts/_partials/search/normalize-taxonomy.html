@@ -1,0 +1,19 @@
+{{- $terms := . -}}
+{{- $normalized := slice -}}
+{{- if $terms -}}
+  {{- if reflect.IsSlice $terms -}}
+    {{- range $terms -}}
+      {{- $value := trim (printf "%v" .) " \n\t\r" -}}
+      {{- if $value -}}
+        {{- $normalized = $normalized | append $value -}}
+      {{- end -}}
+    {{- end -}}
+  {{- else -}}
+    {{- $value := trim (printf "%v" $terms) " \n\t\r" -}}
+    {{- if $value -}}
+      {{- $normalized = $normalized | append $value -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $normalized = uniq $normalized -}}
+{{- return $normalized -}}

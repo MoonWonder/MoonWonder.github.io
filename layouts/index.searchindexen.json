@@ -1,0 +1,8 @@
+{{- $scratch := newScratch -}}
+{{- range site.Sites -}}
+  {{- if eq .Language.Lang "en" -}}
+    {{- $scratch.Set "site" . -}}
+  {{- end -}}
+{{- end -}}
+{{- $target := $scratch.Get "site" | default .Site -}}
+{{- partial "search/index-json.html" (dict "site" $target) -}}

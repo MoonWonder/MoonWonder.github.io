@@ -1,0 +1,103 @@
+{{- $site := .site -}}
+{{- $search := $site.Params.search -}}
+{{- if and $search ($search.enable | default true) -}}
+  {{- $pageDefaults := $site.Params.page | default dict -}}
+  {{- $dateFormat := $site.Params.dateFormat | default "2006-01-02" -}}
+  {{- $contentLength := $search.contentLength | default 0 -}}
+  {{- $absoluteURL := $search.absoluteURL | default false -}}
+  {{- $pages := $site.RegularPages -}}
+  {{- if $pageDefaults.hiddenFromSearch -}}
+    {{- $pages = where $pages "Params.hiddenfromsearch" false -}}
+  {{- else -}}
+    {{- $pages = where $pages "Params.hiddenfromsearch" "!=" true -}}
+  {{- end -}}
+  {{- $records := slice -}}
+  {{- range $page := $pages -}}
+    {{- $uri := cond $absoluteURL $page.Permalink $page.RelPermalink -}}
+    {{- $publishDate := $page.Date -}}
+    {{- if and $page.PublishDate (not $page.PublishDate.IsZero) -}}
+      {{- $publishDate = $page.PublishDate -}}
+    {{- end -}}
+    {{- $lang := $page.Language.Lang -}}
+    {{- $section := $page.Section -}}
+    {{- if not $section -}}
+      {{- $section = $page.Type -}}
+    {{- end -}}
+    {{- $type := $page.Type -}}
+    {{- if not $type -}}
+      {{- $type = $section -}}
+    {{- end -}}
+    {{- $categories := partial "search/normalize-taxonomy.html" $page.Params.categories -}}
+    {{- $tags := partial "search/normalize-taxonomy.html" $page.Params.tags -}}
+    {{- $series := partial "search/normalize-taxonomy.html" $page.Params.series -}}
+    {{- $meta := dict
+          "title" $page.Title
+          "lang" $lang
+          "section" ($section | default "")
+          "type" ($type | default "")
+          "categories" $categories
+          "tags" $tags
+          "series" $series
+          "date" ($publishDate.Format $dateFormat)
+    -}}
+    {{- with $page.Description -}}
+      {{- $records = $records | append (merge (dict "content" . "objectID" $uri "uri" $uri) $meta) -}}
+    {{- end -}}
+    {{- $params := merge $page.Params $pageDefaults -}}
+    {{- $content := dict "Content" $page.Content "Ruby" $params.ruby "Fraction" $params.fraction "Fontawesome" $params.fontawesome | partial "function/content.html" -}}
+    {{- $content = $content | replaceRE `<span class="lnt?"> *\d*\n?</span>` "" -}}
+    {{- $content = $content | replaceRE `" class="headerLink">` `">` -}}
+    {{- $anchor := "" -}}
+    {{- range $h, $contentH := split $content "<h1 id=" -}}
+      {{- if gt $h 0 -}}
+        {{- $anchor = replace (index (split $contentH ">") 0) `"` "" -}}
+        {{- $contentH = printf "<h1 id=%v" $contentH -}}
+      {{- end -}}
+      {{- range $i, $contentI := split $contentH "<h2 id=" -}}
+        {{- if gt $i 0 -}}
+          {{- $anchor = replace (index (split $contentI ">") 0) `"` "" -}}
+          {{- $contentI = printf "<h2 id=%v" $contentI -}}
+        {{- end -}}
+        {{- range $j, $contentJ := split $contentI "<h3 id=" -}}
+          {{- if gt $j 0 -}}
+            {{- $anchor = replace (index (split $contentJ ">") 0) `"` "" -}}
+            {{- $contentJ = printf "<h3 id=%v" $contentJ -}}
+          {{- end -}}
+          {{- range $k, $contentK := split $contentJ "<h4 id=" -}}
+            {{- if gt $k 0 -}}
+              {{- $anchor = replace (index (split $contentK ">") 0) `"` "" -}}
+              {{- $contentK = printf "<h4 id=%v" $contentK -}}
+            {{- end -}}
+            {{- range $l, $contentL := split $contentK "<h5 id=" -}}
+              {{- if gt $l 0 -}}
+                {{- $anchor = replace (index (split $contentL ">") 0) `"` "" -}}
+                {{- $contentL = printf "<h5 id=%v" $contentL -}}
+              {{- end -}}
+              {{- range $m, $contentM := split $contentL "<h6 id=" -}}
+                {{- if gt $m 0 -}}
+                  {{- $anchor = replace (index (split $contentM ">") 0) `"` "" -}}
+                  {{- $contentM = printf "<h6 id=%v" $contentM -}}
+                {{- end -}}
+                {{- $chunk := $contentJ | plainify | htmlUnescape | replaceRE `[\n\t ]+` " " -}}
+                {{- if gt $contentLength 0 -}}
+                  {{- $chunk = substr $chunk 0 $contentLength -}}
+                {{- end -}}
+                {{- if and $chunk (ne $chunk " ") -}}
+                  {{- $record := dict
+                        "content" $chunk
+                        "uri" (printf "%s#%s" $uri $anchor)
+                        "objectID" (printf "%s:%d:%d" $uri $i $j)
+                  -}}
+                  {{- $records = $records | append (merge $record $meta) -}}
+                {{- end -}}
+              {{- end -}}
+            {{- end -}}
+          {{- end -}}
+        {{- end -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $records | jsonify (dict "prefix" " " "indent" "  ") | safeHTML -}}
+{{- else -}}
+  []
+{{- end -}}

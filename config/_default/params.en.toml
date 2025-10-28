@@ -1,0 +1,6 @@
+# Search config
+[search]
+  placeholder = "Search posts, tags, and notes"
+
+  [search.algolia]
+    index = "index.en"

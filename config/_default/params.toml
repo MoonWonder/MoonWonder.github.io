@@ -35,6 +35,40 @@ bundle = false
   avatar = "/images/avatar.png"
   gravatarEmail = "ybw051114@qq.com"
 
+# Search config
+# 搜索配置
+[search]
+  enable = true
+  type = "algolia"
+  contentLength = 4000
+  placeholder = "Search posts, tags, and notes"
+  maxResultLength = 10
+  snippetLength = 50
+  highlightTag = "em"
+  absoluteURL = false
+
+  [search.algolia]
+    index = "index.en"
+    appID = "XM9KAEGZQ3"
+    searchKey = "f3495abb7bf7e59b5a47427e6d0100f5"
+
+  [search.fuse]
+    isCaseSensitive = false
+    minMatchCharLength = 2
+    findAllMatches = false
+    location = 0
+    threshold = 0.1
+    distance = 100
+    ignoreLocation = true
+    useExtendedSearch = false
+    ignoreFieldNorm = false
+
+  [search.pagefind]
+    termFrequency = 1.0
+    pageLength = 0.75
+    termSimilarity = 1.0
+    termSaturation = 1.4
+
 [recentlyUpdated]
   archives = false
   section = false
