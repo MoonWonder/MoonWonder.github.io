@@ -1,0 +1,840 @@
+<!doctype html><html itemscope itemtype=http://schema.org/WebPage lang=zh-CN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=2"><meta name=robots content="noodp"><title>Chapter 13 14 - MoonWonder</title><meta name=author content="MoonWonder"><meta name=description content="第13讲：同步 (Synchronization) 本讲深入讨论多线程/多进程环境下共享资源的访问控制和协调问题，即同步。
+"><meta name=keywords content='OS'><meta itemprop=name content="chapter 13 14"><meta itemprop=description content="第13讲：同步 (Synchronization) 本讲深入讨论多线程/多进程环境下共享资源的访问控制和协调问题，即同步。"><meta itemprop=datePublished content="2025-05-14T13:54:42+08:00"><meta itemprop=dateModified content="2025-10-28T09:28:15+08:00"><meta itemprop=wordCount content="12245"><meta itemprop=image content="https://moonwonder.top/logo.png"><meta itemprop=keywords content="OS"><meta property="og:url" content="https://moonwonder.top/posts/os/13-14/"><meta property="og:site_name" content="MoonWonder"><meta property="og:title" content="chapter 13 14"><meta property="og:description" content="第13讲：同步 (Synchronization) 本讲深入讨论多线程/多进程环境下共享资源的访问控制和协调问题，即同步。"><meta property="og:locale" content="zh_CN"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-05-14T13:54:42+08:00"><meta property="article:modified_time" content="2025-10-28T09:28:15+08:00"><meta property="article:tag" content="OS"><meta property="og:image" content="https://moonwonder.top/logo.png"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://moonwonder.top/logo.png"><meta name=twitter:title content="chapter 13 14"><meta name=twitter:description content="第13讲：同步 (Synchronization) 本讲深入讨论多线程/多进程环境下共享资源的访问控制和协调问题，即同步。"><meta name=application-name content="MoonWonder"><meta name=apple-mobile-web-app-title content="MoonWonder"><meta name=theme-color data-light=#f8f8f8 data-dark=#252627 content="#f8f8f8"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical type=text/html href=https://moonwonder.top/posts/os/13-14/ title="chapter 13 14 - MoonWonder"><link rel=prev type=text/html href=https://moonwonder.top/heatmap/ title=博客活动热力图><link rel=next type=text/html href=https://moonwonder.top/posts/math/mathmatic-analysis/notes1/ title=数值分析笔记一><link rel=alternate type=text/plain href=https://moonwonder.top/posts/os/13-14/index.md title="chapter 13 14 - MoonWonder"><link rel=stylesheet href=/css/config.min.251880c471e90abe5f3e03b6b6ff7ebf.css integrity="md5-JRiAxHHpCr5fPgO2tv9+vw=="><link rel=stylesheet href=/css/style.min.c3fbd99ca3a9e2cb28f2cffa1a3a4541.css integrity="md5-w/vZnKOp4sso8s/6GjpFQQ=="><link rel=preload href=/lib/fontawesome-free/all.min.bde2a1ac06ec87a30967e54da50f5c15.css integrity="md5-veKhrAbsh6MJZ+VNpQ9cFQ==" as=style onload='this.removeAttribute("onload"),this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/fontawesome-free/all.min.bde2a1ac06ec87a30967e54da50f5c15.css integrity="md5-veKhrAbsh6MJZ+VNpQ9cFQ=="></noscript><link rel=preload href=/lib/animate/animate.min.c0be8e53226ac34833fd9b5dbc01ebc5.css integrity="md5-wL6OUyJqw0gz/ZtdvAHrxQ==" as=style onload='this.removeAttribute("onload"),this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/animate/animate.min.c0be8e53226ac34833fd9b5dbc01ebc5.css integrity="md5-wL6OUyJqw0gz/ZtdvAHrxQ=="></noscript><meta name=google-site-verification content="MQ8DNu27ayX6B_4ObiEDK09vGr1fdy7kOAnbd09hJk4"><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"chapter 13 14","inLanguage":"zh-CN","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/moonwonder.top\/posts\/os\/13-14\/"},"image":["https:\/\/moonwonder.top\/images\/Apple-Devices-Preview.png"],"genre":"posts","keywords":"OS","wordcount":12245,"url":"https:\/\/moonwonder.top\/posts\/os\/13-14\/","datePublished":"2025-05-14T13:54:42+08:00","dateModified":"2025-10-28T09:28:15+08:00","license":"This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.","publisher":{"@type":"Organization","name":"xxxx","logo":"https:\/\/moonwonder.top\/images\/avatar.png"},"author":{"@type":"Person","name":"MoonWonder"},"description":""}</script><script src=/js/head/color-scheme.min.9577b206ee497277eba5813880d7978c.js integrity="md5-lXeyBu5JcnfrpYE4gNeXjA=="></script></head><body data-header-desktop=sticky data-header-mobile=auto><div class=wrapper data-page-style=normal><header class="desktop animate__faster" id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title=MoonWonder><span class=header-title-pre><svg class="icon" viewBox="0 0 576 512"><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5.0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1.0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7.0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174 402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7-43.2-43.2c-4.1-4.1-10.8-4.1-14.8.0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg></span><span class=typeit><template>MoonWonder</template></span></a><span class=header-subtitle></span></div><nav><ul class=menu><li class=menu-item><a class=menu-link href=/posts/>所有文章</a></li><li class=menu-item><a class=menu-link href=/tags/>标签</a></li><li class=menu-item><a class=menu-link href=/categories/>分类</a></li><li class=menu-item><a class=menu-link href=/books/>系列</a></li><li class=menu-item><a class=menu-link href=/about/>关于</a></li><li class=menu-item><a class=menu-link href=/heatmap/>热力图</a></li><li class=menu-item><a class=menu-link href=/link/>友链</a></li><li class=menu-item><a class=menu-link href=https://github.com/MoonWonder/moonwonder.github.io title=GitHub rel="noopener noreferrer" target=_blank><svg class="icon" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6.0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6.0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3.0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1.0-6.2-.3-40.4-.3-61.4.0.0-70 15-84.7-29.8.0.0-11.4-29.1-27.8-36.6.0.0-22.9-15.7 1.6-15.4.0.0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5.0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9.0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4.0 33.7-.3 75.4-.3 83.6.0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6.0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9.0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></a></li><li class="menu-item delimiter"></li><li class="menu-item search" id=search-desktop><input type=text placeholder=搜索文章标题或内容…… id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=搜索><i class="fa-solid fa-search fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=清空><i class="fa-solid fa-times-circle fa-fw" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-desktop><i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden=true></i></span></li><li class="menu-item theme-switch" title=切换主题><i class="fa-solid fa-adjust fa-fw" aria-hidden=true></i></li><li class="menu-item language-switch"><span role=button aria-label=选择语言 title=选择语言><i class="fa-solid fa-language fa-fw" aria-hidden=true></i></span><ul class=sub-menu><li class=menu-item>没有更多翻译</li></ul></li></ul></nav></div></header><header class="mobile animate__faster" id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title=MoonWonder><span class=header-title-pre><svg class="icon" viewBox="0 0 576 512"><path d="M402.3 344.9l32-32c5-5 13.7-1.5 13.7 5.7V464c0 26.5-21.5 48-48 48H48c-26.5.0-48-21.5-48-48V112c0-26.5 21.5-48 48-48h273.5c7.1.0 10.7 8.6 5.7 13.7l-32 32c-1.5 1.5-3.5 2.3-5.7 2.3H48v352h352V350.5c0-2.1.8-4.1 2.3-5.6zm156.6-201.8L296.3 405.7l-90.4 10c-26.2 2.9-48.5-19.2-45.6-45.6l10-90.4L432.9 17.1c22.9-22.9 59.9-22.9 82.7.0l43.2 43.2c22.9 22.9 22.9 60 .1 82.8zM460.1 174 402 115.9 216.2 301.8l-7.3 65.3 65.3-7.3L460.1 174zm64.8-79.7-43.2-43.2c-4.1-4.1-10.8-4.1-14.8.0L436 82l58.1 58.1 30.9-30.9c4-4.2 4-10.8-.1-14.9z"/></svg></span><span class=typeit><template>MoonWonder</template></span></a><span class=header-subtitle></span></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><nav><ul class=menu id=menu-mobile><li class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder=搜索文章标题或内容…… id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=搜索><i class="fa-solid fa-search fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=清空><i class="fa-solid fa-times-circle fa-fw" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-mobile><i class="fa-solid fa-spinner fa-fw fa-spin" aria-hidden=true></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>取消</a></li><li class=menu-item><a class=menu-link href=/posts/>所有文章</a></li><li class=menu-item><a class=menu-link href=/tags/>标签</a></li><li class=menu-item><a class=menu-link href=/categories/>分类</a></li><li class=menu-item><a class=menu-link href=/books/>系列</a></li><li class=menu-item><a class=menu-link href=/about/>关于</a></li><li class=menu-item><a class=menu-link href=/heatmap/>热力图</a></li><li class=menu-item><a class=menu-link href=/link/>友链</a></li><li class=menu-item><a class=menu-link href=https://github.com/MoonWonder/moonwonder.github.io title=GitHub rel="noopener noreferrer" target=_blank><svg class="icon" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6.0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6.0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3.0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1.0-6.2-.3-40.4-.3-61.4.0.0-70 15-84.7-29.8.0.0-11.4-29.1-27.8-36.6.0.0-22.9-15.7 1.6-15.4.0.0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5.0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9.0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4.0 33.7-.3 75.4-.3 83.6.0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6.0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9.0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></a></li><li class="menu-item menu-system"><span class="menu-system-item theme-switch" title=切换主题><i class="fa-solid fa-adjust fa-fw" aria-hidden=true></i></span><span class="menu-system-item language-switch">
+<span role=button aria-label=选择语言 title=选择语言>简体中文<i class="dropdown-icon fa-solid fa-chevron-down" aria-hidden=true></i></span>
+<select class=language-select onchange="location=this.value"><option disabled>没有更多翻译</option></select></span></li></ul></nav></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=fi-container><aside class="aside-collection animate__animated animate__fadeIn animate__faster" aria-label=合集></aside><article class="page single"><div class=header><h1 class="single-title animate__animated animate__flipInX"><span>Chapter 13 14</span></h1></div><div class=post-meta><div class=post-meta-line><span class=post-author><a href=https://github.com/moonwonder title=作者 target=_blank rel="external nofollow noopener noreferrer author" class=author><img class=avatar src=/images/avatar.png alt=MoonWonder height=16 width=16>&nbsp;MoonWonder</a></span></div><div class=post-meta-line><span title="发布于 2025-05-14 13:54:42"><i class="fa-solid fa-calendar-days fa-fw me-1" aria-hidden=true></i><time datetime=2025-05-14>2025-05-14</time></span>&nbsp;<span title="更新于 2025-10-28 09:28:15"><i class="fa-regular fa-calendar-check fa-fw me-1" aria-hidden=true></i><time datetime=2025-10-28>2025-10-28</time></span>&nbsp;<span title="12245 字"><i class="fa-solid fa-pencil-alt fa-fw me-1" aria-hidden=true></i>约 12300 字</span>&nbsp;<span><i class="fa-regular fa-clock fa-fw me-1" aria-hidden=true></i>预计阅读 25 分钟</span>&nbsp;<span id=/posts/os/13-14/ class="leancloud_visitors comment-visitors" data-flag-title="Chapter 13 14"><i class="fa-regular fa-eye fa-fw me-1" aria-hidden=true></i><span class=leancloud-visitors-count>-</span>&nbsp;次阅读
+</span>&nbsp;<span class=comment-count data-flag-title="Chapter 13 14">
+<i class="fa-regular fa-comments fa-fw me-1" aria-hidden=true></i><span data-xid=/posts/os/13-14/ class=valine-comment-count>-</span>&nbsp;条评论
+</span>&nbsp;</div></div><div class="details toc" id=toc-static data-kept=false><div class="details-summary toc-title"><span>目录</span>
+<span><i class="details-icon fa-solid fa-angle-right" aria-hidden=true></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#并发执行与竞争-concurrent-execution-and-race>并发执行与竞争 (Concurrent Execution and Race)</a><ul><li><ul><li><a href=#竞争条件-race-condition>竞争条件 (Race Condition):</a></li><li><a href=#示例计数器增加>示例：计数器增加</a></li><li><a href=#临界区-critical-section>临界区 (Critical Section):</a></li></ul></li></ul></li><li><a href=#互斥-mutual-exclusion>互斥 (Mutual Exclusion)</a><ul><li><a href=#锁-lock--mutex>锁 (Lock / Mutex)</a><ul><li><a href=#锁的性质>锁的性质:</a></li><li><a href=#锁的实现方式>锁的实现方式:</a></li></ul></li></ul></li><li><a href=#信号量-semaphore>信号量 (Semaphore)</a><ul><li><ul><li><a href=#二元信号量-binary-semaphore>二元信号量 (Binary Semaphore):</a></li><li><a href=#计数信号量-counting-semaphore>计数信号量 (Counting Semaphore):</a></li><li><a href=#生产者-消费者问题-producer-consumer-problem>生产者-消费者问题 (Producer-Consumer Problem):</a></li></ul></li></ul></li><li><a href=#管程-monitor>管程 (Monitor)</a><ul><li><ul><li><a href=#条件变量-condition-variable>条件变量 (Condition Variable):</a></li></ul></li></ul></li><li><a href=#经典同步问题>经典同步问题</a></li></ul><ul><li><a href=#内存层次-memory-hierarchy>内存层次 (Memory Hierarchy)</a></li><li><a href=#地址空间-address-spaces>地址空间 (Address Spaces)</a><ul><li><ul><li><a href=#物理地址空间-physical-address-space>物理地址空间 (Physical Address Space):</a></li><li><a href=#逻辑地址空间-logical-address-space>逻辑地址空间 (Logical Address Space):</a></li><li><a href=#虚拟地址空间-virtual-address-space>虚拟地址空间 (Virtual Address Space):</a></li></ul></li></ul></li><li><a href=#内存管理单元-memory-management-unit-mmu>内存管理单元 (Memory Management Unit, MMU)</a><ul><li><ul><li><a href=#地址翻译-address-translation>地址翻译 (Address Translation):</a></li></ul></li></ul></li><li><a href=#连续内存分配-contiguous-allocation>连续内存分配 (Contiguous Allocation)</a></li><li><a href=#分页-paging>分页 (Paging)</a><ul><li><ul><li><a href=#地址翻译过程-paging>地址翻译过程 (Paging):</a></li><li><a href=#页表-page-table>页表 (Page Table):</a></li><li><a href=#页表的存储和开销>页表的存储和开销:</a></li><li><a href=#多级页表-multilevel-page-tables>多级页表 (Multilevel Page Tables):</a></li><li><a href=#快表-translation-lookaside-buffer-tlb>快表 (Translation Lookaside Buffer, TLB):</a></li></ul></li></ul></li><li><a href=#虚拟内存与按需分页-virtual-memory-and-demand-paging>虚拟内存与按需分页 (Virtual Memory and Demand Paging)</a><ul><li><ul><li><a href=#缺页中断-page-fault>缺页中断 (Page Fault):</a></li><li><a href=#页面置换算法-page-replacement-algorithms>页面置换算法 (Page Replacement Algorithms):</a></li></ul></li></ul></li><li><a href=#交换-swapping>交换 (Swapping)</a></li><li><a href=#分段-segmentation>分段 (Segmentation)</a></li></ul></nav></div></div><div class=content id=content><h1 class=heading-element id=第13讲同步-synchronization><span>第13讲：同步 (Synchronization)</span>
+<a href=#%e7%ac%ac13%e8%ae%b2%e5%90%8c%e6%ad%a5-synchronization class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h1><p>本讲深入讨论多线程/多进程环境下共享资源的访问控制和协调问题，即同步。</p><h2 class=heading-element id=并发执行与竞争-concurrent-execution-and-race><span>并发执行与竞争 (Concurrent Execution and Race)</span>
+<a href=#%e5%b9%b6%e5%8f%91%e6%89%a7%e8%a1%8c%e4%b8%8e%e7%ab%9e%e4%ba%89-concurrent-execution-and-race class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h2><p>并发是指多个任务（线程或进程）在宏观上同时执行。在多处理器或支持时间片轮转的单处理器上都会发生并发。</p><h4 class=heading-element id=竞争条件-race-condition><span>竞争条件 (Race Condition):</span>
+<a href=#%e7%ab%9e%e4%ba%89%e6%9d%a1%e4%bb%b6-race-condition class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>当多个控制流（线程或进程）访问和修改同一个共享状态时，如果最终结果取决于这些控制流执行的精确交错顺序，那么就存在竞争条件。</p><h4 class=heading-element id=示例计数器增加><span>示例：计数器增加</span>
+<a href=#%e7%a4%ba%e4%be%8b%e8%ae%a1%e6%95%b0%e5%99%a8%e5%a2%9e%e5%8a%a0 class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>考虑一个全局变量 &lsquo;count&rsquo;，初始为 0。两个线程都执行 &lsquo;count++&rsquo;
+1000次。期望最终结果是 2000。 &lsquo;count++&rsquo;
+在硬件层面通常不是原子操作，例如可能被翻译成以下指令序列：</p><pre><code>Load R, count   ; 从内存加载 count 的值到寄存器 R
+Add R, 1        ; 寄存器 R 中的值加一
+Store R, count  ; 将寄存器 R 中的值存回内存 count
+</code></pre><p>如果在两个线程并发执行时发生如下交错：</p><ul><li><p>线程 A: &lsquo;Load R1, count&rsquo; (R1 = 0)</p></li><li><p>线程 B: &lsquo;Load R2, count&rsquo; (R2 = 0)</p></li><li><p>线程 A: &lsquo;Add R1, 1&rsquo; (R1 = 1)</p></li><li><p>线程 B: &lsquo;Add R2, 1&rsquo; (R2 = 1)</p></li><li><p>线程 A: &lsquo;Store R1, count&rsquo; (count = 1)</p></li><li><p>线程 B: &lsquo;Store R2, count&rsquo; (count = 1)</p></li></ul><p>尽管执行了两次 &lsquo;count++&rsquo;，最终 &lsquo;count&rsquo; 的值却是 1，而不是期望的
+2。这就是更新丢失，由竞争导致。</p><h4 class=heading-element id=临界区-critical-section><span>临界区 (Critical Section):</span>
+<a href=#%e4%b8%b4%e7%95%8c%e5%8c%ba-critical-section class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>访问共享资源的代码段称为临界区。同步问题本质上是保证对临界区的互斥访问。</p><h2 class=heading-element id=互斥-mutual-exclusion><span>互斥 (Mutual Exclusion)</span>
+<a href=#%e4%ba%92%e6%96%a5-mutual-exclusion class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h2><p>目标是保证在任何时刻，最多只有一个线程在执行临界区中的代码。</p><h3 class=heading-element id=锁-lock--mutex><span>锁 (Lock / Mutex)</span>
+<a href=#%e9%94%81-lock--mutex class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h3><p>锁是实现互斥的最常用工具。它是一个对象，可以在进入临界区前获取，在离开临界区后释放。</p><pre><code>acquire(lock);
+// 临界区 (Critical Section)
+// 访问或修改共享资源
+release(lock);
+</code></pre><h4 class=heading-element id=锁的性质><span>锁的性质:</span>
+<a href=#%e9%94%81%e7%9a%84%e6%80%a7%e8%b4%a8 class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>一个好的锁实现应该满足以下性质：</p><ul><li><p>**互斥 (Mutual Exclusion):** 任何时刻只有一个线程持有锁。</p></li><li><p>**线程可用 (Progress):**
+如果没有线程在临界区内，并且有线程想进入临界区，那么在有限时间内，某个想进入临界区的线程必须能够成功获取锁并进入临界区。</p></li><li><p>**有限等待 (Bounded Waiting):**
+如果一个线程请求进入临界区，那么在它被允许进入之前，其他线程进入临界区的次数是有限制的。这避免了
+(Starvation)。</p></li></ul><h4 class=heading-element id=锁的实现方式><span>锁的实现方式:</span>
+<a href=#%e9%94%81%e7%9a%84%e5%ae%9e%e7%8e%b0%e6%96%b9%e5%bc%8f class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><ul><li><p>**禁用中断 (Disabling Interrupts):**
+在单处理器上，进入临界区前禁用中断，离开后恢复。简单但粗暴，可能导致丢失重要中断，且在多处理器上无效。</p></li><li><p>**自旋锁 (Spin Lock):** 线程在 &lsquo;acquire()&rsquo;
+时，如果锁被持有，就在一个循环中不断"自旋"检查锁状态，直到锁可用。</p><pre><code>    acquire(lock):
+        while (test_and_set(&amp;lock-&gt;flag)); // 原子操作，设置标志并返回原值
+    release(lock):
+        lock-&gt;flag = 0;
+</code></pre><p>&rsquo;test_and_set&rsquo;
+是一个原子硬件指令。自旋锁在多处理器且临界区非常短时有效（避免上下文切换开销），但如果临界区长，会导致大量
+CPU 浪费在忙等上。</p></li><li><p>**阻塞锁 (Blocking Lock):** 线程在 &lsquo;acquire()&rsquo;
+时，如果锁被持有，则将自己放入一个等待队列并进入睡眠状态（阻塞）。当锁被
+&lsquo;release()&rsquo; 时，唤醒等待队列中的一个或所有线程。</p><pre><code>    acquire(lock):
+        while (lock_is_held) {
+            add_to_wait_queue(current_thread);
+            sleep(); // 线程阻塞，让出 CPU
+        }
+        lock_is_held = true;
+    release(lock):
+        lock_is_held = false;
+        if (wait_queue_not_empty) {
+            wakeup(a_waiting_thread);
+        }
+</code></pre><p>阻塞锁适用于临界区较长的情况，避免 CPU 浪费，但上下文切换有开销。</p></li></ul><h2 class=heading-element id=信号量-semaphore><span>信号量 (Semaphore)</span>
+<a href=#%e4%bf%a1%e5%8f%b7%e9%87%8f-semaphore class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h2><p>信号量是一个整数变量 <span class=katex><span class=katex-mathml><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class=katex-html aria-hidden=true><span class=base><span class=strut style=height:.6833em></span><span class="mord mathnormal" style=margin-right:.05764em>S</span></span></span></span>，只能通过两个原子操作 &lsquo;P&rsquo; (或 &lsquo;wait&rsquo;,
+&lsquo;acquire&rsquo;) 和 &lsquo;V&rsquo; (或 &lsquo;signal&rsquo;, &lsquo;release&rsquo;) 来访问。</p><ul><li><p>&lsquo;P(S)&rsquo;: <span class=katex><span class=katex-mathml><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mi>S</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">S = S - 1</annotation></semantics></math></span><span class=katex-html aria-hidden=true><span class=base><span class=strut style=height:.6833em></span><span class="mord mathnormal" style=margin-right:.05764em>S</span><span class=mspace style=margin-right:.2778em></span><span class=mrel>=</span><span class=mspace style=margin-right:.2778em></span></span><span class=base><span class=strut style=height:.7667em;vertical-align:-.0833em></span><span class="mord mathnormal" style=margin-right:.05764em>S</span><span class=mspace style=margin-right:.2222em></span><span class=mbin>−</span><span class=mspace style=margin-right:.2222em></span></span><span class=base><span class=strut style=height:.6444em></span><span class=mord>1</span></span></span></span>。如果 <span class=katex><span class=katex-mathml><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class=katex-html aria-hidden=true><span class=base><span class=strut style=height:.6833em></span><span class="mord mathnormal" style=margin-right:.05764em>S</span></span></span></span> 变为负值，则执行 &lsquo;P&rsquo;
+的线程阻塞，放入信号量的等待队列。</p></li><li><p>&lsquo;V(S)&rsquo;: <span class=katex><span class=katex-mathml><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mi>S</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">S = S + 1</annotation></semantics></math></span><span class=katex-html aria-hidden=true><span class=base><span class=strut style=height:.6833em></span><span class="mord mathnormal" style=margin-right:.05764em>S</span><span class=mspace style=margin-right:.2778em></span><span class=mrel>=</span><span class=mspace style=margin-right:.2778em></span></span><span class=base><span class=strut style=height:.7667em;vertical-align:-.0833em></span><span class="mord mathnormal" style=margin-right:.05764em>S</span><span class=mspace style=margin-right:.2222em></span><span class=mbin>+</span><span class=mspace style=margin-right:.2222em></span></span><span class=base><span class=strut style=height:.6444em></span><span class=mord>1</span></span></span></span>。如果 <span class=katex><span class=katex-mathml><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class=katex-html aria-hidden=true><span class=base><span class=strut style=height:.6833em></span><span class="mord mathnormal" style=margin-right:.05764em>S</span></span></span></span>
+原本是负值（意味着有线程在等待），则唤醒等待队列中的一个线程。</p></li></ul><p>信号量可以用来实现互斥和更复杂的同步。</p><h4 class=heading-element id=二元信号量-binary-semaphore><span>二元信号量 (Binary Semaphore):</span>
+<a href=#%e4%ba%8c%e5%85%83%e4%bf%a1%e5%8f%b7%e9%87%8f-binary-semaphore class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>初始值为 1 的信号量，功能与互斥锁类似。</p><pre><code>semaphore mutex = 1;
+P(mutex);
+// 临界区
+V(mutex);
+</code></pre><h4 class=heading-element id=计数信号量-counting-semaphore><span>计数信号量 (Counting Semaphore):</span>
+<a href=#%e8%ae%a1%e6%95%b0%e4%bf%a1%e5%8f%b7%e9%87%8f-counting-semaphore class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>初始值大于 1
+的信号量，用于控制对具有多个相同资源的访问。初始值表示可用资源的数量。</p><h4 class=heading-element id=生产者-消费者问题-producer-consumer-problem><span>生产者-消费者问题 (Producer-Consumer Problem):</span>
+<a href=#%e7%94%9f%e4%ba%a7%e8%80%85-%e6%b6%88%e8%b4%b9%e8%80%85%e9%97%ae%e9%a2%98-producer-consumer-problem class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>使用有限大小的缓冲区同步生产者和消费者。</p><ul><li><p>&lsquo;mutex = 1&rsquo;: 保护缓冲区本身的数据访问。</p></li><li><p>&rsquo;empty = N&rsquo;: 表示缓冲区中空槽的数量 (初始为缓冲区大小 N)。</p></li><li><p>&lsquo;full = 0&rsquo;: 表示缓冲区中已填充槽的数量 (初始为 0)。</p></li></ul><p><strong>生产者代码:</strong></p><pre><code>while (true) {
+    item = produce_item(); // 生产物品
+    P(empty); // 等待空槽可用
+    P(mutex); // 锁定缓冲区
+    add_item_to_buffer(item); // 将物品放入缓冲区
+    V(mutex); // 解锁缓冲区
+    V(full);  // 通知消费者，有新物品可用
+}
+</code></pre><p><strong>消费者代码:</strong></p><pre><code>while (true) {
+    P(full);  // 等待物品可用
+    P(mutex); // 锁定缓冲区
+    item = remove_item_from_buffer(); // 从缓冲区取出物品
+    V(mutex); // 解锁缓冲区
+    V(empty); // 通知生产者，有空槽可用
+    consume_item(item); // 消费物品
+}
+</code></pre><p>注意 &lsquo;P(empty)&rsquo; 和 &lsquo;P(full)&rsquo; 在 &lsquo;P(mutex)&rsquo;
+之前，这是为了避免可能的死锁（例如，如果先获取
+mutex，但发现条件不满足需要等待 full/empty，而释放 mutex
+才能让对方生产/消费，就可能死锁）。</p><h2 class=heading-element id=管程-monitor><span>管程 (Monitor)</span>
+<a href=#%e7%ae%a1%e7%a8%8b-monitor class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h2><p>管程是一种更高级的同步抽象，它将共享数据和访问这些数据的过程（函数）封装在一个模块中。管程保证在任何时刻，只有一个线程可以在管程内的某个过程中执行。</p><p>管程通常包含：</p><ul><li><p>共享数据 (Shared data)</p></li><li><p>访问共享数据的过程 (Procedures/Functions)</p></li><li><p>管程锁 (Monitor Lock): 隐式地由管程机制管理，确保互斥。</p></li><li><p>条件变量 (Condition Variables): 用于线程在管程内部等待某个条件成立。</p></li></ul><h4 class=heading-element id=条件变量-condition-variable><span>条件变量 (Condition Variable):</span>
+<a href=#%e6%9d%a1%e4%bb%b6%e5%8f%98%e9%87%8f-condition-variable class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>用于线程在持有管程锁的情况下，等待某个条件（基于共享数据）成立。有两个基本操作：</p><ul><li><p>&lsquo;wait(condition_variable)&rsquo;:
+调用线程原子地释放管程锁并进入该条件变量对应的等待队列中睡眠。当被唤醒时，线程会重新尝试获取管程锁，成功后从
+&lsquo;wait&rsquo; 调用点返回。</p></li><li><p>&lsquo;signal(condition_variable)&rsquo;: 如果有线程在 &lsquo;condition_variable&rsquo;
+上等待，唤醒其中一个。如果没有线程等待，&lsquo;signal&rsquo;
+操作无效果（与信号量的 &lsquo;V&rsquo; 不同）。唤醒的线程会排队等待获取管程锁。</p></li></ul><p>&lsquo;wait()&rsquo; 和 &lsquo;signal()&rsquo; 都必须在持有管程锁的情况下调用。 关于 &lsquo;signal&rsquo;
+的语义有两种常见实现：Hoare 语义（发出 signal
+的线程立即将管程交给被唤醒的线程）和 Mesa 语义（发出 signal
+的线程继续执行直到退出管程或再次等待，被唤醒的线程需要重新竞争管程锁）。Java
+使用的是 Mesa 语义。</p><h2 class=heading-element id=经典同步问题><span>经典同步问题</span>
+<a href=#%e7%bb%8f%e5%85%b8%e5%90%8c%e6%ad%a5%e9%97%ae%e9%a2%98 class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h2><ul><li><p>**读者-写者问题 (Readers-Writers Problem):**
+允许多个读者同时访问共享数据，但写者必须独占访问。有偏向读者和偏向写者的不同策略。</p></li><li><p>**哲学家进餐问题 (Dining Philosophers Problem):**
+五个哲学家围坐，每人左右一把筷子，思考或吃饭。吃饭需要两把筷子。这是一个经典的死锁和饥饿问题示例。解决方法包括：最多允许四个哲学家同时拿左手筷子、奇数号哲学家先拿左筷子偶数号先拿右筷子、使用管程等。</p></li></ul><hr><h1 class=heading-element id=第14讲内存管理-memory-management><span>第14讲：内存管理 (Memory Management)</span>
+<a href=#%e7%ac%ac14%e8%ae%b2%e5%86%85%e5%ad%98%e7%ae%a1%e7%90%86-memory-management class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h1><p>本讲深入探讨操作系统如何管理计算机的内存资源，包括地址空间、地址翻译、以及虚拟内存等核心概念。</p><h2 class=heading-element id=内存层次-memory-hierarchy><span>内存层次 (Memory Hierarchy)</span>
+<a href=#%e5%86%85%e5%ad%98%e5%b1%82%e6%ac%a1-memory-hierarchy class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h2><p>现代计算机系统采用分级存储结构，以平衡速度、容量和成本：</p><ol><li><p>**寄存器 (Registers):** CPU 内部，速度最快，容量最小，成本极高。</p></li><li><p>**缓存 (Cache):** CPU 与主存之间，速度快，容量较小，成本高（L1,
+L2, L3 等）。</p></li><li><p>**主内存 (Main Memory / RAM):** CPU
+可直接访问，速度较慢，容量较大，成本相对较低。</p></li><li><p>**磁盘存储 (Disk Storage / SSD):**
+速度慢，容量巨大，成本最低（用于长期存储和虚拟内存交换）。</p></li></ol><p>内存管理的一个重要目标是利用数据的局部性原理（时间局部性：最近访问的数据很可能再次访问；空间局部性：访问一个数据后，其附近的数据也很可能被访问），通过缓存和虚拟内存等机制，使得程序能够以接近上一层存储介质的速度访问数据。</p><h2 class=heading-element id=地址空间-address-spaces><span>地址空间 (Address Spaces)</span>
+<a href=#%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4-address-spaces class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h2><h4 class=heading-element id=物理地址空间-physical-address-space><span>物理地址空间 (Physical Address Space):</span>
+<a href=#%e7%89%a9%e7%90%86%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4-physical-address-space class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>物理内存（RAM）上的地址范围。这是硬件实际的内存单元地址，由 CPU
+的地址总线决定。</p><h4 class=heading-element id=逻辑地址空间-logical-address-space><span>逻辑地址空间 (Logical Address Space):</span>
+<a href=#%e9%80%bb%e8%be%91%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4-logical-address-space class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>程序在编译或链接后看到的地址空间。每个进程都有自己的逻辑地址空间，通常从地址
+0
+开始编址。在没有内存保护和虚拟内存的简单系统中，逻辑地址可能直接对应物理地址（例如早期的
+DOS）。</p><h4 class=heading-element id=虚拟地址空间-virtual-address-space><span>虚拟地址空间 (Virtual Address Space):</span>
+<a href=#%e8%99%9a%e6%8b%9f%e5%9c%b0%e5%9d%80%e7%a9%ba%e9%97%b4-virtual-address-space class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>在支持虚拟内存的操作系统中，进程看到的地址空间。它是一个抽象的概念，通常比物理内存大得多。虚拟地址需要通过地址翻译转换为物理地址才能访问实际内存。虚拟地址空间为每个进程提供了一个独立、连续的地址视图，简化了编程。</p><h2 class=heading-element id=内存管理单元-memory-management-unit-mmu><span>内存管理单元 (Memory Management Unit, MMU)</span>
+<a href=#%e5%86%85%e5%ad%98%e7%ae%a1%e7%90%86%e5%8d%95%e5%85%83-memory-management-unit-mmu class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h2><p>MMU 是 CPU
+中的一个硬件组件，负责在程序运行时将虚拟地址（或逻辑地址）实时翻译成物理地址。</p><h4 class=heading-element id=地址翻译-address-translation><span>地址翻译 (Address Translation):</span>
+<a href=#%e5%9c%b0%e5%9d%80%e7%bf%bb%e8%af%91-address-translation class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>MMU 根据页表（或段表）进行地址转换。</p><h2 class=heading-element id=连续内存分配-contiguous-allocation><span>连续内存分配 (Contiguous Allocation)</span>
+<a href=#%e8%bf%9e%e7%bb%ad%e5%86%85%e5%ad%98%e5%88%86%e9%85%8d-contiguous-allocation class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h2><p>早期的内存管理方法，要求进程的整个地址空间在物理内存中占据一个连续的块。</p><ul><li><p>**固定分区 (Fixed Partitioning):**
+物理内存被预先划分为固定大小的分区。会导致内部碎片（分区大于进程需求）和可用分区数量限制进程数量。</p></li><li><p>**动态分区 (Dynamic Partitioning):**
+物理内存根据进程需求动态划分，分区大小可变。</p><ul><li><p>首次适应 (First Fit): 查找第一个足够大的空闲块。</p></li><li><p>最佳适应 (Best Fit): 查找最小的足够大的空闲块。</p></li><li><p>最差适应 (Worst Fit): 查找最大的空闲块。</p></li></ul><p>动态分区的主要问题是外部碎片 (External Fragmentation):
+总空闲空间足够，但分散成许多小块，无法满足新进程对连续大块内存的需求。可以通过紧缩
+(Compaction) 来解决，但开销很大。</p></li></ul><p>连续分配需要基址寄存器 (Base Register) 和界限寄存器 (Limit Register)
+来实现简单的地址翻译和内存保护：物理地址 = 基址寄存器 +
+逻辑地址，且逻辑地址必须小于界限寄存器。</p><h2 class=heading-element id=分页-paging><span>分页 (Paging)</span>
+<a href=#%e5%88%86%e9%a1%b5-paging class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h2><p>一种非连续内存分配方式，是实现虚拟内存的基础。它解决了连续内存分配的外部碎片问题。</p><ul><li><p>**物理内存 (Physical Memory):**
+被划分为固定大小的块，称为**页帧 (Page Frames)**。</p></li><li><p>**虚拟地址空间 (Virtual Address Space):**
+被划分为同样大小的块，称为**页 (Pages)**。页的大小通常是 2
+的幂次方，例如 4KB。</p></li></ul><h4 class=heading-element id=地址翻译过程-paging><span>地址翻译过程 (Paging):</span>
+<a href=#%e5%9c%b0%e5%9d%80%e7%bf%bb%e8%af%91%e8%bf%87%e7%a8%8b-paging class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>虚拟地址被分成两部分：页号 (Page Number, P) 和页内偏移量 (Offset, O)。
+虚拟地址 = (页号 P, 页内偏移量 O) MMU 使用进程的页表 (Page Table)
+进行翻译： 页表以页号 P 作为索引，查找对应的页表条目 (Page Table Entry,
+PTE)。PTE 包含该虚拟页在物理内存中的起始地址，即对应的物理页帧号 (Frame
+Number, F)。 物理地址 = (物理页帧号 F, 页内偏移量 O) 物理地址 = F
+<span class=katex><span class=katex-mathml><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>×</mo></mrow><annotation encoding="application/x-tex">\times</annotation></semantics></math></span><span class=katex-html aria-hidden=true><span class=base><span class=strut style=height:.6667em;vertical-align:-.0833em></span><span class=mord>×</span></span></span></span> Page_Size + O</p><h4 class=heading-element id=页表-page-table><span>页表 (Page Table):</span>
+<a href=#%e9%a1%b5%e8%a1%a8-page-table class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>每个进程都有一个页表，它存储了进程的虚拟页到物理页帧的映射关系。页表本身存储在物理内存中。
+一个页表条目 (PTE) 通常包含以下信息：</p><ul><li><p>**物理页帧号 (Physical Page Frame Number):**
+指向该虚拟页所在的物理内存位置。</p></li><li><p>**有效位 (Valid Bit):** 通常是一位。如果为
+1，表示该页当前在物理内存中且映射有效；如果为
+0，表示该页不在物理内存中（可能在磁盘上或从未被分配），访问会导致缺页中断
+(Page Fault)。</p></li><li><p>**保护位 (Protection Bits):**
+控制对该页的访问权限，如只读、读写、可执行等。</p></li><li><p>**修改位 / 脏位 (Dirty Bit):**
+如果该页被写入过（修改过），此位为 1。在进行页面置换时，如果脏位为
+1，需要将页的内容写回磁盘交换区；如果为 0，则无需写回。</p></li><li><p>**访问位 (Accessed Bit):**
+如果该页在上次页表被检查后被访问过（读或写），此位为
+1。用于某些页面置换算法（如近似 LRU）。</p></li></ul><h4 class=heading-element id=页表的存储和开销><span>页表的存储和开销:</span>
+<a href=#%e9%a1%b5%e8%a1%a8%e7%9a%84%e5%ad%98%e5%82%a8%e5%92%8c%e5%bc%80%e9%94%80 class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>页表通常很大，因为它需要为进程虚拟地址空间中的每一个页提供一个条目。将整个页表保存在物理内存中会占用大量空间。
+例如，一个 32 位地址空间（4GB）如果页大小是 4KB (2^12 bytes)，则有
+2^20 = 1M 个页。如果每个 PTE 占 4 字节，页表大小就是
+4MB。对于大量进程，总页表大小可能非常大。</p><h4 class=heading-element id=多级页表-multilevel-page-tables><span>多级页表 (Multilevel Page Tables):</span>
+<a href=#%e5%a4%9a%e7%ba%a7%e9%a1%b5%e8%a1%a8-multilevel-page-tables class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>为了减少页表所需的物理内存空间，可以采用多级页表结构。将页表本身也进行分页。只有当前需要访问的页表页才需要驻留在物理内存中。这以增加地址翻译时的内存访问次数为代价（例如二级页表需要两次内存访问来查找
+PTE）。</p><h4 class=heading-element id=快表-translation-lookaside-buffer-tlb><span>快表 (Translation Lookaside Buffer, TLB):</span>
+<a href=#%e5%bf%ab%e8%a1%a8-translation-lookaside-buffer-tlb class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>为了加速页式存储系统中的地址翻译过程，MMU 中包含一个 TLB。TLB
+是一个高速缓存，用于存储最近使用的页表条目 (PTEs)。</p><ul><li><p>**TLB 命中 (TLB Hit):** 如果在 TLB 中找到了虚拟地址对应的
+PTE，则可以直接获取物理页帧号，地址翻译非常快（硬件完成）。</p></li><li><p>**TLB 未命中 (TLB Miss):** 如果 TLB 中没有对应的 PTE，MMU
+需要访问主内存中的页表来获取 PTE，然后将 PTE 存入 TLB
+(可能需要替换一个旧条目)，最后完成地址翻译。TLB
+未命中会显著增加地址翻译的时间。</p></li></ul><p>TLB 通常很小但速度极快。</p><h2 class=heading-element id=虚拟内存与按需分页-virtual-memory-and-demand-paging><span>虚拟内存与按需分页 (Virtual Memory and Demand Paging)</span>
+<a href=#%e8%99%9a%e6%8b%9f%e5%86%85%e5%ad%98%e4%b8%8e%e6%8c%89%e9%9c%80%e5%88%86%e9%a1%b5-virtual-memory-and-demand-paging class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h2><p>虚拟内存允许程序使用的虚拟地址空间大小超过物理内存的容量。这是通过将不常用的虚拟页存储在磁盘上的交换区
+(Swap Space / Paging File) 实现的。 按需分页 (Demand Paging)
+是虚拟内存的一种实现策略：只有当进程实际访问到某个虚拟页时，才将其从磁盘加载到物理内存。</p><h4 class=heading-element id=缺页中断-page-fault><span>缺页中断 (Page Fault):</span>
+<a href=#%e7%bc%ba%e9%a1%b5%e4%b8%ad%e6%96%ad-page-fault class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>当 CPU 访问一个虚拟地址，MMU 查找页表发现对应的 PTE 的有效位为
+0（表示页不在内存中）时，会触发一个陷阱 (Trap) 或异常，称为缺页中断。
+操作系统内核的缺页中断处理程序会执行以下步骤：</p><ol><li><p>捕获缺页中断。</p></li><li><p>确定是哪个虚拟地址导致了中断，计算出页号。</p></li><li><p>检查该页的合法性（是否在进程的虚拟地址空间范围内）。</p></li><li><p>如果合法，找到该页在磁盘交换区中的位置。</p></li><li><p>查找一个空闲的物理页帧。</p></li><li><p>**页面置换 (Page Replacement):**
+如果没有空闲页帧，根据页面置换算法选择一个物理页帧，将其内容换出到磁盘（如果该页是脏页），并释放该页帧。</p></li><li><p>将缺页从磁盘加载到选定的物理页帧中。</p></li><li><p>更新进程的页表，将新加载页的 PTE 的有效位设为 1，并填入物理页帧号。</p></li><li><p>重新执行导致缺页中断的指令。</p></li></ol><h4 class=heading-element id=页面置换算法-page-replacement-algorithms><span>页面置换算法 (Page Replacement Algorithms):</span>
+<a href=#%e9%a1%b5%e9%9d%a2%e7%bd%ae%e6%8d%a2%e7%ae%97%e6%b3%95-page-replacement-algorithms class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h4><p>在物理内存满时，决定替换哪个页以腾出空间。目标是尽量减少缺页率。</p><ul><li><p>**最优算法 (OPT - Optimal):**
+替换将来最长时间内不会被访问的页。理论上最优，但无法实现（需要预知未来访问序列）。</p></li><li><p>**先进先出 (FIFO - First-In, First-Out):**
+替换在内存中驻留时间最长的页。实现简单，但可能淘汰常用页（Belady&rsquo;s
+anomaly）。</p></li><li><p>**最近最少使用 (LRU - Least Recently Used):**
+替换最近最长时间未被使用的页。基于时间局部性原理，是实际系统中常用的算法或其近似。实现开销较大（需要记录访问时间或顺序）。</p></li><li><p>**时钟算法 (Clock):** LRU 的一种近似实现，使用访问位 (Accessed
+Bit) 构建一个循环列表。开销较低。</p></li></ul><h2 class=heading-element id=交换-swapping><span>交换 (Swapping)</span>
+<a href=#%e4%ba%a4%e6%8d%a2-swapping class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h2><p>比分页更粗粒度的内存管理方式。可以将整个进程的地址空间（所有页或段）作为一个整体从内存换出到磁盘，或从磁盘换入内存。在内存资源极度紧张时使用。</p><h2 class=heading-element id=分段-segmentation><span>分段 (Segmentation)</span>
+<a href=#%e5%88%86%e6%ae%b5-segmentation class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h2><p>另一种非连续内存分配方式，将程序的地址空间划分为多个逻辑上独立的段
+(Segment)，如代码段、数据段、栈段、堆段等。每个段有独立的起始地址和长度。</p><ul><li><p>**地址表示:** 虚拟地址由 (段号 S, 段内偏移量 O) 组成。</p></li><li><p>**地址翻译:** MMU 使用段表 (Segment Table) 将段号 S
+映射到该段在物理内存中的起始物理地址（基地址 Base）。物理地址 =
+Base + O。需要检查 O 是否小于段的长度 Limit。</p></li><li><p>**优点:**
+更符合程序逻辑结构，易于实现内存保护和共享（不同进程的段表可以指向同一个物理内存区域）。</p></li><li><p>**缺点:**
+容易产生外部碎片。段的长度可变，内存回收和分配时可能出现大小不一的空闲块。</p></li></ul><p>现代操作系统通常结合使用分页和分段，例如 x86
+架构的硬件支持分段，但操作系统软件层面通常主要依赖于分页和虚拟内存。</p><h1 class=heading-element id=总结><span>总结</span>
+<a href=#%e6%80%bb%e7%bb%93 class=heading-mark><svg class="octicon octicon-link" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5.0 114.95 4.95l-2.5 2.5a3.5 3.5.0 01-4.95.0.751.751.0 01.018-1.042.751.751.0 011.042-.018 1.998 1.998.0 002.83.0l2.5-2.5a2.002 2.002.0 00-2.83-2.83l-1.25 1.25a.751.751.0 01-1.042-.018.751.751.0 01-.018-1.042zm-4.69 9.64a1.998 1.998.0 002.83.0l1.25-1.25a.751.751.0 011.042.018.751.751.0 01.018 1.042l-1.25 1.25a3.5 3.5.0 11-4.95-4.95l2.5-2.5a3.5 3.5.0 014.95.0.751.751.0 01-.018 1.042.751.751.0 01-1.042.018 1.998 1.998.0 00-2.83.0l-2.5 2.5a1.998 1.998.0 000 2.83z"/></svg></a></h1><p>第13讲重点讲解了多任务环境下的同步挑战，从基本的竞争条件引出锁、信号量、管程等同步原语，并讨论了经典同步问题及其解决方案。理解这些机制对于编写正确的并发程序至关重要。</p><p>第14讲详细介绍了操作系统的内存管理，从内存层次结构到地址空间的概念，再到分页机制的原理和实现细节，包括页表、TLB、虚拟内存和页面置换。高效的内存管理是实现多任务和提高系统性能的基础。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span><span class=lnt>156
+</span><span class=lnt>157
+</span><span class=lnt>158
+</span><span class=lnt>159
+</span><span class=lnt>160
+</span><span class=lnt>161
+</span><span class=lnt>162
+</span><span class=lnt>163
+</span><span class=lnt>164
+</span><span class=lnt>165
+</span><span class=lnt>166
+</span><span class=lnt>167
+</span><span class=lnt>168
+</span><span class=lnt>169
+</span><span class=lnt>170
+</span><span class=lnt>171
+</span><span class=lnt>172
+</span><span class=lnt>173
+</span><span class=lnt>174
+</span><span class=lnt>175
+</span><span class=lnt>176
+</span><span class=lnt>177
+</span><span class=lnt>178
+</span><span class=lnt>179
+</span><span class=lnt>180
+</span><span class=lnt>181
+</span><span class=lnt>182
+</span><span class=lnt>183
+</span><span class=lnt>184
+</span><span class=lnt>185
+</span><span class=lnt>186
+</span><span class=lnt>187
+</span><span class=lnt>188
+</span><span class=lnt>189
+</span><span class=lnt>190
+</span><span class=lnt>191
+</span><span class=lnt>192
+</span><span class=lnt>193
+</span><span class=lnt>194
+</span><span class=lnt>195
+</span><span class=lnt>196
+</span><span class=lnt>197
+</span><span class=lnt>198
+</span><span class=lnt>199
+</span><span class=lnt>200
+</span><span class=lnt>201
+</span><span class=lnt>202
+</span><span class=lnt>203
+</span><span class=lnt>204
+</span><span class=lnt>205
+</span><span class=lnt>206
+</span><span class=lnt>207
+</span><span class=lnt>208
+</span><span class=lnt>209
+</span><span class=lnt>210
+</span><span class=lnt>211
+</span><span class=lnt>212
+</span><span class=lnt>213
+</span><span class=lnt>214
+</span><span class=lnt>215
+</span><span class=lnt>216
+</span><span class=lnt>217
+</span><span class=lnt>218
+</span><span class=lnt>219
+</span><span class=lnt>220
+</span><span class=lnt>221
+</span><span class=lnt>222
+</span><span class=lnt>223
+</span><span class=lnt>224
+</span><span class=lnt>225
+</span><span class=lnt>226
+</span><span class=lnt>227
+</span><span class=lnt>228
+</span><span class=lnt>229
+</span><span class=lnt>230
+</span><span class=lnt>231
+</span><span class=lnt>232
+</span><span class=lnt>233
+</span><span class=lnt>234
+</span><span class=lnt>235
+</span><span class=lnt>236
+</span><span class=lnt>237
+</span><span class=lnt>238
+</span><span class=lnt>239
+</span><span class=lnt>240
+</span><span class=lnt>241
+</span><span class=lnt>242
+</span><span class=lnt>243
+</span><span class=lnt>244
+</span><span class=lnt>245
+</span><span class=lnt>246
+</span><span class=lnt>247
+</span><span class=lnt>248
+</span><span class=lnt>249
+</span><span class=lnt>250
+</span><span class=lnt>251
+</span><span class=lnt>252
+</span><span class=lnt>253
+</span><span class=lnt>254
+</span><span class=lnt>255
+</span><span class=lnt>256
+</span><span class=lnt>257
+</span><span class=lnt>258
+</span><span class=lnt>259
+</span><span class=lnt>260
+</span><span class=lnt>261
+</span><span class=lnt>262
+</span><span class=lnt>263
+</span><span class=lnt>264
+</span><span class=lnt>265
+</span><span class=lnt>266
+</span><span class=lnt>267
+</span><span class=lnt>268
+</span><span class=lnt>269
+</span><span class=lnt>270
+</span><span class=lnt>271
+</span><span class=lnt>272
+</span><span class=lnt>273
+</span><span class=lnt>274
+</span><span class=lnt>275
+</span><span class=lnt>276
+</span><span class=lnt>277
+</span><span class=lnt>278
+</span><span class=lnt>279
+</span><span class=lnt>280
+</span><span class=lnt>281
+</span><span class=lnt>282
+</span><span class=lnt>283
+</span><span class=lnt>284
+</span><span class=lnt>285
+</span><span class=lnt>286
+</span><span class=lnt>287
+</span><span class=lnt>288
+</span><span class=lnt>289
+</span><span class=lnt>290
+</span><span class=lnt>291
+</span><span class=lnt>292
+</span><span class=lnt>293
+</span><span class=lnt>294
+</span><span class=lnt>295
+</span><span class=lnt>296
+</span><span class=lnt>297
+</span><span class=lnt>298
+</span><span class=lnt>299
+</span><span class=lnt>300
+</span><span class=lnt>301
+</span><span class=lnt>302
+</span><span class=lnt>303
+</span><span class=lnt>304
+</span><span class=lnt>305
+</span><span class=lnt>306
+</span><span class=lnt>307
+</span><span class=lnt>308
+</span><span class=lnt>309
+</span><span class=lnt>310
+</span><span class=lnt>311
+</span><span class=lnt>312
+</span><span class=lnt>313
+</span><span class=lnt>314
+</span><span class=lnt>315
+</span><span class=lnt>316
+</span><span class=lnt>317
+</span><span class=lnt>318
+</span><span class=lnt>319
+</span><span class=lnt>320
+</span><span class=lnt>321
+</span><span class=lnt>322
+</span><span class=lnt>323
+</span><span class=lnt>324
+</span><span class=lnt>325
+</span><span class=lnt>326
+</span><span class=lnt>327
+</span><span class=lnt>328
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-tex data-lang=tex><span class=line><span class=cl><span class=k>\documentclass</span><span class=nb>{</span>article<span class=nb>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>% 中文支持
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=k>\usepackage</span><span class=nb>{</span>ctex<span class=nb>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>% 数学公式支持
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=k>\usepackage</span><span class=nb>{</span>amsmath<span class=nb>}</span>
+</span></span><span class=line><span class=cl><span class=k>\usepackage</span><span class=nb>{</span>amssymb<span class=nb>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>% 代码块支持 (使用 verbatim 环境，简单直接，不提供语法高亮)
+</span></span></span><span class=line><span class=cl><span class=c>% 如果需要语法高亮，请使用 listings 包并配置
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=k>\usepackage</span><span class=nb>{</span>verbatim<span class=nb>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>% 调整页边距
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=k>\usepackage</span><span class=na>[margin=1in]</span><span class=nb>{</span>geometry<span class=nb>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c>% 标题信息
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=k>\title</span><span class=nb>{</span>操作系统课程笔记 (2025)<span class=nb>}</span>
+</span></span><span class=line><span class=cl><span class=k>\author</span><span class=nb>{</span>基于 jyywiki.cn/OS/2025/lect13 <span class=k>\&amp;</span> lect14 详尽整理<span class=nb>}</span>
+</span></span><span class=line><span class=cl><span class=k>\date</span><span class=nb>{</span><span class=k>\today</span><span class=nb>}</span> <span class=c>% 自动显示当前日期
+</span></span></span><span class=line><span class=cl><span class=c></span>
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>document<span class=nb>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\maketitle</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\hrule</span> <span class=c>% 分隔线
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=k>\vspace</span><span class=nb>{</span>1em<span class=nb>}</span> <span class=c>% 垂直间距
+</span></span></span><span class=line><span class=cl><span class=c></span>
+</span></span><span class=line><span class=cl><span class=c>% ==================================================
+</span></span></span><span class=line><span class=cl><span class=c>% 第13讲：同步 (Synchronization) - 详尽内容
+</span></span></span><span class=line><span class=cl><span class=c>% 来源: https://jyywiki.cn/OS/2025/lect13.md
+</span></span></span><span class=line><span class=cl><span class=c>% ==================================================
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=k>\section</span><span class=nb>{</span>第13讲：同步 (Synchronization)<span class=nb>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>本讲深入讨论多线程/多进程环境下共享资源的访问控制和协调问题，即同步。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\subsection</span><span class=nb>{</span>并发执行与竞争 (Concurrent Execution and Race)<span class=nb>}</span>
+</span></span><span class=line><span class=cl>并发是指多个任务（线程或进程）在宏观上同时执行。在多处理器或支持时间片轮转的单处理器上都会发生并发。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>竞争条件 (Race Condition):<span class=nb>}</span>
+</span></span><span class=line><span class=cl>当多个控制流（线程或进程）访问和修改同一个共享状态时，如果最终结果取决于这些控制流执行的精确交错顺序，那么就存在竞争条件。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>示例：计数器增加<span class=nb>}</span>
+</span></span><span class=line><span class=cl>考虑一个全局变量 `count`，初始为 0。两个线程都执行 `count++` 1000次。期望最终结果是 2000。
+</span></span><span class=line><span class=cl>`count++` 在硬件层面通常不是原子操作，例如可能被翻译成以下指令序列：
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>verbatim<span class=nb>}</span>
+</span></span><span class=line><span class=cl>Load R, count   ; 从内存加载 count 的值到寄存器 R
+</span></span><span class=line><span class=cl>Add R, 1        ; 寄存器 R 中的值加一
+</span></span><span class=line><span class=cl>Store R, count  ; 将寄存器 R 中的值存回内存 count
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>verbatim<span class=nb>}</span>
+</span></span><span class=line><span class=cl>如果在两个线程并发执行时发生如下交错：
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> 线程 A: `Load R1, count` (R1 = 0)
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> 线程 B: `Load R2, count` (R2 = 0)
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> 线程 A: `Add R1, 1` (R1 = 1)
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> 线程 B: `Add R2, 1` (R2 = 1)
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> 线程 A: `Store R1, count` (count = 1)
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> 线程 B: `Store R2, count` (count = 1)
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>尽管执行了两次 `count++`，最终 `count` 的值却是 1，而不是期望的 2。这就是更新丢失，由竞争导致。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>临界区 (Critical Section):<span class=nb>}</span>
+</span></span><span class=line><span class=cl>访问共享资源的代码段称为临界区。同步问题本质上是保证对临界区的互斥访问。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\subsection</span><span class=nb>{</span>互斥 (Mutual Exclusion)<span class=nb>}</span>
+</span></span><span class=line><span class=cl>目标是保证在任何时刻，最多只有一个线程在执行临界区中的代码。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\subsubsection</span><span class=nb>{</span>锁 (Lock / Mutex)<span class=nb>}</span>
+</span></span><span class=line><span class=cl>锁是实现互斥的最常用工具。它是一个对象，可以在进入临界区前获取，在离开临界区后释放。
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>verbatim<span class=nb>}</span>
+</span></span><span class=line><span class=cl>acquire(lock);
+</span></span><span class=line><span class=cl>// 临界区 (Critical Section)
+</span></span><span class=line><span class=cl>// 访问或修改共享资源
+</span></span><span class=line><span class=cl>release(lock);
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>verbatim<span class=nb>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>锁的性质:<span class=nb>}</span> 一个好的锁实现应该满足以下性质：
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **互斥 (Mutual Exclusion):** 任何时刻只有一个线程持有锁。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **进步 (Progress):** 如果没有线程在临界区内，并且有线程想进入临界区，那么在有限时间内，某个想进入临界区的线程必须能够成功获取锁并进入临界区。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **有限等待 (Bounded Waiting):** 如果一个线程请求进入临界区，那么在它被允许进入之前，其他线程进入临界区的次数是有限制的。这避免了饥饿 (Starvation)。
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>锁的实现方式:<span class=nb>}</span>
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **禁用中断 (Disabling Interrupts):** 在单处理器上，进入临界区前禁用中断，离开后恢复。简单但粗暴，可能导致丢失重要中断，且在多处理器上无效。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **自旋锁 (Spin Lock):** 线程在 `acquire()` 时，如果锁被持有，就在一个循环中不断“自旋”检查锁状态，直到锁可用。
+</span></span><span class=line><span class=cl>    <span class=k>\begin</span><span class=nb>{</span>verbatim<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    acquire(lock):
+</span></span><span class=line><span class=cl>        while (test<span class=nb>_</span>and<span class=nb>_</span>set(<span class=nb>&amp;</span>lock-&gt;flag)); // 原子操作，设置标志并返回原值
+</span></span><span class=line><span class=cl>    release(lock):
+</span></span><span class=line><span class=cl>        lock-&gt;flag = 0;
+</span></span><span class=line><span class=cl>    <span class=k>\end</span><span class=nb>{</span>verbatim<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    `test<span class=nb>_</span>and<span class=nb>_</span>set` 是一个原子硬件指令。自旋锁在多处理器且临界区非常短时有效（避免上下文切换开销），但如果临界区长，会导致大量 CPU 浪费在忙等上。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **阻塞锁 (Blocking Lock):** 线程在 `acquire()` 时，如果锁被持有，则将自己放入一个等待队列并进入睡眠状态（阻塞）。当锁被 `release()` 时，唤醒等待队列中的一个或所有线程。
+</span></span><span class=line><span class=cl>    <span class=k>\begin</span><span class=nb>{</span>verbatim<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    acquire(lock):
+</span></span><span class=line><span class=cl>        while (lock<span class=nb>_</span>is<span class=nb>_</span>held) <span class=nb>{</span>
+</span></span><span class=line><span class=cl>            add<span class=nb>_</span>to<span class=nb>_</span>wait<span class=nb>_</span>queue(current<span class=nb>_</span>thread);
+</span></span><span class=line><span class=cl>            sleep(); // 线程阻塞，让出 CPU
+</span></span><span class=line><span class=cl>        <span class=nb>}</span>
+</span></span><span class=line><span class=cl>        lock<span class=nb>_</span>is<span class=nb>_</span>held = true;
+</span></span><span class=line><span class=cl>    release(lock):
+</span></span><span class=line><span class=cl>        lock<span class=nb>_</span>is<span class=nb>_</span>held = false;
+</span></span><span class=line><span class=cl>        if (wait<span class=nb>_</span>queue<span class=nb>_</span>not<span class=nb>_</span>empty) <span class=nb>{</span>
+</span></span><span class=line><span class=cl>            wakeup(a<span class=nb>_</span>waiting<span class=nb>_</span>thread);
+</span></span><span class=line><span class=cl>        <span class=nb>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>\end</span><span class=nb>{</span>verbatim<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    阻塞锁适用于临界区较长的情况，避免 CPU 浪费，但上下文切换有开销。
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\subsection</span><span class=nb>{</span>信号量 (Semaphore)<span class=nb>}</span>
+</span></span><span class=line><span class=cl>信号量是一个整数变量 <span class=s>$</span><span class=nb>S</span><span class=s>$</span>，只能通过两个原子操作 `P` (或 `wait`, `acquire`) 和 `V` (或 `signal`, `release`) 来访问。
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> `P(S)`: <span class=s>$</span><span class=nb>S </span><span class=o>=</span><span class=nb> S </span><span class=o>-</span><span class=nb> </span><span class=m>1</span><span class=s>$</span>。如果 <span class=s>$</span><span class=nb>S</span><span class=s>$</span> 变为负值，则执行 `P` 的线程阻塞，放入信号量的等待队列。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> `V(S)`: <span class=s>$</span><span class=nb>S </span><span class=o>=</span><span class=nb> S </span><span class=o>+</span><span class=nb> </span><span class=m>1</span><span class=s>$</span>。如果 <span class=s>$</span><span class=nb>S</span><span class=s>$</span> 原本是负值（意味着有线程在等待），则唤醒等待队列中的一个线程。
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>信号量可以用来实现互斥和更复杂的同步。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>二元信号量 (Binary Semaphore):<span class=nb>}</span>
+</span></span><span class=line><span class=cl>初始值为 1 的信号量，功能与互斥锁类似。
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>verbatim<span class=nb>}</span>
+</span></span><span class=line><span class=cl>semaphore mutex = 1;
+</span></span><span class=line><span class=cl>P(mutex);
+</span></span><span class=line><span class=cl>// 临界区
+</span></span><span class=line><span class=cl>V(mutex);
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>verbatim<span class=nb>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>计数信号量 (Counting Semaphore):<span class=nb>}</span>
+</span></span><span class=line><span class=cl>初始值大于 1 的信号量，用于控制对具有多个相同资源的访问。初始值表示可用资源的数量。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>生产者-消费者问题 (Producer-Consumer Problem):<span class=nb>}</span>
+</span></span><span class=line><span class=cl>使用有限大小的缓冲区同步生产者和消费者。
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> `mutex = 1`: 保护缓冲区本身的数据访问。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> `empty = N`: 表示缓冲区中空槽的数量 (初始为缓冲区大小 N)。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> `full = 0`: 表示缓冲区中已填充槽的数量 (初始为 0)。
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl><span class=k>\textbf</span><span class=nb>{</span>生产者代码:<span class=nb>}</span>
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>verbatim<span class=nb>}</span>
+</span></span><span class=line><span class=cl>while (true) <span class=nb>{</span>
+</span></span><span class=line><span class=cl>    item = produce<span class=nb>_</span>item(); // 生产物品
+</span></span><span class=line><span class=cl>    P(empty); // 等待空槽可用
+</span></span><span class=line><span class=cl>    P(mutex); // 锁定缓冲区
+</span></span><span class=line><span class=cl>    add<span class=nb>_</span>item<span class=nb>_</span>to<span class=nb>_</span>buffer(item); // 将物品放入缓冲区
+</span></span><span class=line><span class=cl>    V(mutex); // 解锁缓冲区
+</span></span><span class=line><span class=cl>    V(full);  // 通知消费者，有新物品可用
+</span></span><span class=line><span class=cl><span class=nb>}</span>
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>verbatim<span class=nb>}</span>
+</span></span><span class=line><span class=cl><span class=k>\textbf</span><span class=nb>{</span>消费者代码:<span class=nb>}</span>
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>verbatim<span class=nb>}</span>
+</span></span><span class=line><span class=cl>while (true) <span class=nb>{</span>
+</span></span><span class=line><span class=cl>    P(full);  // 等待物品可用
+</span></span><span class=line><span class=cl>    P(mutex); // 锁定缓冲区
+</span></span><span class=line><span class=cl>    item = remove<span class=nb>_</span>item<span class=nb>_</span>from<span class=nb>_</span>buffer(); // 从缓冲区取出物品
+</span></span><span class=line><span class=cl>    V(mutex); // 解锁缓冲区
+</span></span><span class=line><span class=cl>    V(empty); // 通知生产者，有空槽可用
+</span></span><span class=line><span class=cl>    consume<span class=nb>_</span>item(item); // 消费物品
+</span></span><span class=line><span class=cl><span class=nb>}</span>
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>verbatim<span class=nb>}</span>
+</span></span><span class=line><span class=cl>注意 `P(empty)` 和 `P(full)` 在 `P(mutex)` 之前，这是为了避免可能的死锁（例如，如果先获取 mutex，但发现条件不满足需要等待 full/empty，而释放 mutex 才能让对方生产/消费，就可能死锁）。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\subsection</span><span class=nb>{</span>管程 (Monitor)<span class=nb>}</span>
+</span></span><span class=line><span class=cl>管程是一种更高级的同步抽象，它将共享数据和访问这些数据的过程（函数）封装在一个模块中。管程保证在任何时刻，只有一个线程可以在管程内的某个过程中执行。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>管程通常包含：
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> 共享数据 (Shared data)
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> 访问共享数据的过程 (Procedures/Functions)
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> 管程锁 (Monitor Lock): 隐式地由管程机制管理，确保互斥。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> 条件变量 (Condition Variables): 用于线程在管程内部等待某个条件成立。
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>条件变量 (Condition Variable):<span class=nb>}</span>
+</span></span><span class=line><span class=cl>用于线程在持有管程锁的情况下，等待某个条件（基于共享数据）成立。有两个基本操作：
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> `wait(condition<span class=nb>_</span>variable)`: 调用线程原子地释放管程锁并进入该条件变量对应的等待队列中睡眠。当被唤醒时，线程会重新尝试获取管程锁，成功后从 `wait` 调用点返回。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> `signal(condition<span class=nb>_</span>variable)`: 如果有线程在 `condition<span class=nb>_</span>variable` 上等待，唤醒其中一个。如果没有线程等待，`signal` 操作无效果（与信号量的 `V` 不同）。唤醒的线程会排队等待获取管程锁。
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>`wait()` 和 `signal()` 都必须在持有管程锁的情况下调用。
+</span></span><span class=line><span class=cl>关于 `signal` 的语义有两种常见实现：Hoare 语义（发出 signal 的线程立即将管程交给被唤醒的线程）和 Mesa 语义（发出 signal 的线程继续执行直到退出管程或再次等待，被唤醒的线程需要重新竞争管程锁）。Java 使用的是 Mesa 语义。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\subsection</span><span class=nb>{</span>经典同步问题<span class=nb>}</span>
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **读者-写者问题 (Readers-Writers Problem):** 允许多个读者同时访问共享数据，但写者必须独占访问。有偏向读者和偏向写者的不同策略。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **哲学家进餐问题 (Dining Philosophers Problem):** 五个哲学家围坐，每人左右一把筷子，思考或吃饭。吃饭需要两把筷子。这是一个经典的死锁和饥饿问题示例。解决方法包括：最多允许四个哲学家同时拿左手筷子、奇数号哲学家先拿左筷子偶数号先拿右筷子、使用管程等。
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\vspace</span><span class=nb>{</span>2em<span class=nb>}</span> <span class=c>% 垂直间距
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=k>\hrule</span> <span class=c>% 分隔线
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=k>\vspace</span><span class=nb>{</span>1em<span class=nb>}</span> <span class=c>% 垂直间距
+</span></span></span><span class=line><span class=cl><span class=c></span>
+</span></span><span class=line><span class=cl><span class=c>% ==================================================
+</span></span></span><span class=line><span class=cl><span class=c>% 第14讲：内存管理 (Memory Management) - 详尽内容
+</span></span></span><span class=line><span class=cl><span class=c>% 来源: https://jyywiki.cn/OS/2025/lect14.md
+</span></span></span><span class=line><span class=cl><span class=c>% ==================================================
+</span></span></span><span class=line><span class=cl><span class=c></span><span class=k>\section</span><span class=nb>{</span>第14讲：内存管理 (Memory Management)<span class=nb>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>本讲深入探讨操作系统如何管理计算机的内存资源，包括地址空间、地址翻译、以及虚拟内存等核心概念。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\subsection</span><span class=nb>{</span>内存层次 (Memory Hierarchy)<span class=nb>}</span>
+</span></span><span class=line><span class=cl>现代计算机系统采用分级存储结构，以平衡速度、容量和成本：
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>enumerate<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **寄存器 (Registers):** CPU 内部，速度最快，容量最小，成本极高。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **缓存 (Cache):** CPU 与主存之间，速度快，容量较小，成本高（L1, L2, L3 等）。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **主内存 (Main Memory / RAM):** CPU 可直接访问，速度较慢，容量较大，成本相对较低。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **磁盘存储 (Disk Storage / SSD):** 速度慢，容量巨大，成本最低（用于长期存储和虚拟内存交换）。
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>enumerate<span class=nb>}</span>
+</span></span><span class=line><span class=cl>内存管理的一个重要目标是利用数据的局部性原理（时间局部性：最近访问的数据很可能再次访问；空间局部性：访问一个数据后，其附近的数据也很可能被访问），通过缓存和虚拟内存等机制，使得程序能够以接近上一层存储介质的速度访问数据。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\subsection</span><span class=nb>{</span>地址空间 (Address Spaces)<span class=nb>}</span>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>物理地址空间 (Physical Address Space):<span class=nb>}</span>
+</span></span><span class=line><span class=cl>物理内存（RAM）上的地址范围。这是硬件实际的内存单元地址，由 CPU 的地址总线决定。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>逻辑地址空间 (Logical Address Space):<span class=nb>}</span>
+</span></span><span class=line><span class=cl>程序在编译或链接后看到的地址空间。每个进程都有自己的逻辑地址空间，通常从地址 0 开始编址。在没有内存保护和虚拟内存的简单系统中，逻辑地址可能直接对应物理地址（例如早期的 DOS）。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>虚拟地址空间 (Virtual Address Space):<span class=nb>}</span>
+</span></span><span class=line><span class=cl>在支持虚拟内存的操作系统中，进程看到的地址空间。它是一个抽象的概念，通常比物理内存大得多。虚拟地址需要通过地址翻译转换为物理地址才能访问实际内存。虚拟地址空间为每个进程提供了一个独立、连续的地址视图，简化了编程。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\subsection</span><span class=nb>{</span>内存管理单元 (Memory Management Unit, MMU)<span class=nb>}</span>
+</span></span><span class=line><span class=cl>MMU 是 CPU 中的一个硬件组件，负责在程序运行时将虚拟地址（或逻辑地址）实时翻译成物理地址。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>地址翻译 (Address Translation):<span class=nb>}</span>
+</span></span><span class=line><span class=cl>MMU 根据页表（或段表）进行地址转换。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\subsection</span><span class=nb>{</span>连续内存分配 (Contiguous Allocation)<span class=nb>}</span>
+</span></span><span class=line><span class=cl>早期的内存管理方法，要求进程的整个地址空间在物理内存中占据一个连续的块。
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **固定分区 (Fixed Partitioning):** 物理内存被预先划分为固定大小的分区。会导致内部碎片（分区大于进程需求）和可用分区数量限制进程数量。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **动态分区 (Dynamic Partitioning):** 物理内存根据进程需求动态划分，分区大小可变。
+</span></span><span class=line><span class=cl>    <span class=k>\begin</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>        <span class=k>\item</span> 首次适应 (First Fit): 查找第一个足够大的空闲块。
+</span></span><span class=line><span class=cl>        <span class=k>\item</span> 最佳适应 (Best Fit): 查找最小的足够大的空闲块。
+</span></span><span class=line><span class=cl>        <span class=k>\item</span> 最差适应 (Worst Fit): 查找最大的空闲块。
+</span></span><span class=line><span class=cl>    <span class=k>\end</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    动态分区的主要问题是外部碎片 (External Fragmentation): 总空闲空间足够，但分散成许多小块，无法满足新进程对连续大块内存的需求。可以通过紧缩 (Compaction) 来解决，但开销很大。
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>连续分配需要基址寄存器 (Base Register) 和界限寄存器 (Limit Register) 来实现简单的地址翻译和内存保护：物理地址 = 基址寄存器 + 逻辑地址，且逻辑地址必须小于界限寄存器。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\subsection</span><span class=nb>{</span>分页 (Paging)<span class=nb>}</span>
+</span></span><span class=line><span class=cl>一种非连续内存分配方式，是实现虚拟内存的基础。它解决了连续内存分配的外部碎片问题。
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **物理内存 (Physical Memory):** 被划分为固定大小的块，称为**页帧 (Page Frames)**。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **虚拟地址空间 (Virtual Address Space):** 被划分为同样大小的块，称为**页 (Pages)**。页的大小通常是 2 的幂次方，例如 4KB。
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>地址翻译过程 (Paging):<span class=nb>}</span>
+</span></span><span class=line><span class=cl>虚拟地址被分成两部分：页号 (Page Number, P) 和页内偏移量 (Offset, O)。
+</span></span><span class=line><span class=cl>虚拟地址 = (页号 P, 页内偏移量 O)
+</span></span><span class=line><span class=cl>MMU 使用进程的页表 (Page Table) 进行翻译：
+</span></span><span class=line><span class=cl>页表以页号 P 作为索引，查找对应的页表条目 (Page Table Entry, PTE)。PTE 包含该虚拟页在物理内存中的起始地址，即对应的物理页帧号 (Frame Number, F)。
+</span></span><span class=line><span class=cl>物理地址 = (物理页帧号 F, 页内偏移量 O)
+</span></span><span class=line><span class=cl>物理地址 = F <span class=s>$</span><span class=nv>\times</span><span class=s>$</span> Page<span class=k>\_</span>Size + O
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>页表 (Page Table):<span class=nb>}</span>
+</span></span><span class=line><span class=cl>每个进程都有一个页表，它存储了进程的虚拟页到物理页帧的映射关系。页表本身存储在物理内存中。
+</span></span><span class=line><span class=cl>一个页表条目 (PTE) 通常包含以下信息：
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **物理页帧号 (Physical Page Frame Number):** 指向该虚拟页所在的物理内存位置。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **有效位 (Valid Bit):** 通常是一位。如果为 1，表示该页当前在物理内存中且映射有效；如果为 0，表示该页不在物理内存中（可能在磁盘上或从未被分配），访问会导致缺页中断 (Page Fault)。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **保护位 (Protection Bits):** 控制对该页的访问权限，如只读、读写、可执行等。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **修改位 / 脏位 (Dirty Bit):** 如果该页被写入过（修改过），此位为 1。在进行页面置换时，如果脏位为 1，需要将页的内容写回磁盘交换区；如果为 0，则无需写回。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **访问位 (Accessed Bit):** 如果该页在上次页表被检查后被访问过（读或写），此位为 1。用于某些页面置换算法（如近似 LRU）。
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>页表的存储和开销:<span class=nb>}</span>
+</span></span><span class=line><span class=cl>页表通常很大，因为它需要为进程虚拟地址空间中的每一个页提供一个条目。将整个页表保存在物理内存中会占用大量空间。
+</span></span><span class=line><span class=cl>例如，一个 32 位地址空间（4GB）如果页大小是 4KB (2<span class=nb>^</span>12 bytes)，则有 2<span class=nb>^</span>20 = 1M 个页。如果每个 PTE 占 4 字节，页表大小就是 4MB。对于大量进程，总页表大小可能非常大。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>多级页表 (Multilevel Page Tables):<span class=nb>}</span>
+</span></span><span class=line><span class=cl>为了减少页表所需的物理内存空间，可以采用多级页表结构。将页表本身也进行分页。只有当前需要访问的页表页才需要驻留在物理内存中。这以增加地址翻译时的内存访问次数为代价（例如二级页表需要两次内存访问来查找 PTE）。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>快表 (Translation Lookaside Buffer, TLB):<span class=nb>}</span>
+</span></span><span class=line><span class=cl>为了加速页式存储系统中的地址翻译过程，MMU 中包含一个 TLB。TLB 是一个高速缓存，用于存储最近使用的页表条目 (PTEs)。
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **TLB 命中 (TLB Hit):** 如果在 TLB 中找到了虚拟地址对应的 PTE，则可以直接获取物理页帧号，地址翻译非常快（硬件完成）。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **TLB 未命中 (TLB Miss):** 如果 TLB 中没有对应的 PTE，MMU 需要访问主内存中的页表来获取 PTE，然后将 PTE 存入 TLB (可能需要替换一个旧条目)，最后完成地址翻译。TLB 未命中会显著增加地址翻译的时间。
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>TLB 通常很小但速度极快。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\subsection</span><span class=nb>{</span>虚拟内存与按需分页 (Virtual Memory and Demand Paging)<span class=nb>}</span>
+</span></span><span class=line><span class=cl>虚拟内存允许程序使用的虚拟地址空间大小超过物理内存的容量。这是通过将不常用的虚拟页存储在磁盘上的交换区 (Swap Space / Paging File) 实现的。
+</span></span><span class=line><span class=cl>按需分页 (Demand Paging) 是虚拟内存的一种实现策略：只有当进程实际访问到某个虚拟页时，才将其从磁盘加载到物理内存。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>缺页中断 (Page Fault):<span class=nb>}</span>
+</span></span><span class=line><span class=cl>当 CPU 访问一个虚拟地址，MMU 查找页表发现对应的 PTE 的有效位为 0（表示页不在内存中）时，会触发一个陷阱 (Trap) 或异常，称为缺页中断。
+</span></span><span class=line><span class=cl>操作系统内核的缺页中断处理程序会执行以下步骤：
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>enumerate<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> 捕获缺页中断。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> 确定是哪个虚拟地址导致了中断，计算出页号。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> 检查该页的合法性（是否在进程的虚拟地址空间范围内）。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> 如果合法，找到该页在磁盘交换区中的位置。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> 查找一个空闲的物理页帧。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **页面置换 (Page Replacement):** 如果没有空闲页帧，根据页面置换算法选择一个物理页帧，将其内容换出到磁盘（如果该页是脏页），并释放该页帧。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> 将缺页从磁盘加载到选定的物理页帧中。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> 更新进程的页表，将新加载页的 PTE 的有效位设为 1，并填入物理页帧号。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> 重新执行导致缺页中断的指令。
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>enumerate<span class=nb>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\paragraph</span><span class=nb>{</span>页面置换算法 (Page Replacement Algorithms):<span class=nb>}</span>
+</span></span><span class=line><span class=cl>在物理内存满时，决定替换哪个页以腾出空间。目标是尽量减少缺页率。
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **最优算法 (OPT - Optimal):** 替换将来最长时间内不会被访问的页。理论上最优，但无法实现（需要预知未来访问序列）。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **先进先出 (FIFO - First-In, First-Out):** 替换在内存中驻留时间最长的页。实现简单，但可能淘汰常用页（Belady&#39;s anomaly）。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **最近最少使用 (LRU - Least Recently Used):** 替换最近最长时间未被使用的页。基于时间局部性原理，是实际系统中常用的算法或其近似。实现开销较大（需要记录访问时间或顺序）。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **时钟算法 (Clock):** LRU 的一种近似实现，使用访问位 (Accessed Bit) 构建一个循环列表。开销较低。
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\subsection</span><span class=nb>{</span>交换 (Swapping)<span class=nb>}</span>
+</span></span><span class=line><span class=cl>比分页更粗粒度的内存管理方式。可以将整个进程的地址空间（所有页或段）作为一个整体从内存换出到磁盘，或从磁盘换入内存。在内存资源极度紧张时使用。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\subsection</span><span class=nb>{</span>分段 (Segmentation)<span class=nb>}</span>
+</span></span><span class=line><span class=cl>另一种非连续内存分配方式，将程序的地址空间划分为多个逻辑上独立的段 (Segment)，如代码段、数据段、栈段、堆段等。每个段有独立的起始地址和长度。
+</span></span><span class=line><span class=cl><span class=k>\begin</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **地址表示:** 虚拟地址由 (段号 S, 段内偏移量 O) 组成。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **地址翻译:** MMU 使用段表 (Segment Table) 将段号 S 映射到该段在物理内存中的起始物理地址（基地址 Base）。物理地址 = Base + O。需要检查 O 是否小于段的长度 Limit。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **优点:** 更符合程序逻辑结构，易于实现内存保护和共享（不同进程的段表可以指向同一个物理内存区域）。
+</span></span><span class=line><span class=cl>    <span class=k>\item</span> **缺点:** 容易产生外部碎片。段的长度可变，内存回收和分配时可能出现大小不一的空闲块。
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>itemize<span class=nb>}</span>
+</span></span><span class=line><span class=cl>现代操作系统通常结合使用分页和分段，例如 x86 架构的硬件支持分段，但操作系统软件层面通常主要依赖于分页和虚拟内存。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\section</span><span class=nb>{</span>总结<span class=nb>}</span>
+</span></span><span class=line><span class=cl>第13讲重点讲解了多任务环境下的同步挑战，从基本的竞争条件引出锁、信号量、管程等同步原语，并讨论了经典同步问题及其解决方案。理解这些机制对于编写正确的并发程序至关重要。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>第14讲详细介绍了操作系统的内存管理，从内存层次结构到地址空间的概念，再到分页机制的原理和实现细节，包括页表、TLB、虚拟内存和页面置换。高效的内存管理是实现多任务和提高系统性能的基础。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>\end</span><span class=nb>{</span>document<span class=nb>}</span></span></span></code></pre></td></tr></table></div></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span title="更新于 2025-10-28 09:28:15">更新于 2025-10-28&nbsp;</span></div></div><div class=post-info-line><div class=post-info-md><span><a href=/posts/os/13-14/index.md title=阅读原始文档 class=link-to-markdown>阅读原始文档</a></span></div><div class=post-info-share><span><a href=javascript:void(0); title="分享到 X" data-sharer=twitter data-url=https://moonwonder.top/posts/os/13-14/ data-title="Chapter 13 14" data-hashtags=OS><i class="fa-brands fa-x-twitter fa-fw" aria-hidden=true></i></a>
+<a href=javascript:void(0); title="分享到 Facebook" data-sharer=facebook data-url=https://moonwonder.top/posts/os/13-14/ data-hashtag=OS><i class="fa-brands fa-facebook-square fa-fw" aria-hidden=true></i></a>
+<a href=javascript:void(0); title="分享到 Hacker News" data-sharer=hackernews data-url=https://moonwonder.top/posts/os/13-14/ data-title="Chapter 13 14"><i class="fa-brands fa-hacker-news fa-fw" aria-hidden=true></i></a>
+<a href=javascript:void(0); title="分享到 Line" data-sharer=line data-url=https://moonwonder.top/posts/os/13-14/ data-title="Chapter 13 14"><svg class="icon" role="img" viewBox="0 0 24 24"><title>LINE</title><path d="M19.365 9.863c.349.0.63.285.63.631.0.345-.281.63-.63.63H17.61v1.125h1.755c.349.0.63.283.63.63.0.344-.281.629-.63.629h-2.386c-.345.0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346.0.627.285.627.63.0.349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211.0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346.0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195.0.375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345.0.63.285.63.63v4.771zm-5.741.0c0 .344-.282.629-.631.629-.345.0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346.0.628.285.628.63v4.771zm-2.466.629H4.917c-.345.0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348.0.63.285.63.63v4.141h1.756c.348.0.629.283.629.63.0.344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943.0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314"/></svg></a>
+<a href=javascript:void(0); title="分享到 微博" data-sharer=weibo data-url=https://moonwonder.top/posts/os/13-14/ data-title="Chapter 13 14" data-ralateuid=7562571916><i class="fa-brands fa-weibo fa-fw" aria-hidden=true></i></a></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fa-solid fa-tags fa-fw me-1" aria-hidden=true></i><a href=/tags/os/ class=post-tag title="标签 - OS">OS</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>返回</a></span>&nbsp;|&nbsp;<span><a href=/>主页</a></span></section></div><div class=post-nav><a href=/posts/physics/ch36/ class=post-nav-item rel=prev title=Ch36><i class="fa-solid fa-angle-left fa-fw" aria-hidden=true></i>Ch36</a><a href=/posts/math/mathmatic-analysis/notes1/ class=post-nav-item rel=next title=数值分析笔记一>数值分析笔记一<i class="fa-solid fa-angle-right fa-fw" aria-hidden=true></i></a></div></div><div id=comments><div id=valine class=comment></div><noscript>Please enable JavaScript to view the comments powered by <a href=https://valine.js.org/ rel="external nofollow noopener noreferrer">Valine</a>.</noscript></div></article><aside class=toc id=toc-auto aria-label=目录><h2 class=toc-title>目录&nbsp;<i class="toc-icon fa-solid fa-angle-down fa-fw" aria-hidden=true></i></h2><div class=toc-content id=toc-content-auto></div></aside></main><footer class=footer><div class=footer-container><div class="footer-line powered">由 <a href=https://gohugo.io/ target=_blank rel="external nofollow noopener noreferrer" title="Hugo 0.147.9"><img class=hugo-icon src=/images/hugo.min.svg alt="Hugo logo"> Hugo</a> 强力驱动 | 主题 - <a href=https://github.com/hugo-fixit/FixIt target=_blank rel=external title="FixIt v0.4.0-alpha.2-20251023040336-063af2cd"><img class=fixit-icon src=/images/fixit.min.svg alt="FixIt logo"> FixIt</a></div><div class="footer-line copyright" itemscope itemtype=http://schema.org/CreativeWork><i class="fa-regular fa-copyright fa-fw" aria-hidden=true></i>
+<span itemprop=copyrightYear>2021 - 2025</span><span class=author itemprop=copyrightHolder>
+<a href=https://github.com/moonwonder target=_blank rel="external nofollow noopener noreferrer">MoonWonder</a></span><span class="license footer-divider"><a rel="license external nofollow noopener noreferrer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div class=widgets><div class="fixed-buttons animate__faster d-none"><div class="fixed-button back-to-top" role=button aria-label=回到顶部><i class="fa-solid fa-arrow-up fa-fw" aria-hidden=true></i><span class=variant-numeric>0%</span></div><div class="fixed-button view-comments d-none" role=button aria-label=查看评论><i class="fa-solid fa-comment fa-fw" aria-hidden=true></i></div></div><div id=mask></div><div class=reading-progress-bar style=left:0;top:0></div><noscript><div class=noscript-warning>该网站在启用 JavaScript 的情况下效果最佳。</div></noscript></div><link rel=stylesheet href=/lib/valine/valine.min.css><link rel=stylesheet href=/lib/lightgallery/css/lightgallery-bundle.min.7e80d25d294e8842d39022810b958552.css integrity="md5-foDSXSlOiELTkCKBC5WFUg=="><link rel=preload href=/lib/katex/katex.min.b6536013af151fbdc29bbdf0f10e1f77.css integrity="md5-tlNgE68VH73Cm73w8Q4fdw==" as=style onload='this.removeAttribute("onload"),this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/katex/katex.min.b6536013af151fbdc29bbdf0f10e1f77.css integrity="md5-tlNgE68VH73Cm73w8Q4fdw=="></noscript><script src=/lib/valine/Valine.min.91ad455f2b872ce889395474e4609481.js integrity="md5-ka1FXyuHLOiJOVR05GCUgQ=="></script><script src=/lib/autocomplete/autocomplete.min.553edd1b8dd335ab4626f05e6131812a.js integrity="md5-VT7dG43TNatGJvBeYTGBKg==" defer></script><script src=/lib/algoliasearch/algoliasearch-lite.umd.min.339e44173f7561e5ba328301e972bc2f.js integrity="md5-M55EFz91YeW6MoMB6XK8Lw==" defer></script><script src=/lib/instant-page/instantpage.min.d4be8390e577e842090e98303563633e.js integrity="md5-1L6DkOV36EIJDpgwNWNjPg==" async defer type=module></script><script src=/lib/lightgallery/lightgallery.min.b83f93b7f9e08420c662a3229d70357e.js integrity="md5-uD+Tt/nghCDGYqMinXA1fg==" defer></script><script src=/lib/lightgallery/plugins/thumbnail/lg-thumbnail.min.bd0822f7901ccdaa2ee841c69101449e.js integrity="md5-vQgi95Aczaou6EHGkQFEng==" defer></script><script src=/lib/lightgallery/plugins/zoom/lg-zoom.min.a775775d139d5670bc75288e68b6aedb.js integrity="md5-p3V3XROdVnC8dSiOaLau2w==" defer></script><script src=/lib/sharer/sharer.min.9c17fd8602aab18b8337139614a30fda.js integrity="md5-nBf9hgKqsYuDNxOWFKMP2g==" async defer></script><script src=/lib/typeit/index.umd.10b1c79fdaa004fa101077c3fc636a5a.js integrity="md5-ELHHn9qgBPoQEHfD/GNqWg==" defer></script><script src=/lib/katex/copy-tex.min.6be74da2bd31a1975da5090d5926cd54.js integrity="md5-a+dNor0xoZddpQkNWSbNVA==" defer></script><script src=/posts/os/13-14/config/page.js defer></script><script src=/js/theme.min.e245c9c9d0171e1e3ecf45805f56a0f8.js integrity="md5-4kXJydAXHh4+z0WAX1ag+A==" defer></script></body></html>

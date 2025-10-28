@@ -1,0 +1,69 @@
+# Canonical taxonomy definitions used by the content migration script.
+#
+# Each section maps canonical names to the list of aliases that should be
+# normalised to the canonical spelling.  The canonical key is treated as an
+# alias too, so you only need to list variants that differ in case or spelling.
+categories:
+  AI:
+    - ai
+    - artificial intelligence
+  Books:
+    - book
+  Chemistry:
+    - chemistry
+  Courses:
+    - course
+  Economy:
+    - economy
+  Fighting:
+    - fighting
+  Life:
+    - life
+  Math:
+    - mathematics
+    - math
+  OI:
+    - oi
+  OS:
+    - os
+  Physics:
+    - physics
+  Readings:
+    - reading
+    - readings
+  Summary:
+    - summaries
+    - summary
+  Technology:
+    - tech
+    - technology
+
+tags:
+  4000d:
+    - 4000D
+  AI:
+    - ai
+  Daily:
+    - daily
+  Diary:
+    - diary
+  Linear Attention:
+    - linear attention
+  Life:
+    - life
+  Maths:
+    - math
+    - maths
+  Notes:
+    - note
+    - notes
+  Review:
+    - review
+  Staticman:
+    - staticman
+  Study:
+    - study
+
+series:
+  Next.js 全栈入门实战指南:
+    - nextjs book

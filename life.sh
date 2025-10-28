@@ -1,87 +1,54 @@
-#!/bin/zsh
+#!/usr/bin/env bash
+set -euo pipefail
 
-# 生成每日日记的脚本
-# 使用方法: ./life.sh [YYYY-MM-DD] (如果不提供日期，则使用当天日期)
-# 示例: ./life.sh 2025-08-26
+# Generate a daily life diary entry following the post-migration structure.
+# Usage: ./life.sh [YYYY-MM-DD]
+# If no date is provided the current local date is used.
 
-# 基准日期: 2025-06-28 是 week1/day1
-REFERENCE_DATE="2025-06-28"
-
-# 获取输入日期，如果没有提供则使用当前日期
-if [ $# -eq 0 ]; then
-    TARGET_DATE=$(date +%Y-%m-%d)
+if [[ $# -ge 1 ]]; then
+  TARGET_DATE="$1"
 else
-    TARGET_DATE=$1
+  TARGET_DATE="$(date +%Y-%m-%d)"
 fi
 
-echo "创建日期为 $TARGET_DATE 的日记..."
-
-# 将日期转换为自纪元以来的天数
-reference_epoch=$(date -d "$REFERENCE_DATE" +%s)
-target_epoch=$(date -d "$TARGET_DATE" +%s)
-
-# 计算天数差
-days_diff=$(( (target_epoch - reference_epoch) / 86400 ))
-
-if [ $days_diff -lt 0 ]; then
-    echo "错误：目标日期早于基准日期 $REFERENCE_DATE"
-    exit 1
+if ! date -d "$TARGET_DATE" >/dev/null 2>&1; then
+  echo "❌ Invalid date: $TARGET_DATE" >&2
+  exit 1
 fi
 
-# 计算周数和天数
-# 每周5个工作日，从周一到周五
-week_num=$(( days_diff / 5 + 1 ))
-day_num=$(( days_diff % 5 + 1 ))
+YEAR="${TARGET_DATE:0:4}"
+BUNDLE_DIR="content/life/${YEAR}/${TARGET_DATE}"
+FILE_PATH="${BUNDLE_DIR}/index.md"
 
-# 计算文件所在的目录段 (1-100)
-segment=$(( (week_num - 1) / 100 + 1 ))
-segment_start=$(( (segment - 1) * 100 + 1 ))
-segment_end=$(( segment * 100 ))
+echo "📅 Generating diary for ${TARGET_DATE}"
 
-# 构建目录路径
-dir_path="content/posts/life/${segment_start}-${segment_end}/week$(printf "%d" $week_num)"
-file_path="${dir_path}/day$(printf "%d" $day_num).md"
-
-echo "周数: week$(printf "%03d" $week_num)"
-echo "天数: day$(printf "%03d" $day_num)"
-echo "目录段: ${segment_start}-${segment_end}"
-echo "文件路径: $file_path"
-
-# 创建目录
-mkdir -p "$dir_path"
-
-# 检查文件是否已存在
-if [ -f "$file_path" ]; then
-    echo "警告：文件 $file_path 已存在！"
-    read -p "是否要覆盖？(y/N): " confirm
-    if [ "$confirm" != "y" ] && [ "$confirm" != "Y" ]; then
-        echo "操作已取消"
-        exit 1
-    fi
+if [[ -e "$FILE_PATH" ]]; then
+  echo "⚠️  ${FILE_PATH} already exists."
+  read -rp "Overwrite? (y/N): " CONFIRM
+  if [[ "$CONFIRM" != "y" && "$CONFIRM" != "Y" ]]; then
+    echo "Aborted."
+    exit 0
+  fi
 fi
 
-# 使用 Hugo 创建新文件
-hugo new "$file_path" --kind=life
+mkdir -p "$BUNDLE_DIR"
 
-if [ $? -eq 0 ]; then
-    echo "✅ 成功创建日记文件: $file_path"
-    echo "📝 你可以开始编辑你的日记了！"
-    
-    # 询问是否立即打开文件编辑
-    read -p "是否立即打开文件编辑？(y/N): " open_file
-    if [ "$open_file" = "y" ] || [ "$open_file" = "Y" ]; then
-        # 尝试使用 VS Code 打开，如果没有则使用默认编辑器
-        if command -v code >/dev/null 2>&1; then
-            code "$file_path"
-        elif command -v vim >/dev/null 2>&1; then
-            vim "$file_path"
-        elif command -v nano >/dev/null 2>&1; then
-            nano "$file_path"
-        else
-            echo "没有找到合适的编辑器，请手动打开文件: $file_path"
-        fi
-    fi
+if hugo new "${FILE_PATH}" --kind=life > /dev/null; then
+  echo "✅ Created ${FILE_PATH}"
 else
-    echo "❌ 创建文件失败"
-    exit 1
+  echo "❌ Failed to create ${FILE_PATH}" >&2
+  exit 1
+fi
+
+read -rp "Open the file now? (y/N): " OPEN
+if [[ "$OPEN" == "y" || "$OPEN" == "Y" ]]; then
+  if command -v code >/dev/null 2>&1; then
+    code "$FILE_PATH"
+  elif command -v vim >/dev/null 2>&1; then
+    vim "$FILE_PATH"
+  elif command -v nano >/dev/null 2>&1; then
+    nano "$FILE_PATH"
+  else
+    echo "Open ${FILE_PATH} in your preferred editor." >&2
+  fi
 fi
