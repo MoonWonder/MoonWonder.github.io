@@ -1,0 +1,23 @@
+[heatmap.postsHeading]
+other = "文章发布热力图"
+
+[heatmap.wordsHeading]
+other = "字数统计热力图"
+
+[heatmap.postsTooltip]
+other = "{date}: {count} 篇文章"
+
+[heatmap.wordsTooltip]
+other = "{date}: {count} 字"
+
+[heatmap.metricPosts]
+other = "发文数量"
+
+[heatmap.metricWords]
+other = "总字数"
+
+[heatmap.verificationMessage]
+other = "热力图 {metric} 校验失败（{year} 年）：期望 {expected}，实际 {actual}（分区：{sections}）"
+
+[heatmap.verificationSummary]
+other = "热力图 {metric} 校验通过（{year} 年）：{value}，覆盖 {days} 天（分区：{sections}）"

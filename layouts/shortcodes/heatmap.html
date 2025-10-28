@@ -1,11 +1,83 @@
-<!-- 引入 Cal-Heatmap 库及依赖 -->
+{{ $currentYear := now.Year }}
+{{ $pageLang := .Page.Lang }}
+{{ $defaultSections := slice "posts" "life" }}
+{{ $includeSections := $defaultSections }}
+{{ $normalizeScratch := newScratch }}
+{{ with site.Params.heatmap }}
+    {{ with .sections }}
+        {{ $normalizeScratch.Set "sections" (slice) }}
+        {{ if eq (printf "%T" .) "string" }}
+            {{ range (split . ",") }}
+                {{ $trimmed := strings.TrimSpace . }}
+                {{ if $trimmed }}
+                    {{ $normalizeScratch.Set "sections" (append ($normalizeScratch.Get "sections") $trimmed) }}
+                {{ end }}
+            {{ end }}
+        {{ else }}
+            {{ range . }}
+                {{ $value := strings.TrimSpace (printf "%v" .) }}
+                {{ if $value }}
+                    {{ $normalizeScratch.Set "sections" (append ($normalizeScratch.Get "sections") $value) }}
+                {{ end }}
+            {{ end }}
+        {{ end }}
+        {{ if gt (len ($normalizeScratch.Get "sections")) 0 }}
+            {{ $includeSections = $normalizeScratch.Get "sections" }}
+        {{ end }}
+    {{ end }}
+{{ end }}
+
+{{ with .Get "sections" }}
+    {{ $normalizeScratch.Set "sections" (slice) }}
+    {{ range (split . ",") }}
+        {{ $trimmed := strings.TrimSpace . }}
+        {{ if $trimmed }}
+            {{ $normalizeScratch.Set "sections" (append ($normalizeScratch.Get "sections") $trimmed) }}
+        {{ end }}
+    {{ end }}
+    {{ if gt (len ($normalizeScratch.Get "sections")) 0 }}
+        {{ $includeSections = $normalizeScratch.Get "sections" }}
+    {{ end }}
+{{ end }}
+
+{{ if gt (len $includeSections) 0 }}
+    {{ $includeSections = sort $includeSections }}
+{{ else }}
+    {{ $includeSections = $defaultSections }}
+{{ end }}
+
+{{ if eq (len $includeSections) 0 }}
+    {{ $includeSections = $defaultSections }}
+{{ end }}
+
+{{ $pages := where .Page.Site.RegularPages "Lang" $pageLang }}
+{{ if gt (len $includeSections) 0 }}
+    {{ $pages = where $pages "Section" "in" $includeSections }}
+{{ end }}
+{{ $pages = where $pages "Date.Year" $currentYear }}
+{{ $pages = sort $pages "Date" }}
+
+{{ $pageCount := len $pages }}
+{{ $aggregatedWords := 0 }}
+{{ range $pages }}
+    {{ $aggregatedWords = add $aggregatedWords .WordCount }}
+{{ end }}
+{{ $aggregatedCount := $pageCount }}
+{{ $grouped := $pages.GroupByDate "2006-01-02" }}
+{{ $uniqueDayCount := len $grouped }}
+{{ $sectionsJSON := $includeSections | jsonify }}
+{{ $verificationJSON := dict "expectedPages" $pageCount "aggregatedPages" $aggregatedCount "totalWords" $aggregatedWords "uniqueDays" $uniqueDayCount | jsonify }}
+
+<!-- Cal-Heatmap assets -->
 <div>
-    <h2>文章发布热力图</h2>
+    <h2>{{ i18n "heatmap.postsHeading" }}</h2>
     <div id="posts-heatmap" style="width: 100%; overflow-x: auto;"></div>
-    
-    <h2>字数统计热力图</h2>
+
+    <h2>{{ i18n "heatmap.wordsHeading" }}</h2>
     <div id="words-heatmap" style="width: 100%; overflow-x: auto;"></div>
 </div>
+
+<!-- heatmap-verify: lang={{ $pageLang }}, year={{ $currentYear }}, sections={{ delimit $includeSections ", " }}, qualifyingPages={{ $pageCount }}, aggregatedPages={{ $aggregatedCount }}, uniqueDays={{ $uniqueDayCount }}, totalWords={{ $aggregatedWords }} -->
 
 <script src="https://d3js.org/d3.v7.min.js"></script>
 <script src="https://unpkg.com/cal-heatmap/dist/cal-heatmap.min.js"></script>
@@ -13,61 +85,78 @@
 
 <script type="text/javascript">
 document.addEventListener('DOMContentLoaded', async function() {
-    // 获取当前年份
-    const currentYear = new Date().getFullYear();
-    
-    // 收集文章数据 - 只收集当前年份的文章
-    const posts = [
-        {{ $currentYear := now.Year }}
-        {{ range (where (where .Site.Pages "Section" "posts") "Date.Year" $currentYear) }}
-            {
-                date: "{{ .Date.Format "2006-01-02" }}",
-                wordCount: {{ .WordCount }},
-            },
-        {{ end }}
-    ];
-
-    // 按日期整理数据
-    const postsByDate = {};
-    const wordsByDate = {};
-    
-    posts.forEach(post => {
-        if (postsByDate[post.date]) {
-            postsByDate[post.date]++;
-        } else {
-            postsByDate[post.date] = 1;
-        }
-        
-        if (wordsByDate[post.date]) {
-            wordsByDate[post.date] += post.wordCount;
-        } else {
-            wordsByDate[post.date] = post.wordCount;
-        }
-    });
-    
-    // 转换为热力图需要的格式
+    const currentYear = {{ $currentYear }};
     const postsData = [];
-    Object.keys(postsByDate).forEach(date => {
-        postsData.push({
-            date: date, // Unix timestamp in seconds
-            value: postsByDate[date]
-        });
-    });
-    
     const wordsData = [];
-    Object.keys(wordsByDate).forEach(date => {
-        wordsData.push({
-            date: date, // Unix timestamp in seconds
-            value: wordsByDate[date]
+{{ range $grouped }}
+    {{ $count := len .Pages }}
+    {{ $dayWords := 0 }}
+    {{ range .Pages }}
+        {{ $dayWords = add $dayWords .WordCount }}
+    {{ end }}
+    postsData.push({ date: "{{ .Key }}", value: {{ $count }} });
+    wordsData.push({ date: "{{ .Key }}", value: {{ $dayWords }} });
+{{ end }}
+    const sectionsUsed = {{ $sectionsJSON | safeJS }};
+    const heatmapVerification = {{ $verificationJSON | safeJS }};
+    const postsTooltipTemplate = {{ (i18n "heatmap.postsTooltip") | jsonify | safeJS }};
+    const wordsTooltipTemplate = {{ (i18n "heatmap.wordsTooltip") | jsonify | safeJS }};
+    const verificationMessageTemplate = {{ (i18n "heatmap.verificationMessage") | jsonify | safeJS }};
+    const verificationSummaryTemplate = {{ (i18n "heatmap.verificationSummary") | jsonify | safeJS }};
+    const metricPostsLabel = {{ (i18n "heatmap.metricPosts") | jsonify | safeJS }};
+    const metricWordsLabel = {{ (i18n "heatmap.metricWords") | jsonify | safeJS }};
+
+    const formatTemplate = (template, replacements) => {
+        let result = template;
+        Object.entries(replacements).forEach(([key, value]) => {
+            const pattern = new RegExp(`\\{${key}\\}`, 'g');
+            result = result.replace(pattern, value);
         });
+        return result;
+    };
+
+    const aggregatedCount = postsData.reduce((sum, item) => sum + (item.value || 0), 0);
+    const aggregatedWordTotal = wordsData.reduce((sum, item) => sum + (item.value || 0), 0);
+    const sharedReplacements = {
+        year: currentYear,
+        sections: sectionsUsed.join(', '),
+        days: heatmapVerification.uniqueDays
+    };
+
+    const postsMismatchMessage = formatTemplate(verificationMessageTemplate, {
+        ...sharedReplacements,
+        metric: metricPostsLabel,
+        expected: heatmapVerification.expectedPages,
+        actual: aggregatedCount
     });
-    
-    // 初始化文章热力图
+
+    const wordsMismatchMessage = formatTemplate(verificationMessageTemplate, {
+        ...sharedReplacements,
+        metric: metricWordsLabel,
+        expected: heatmapVerification.totalWords,
+        actual: aggregatedWordTotal
+    });
+
+    console.assert(aggregatedCount === heatmapVerification.expectedPages, postsMismatchMessage);
+    console.assert(aggregatedWordTotal === heatmapVerification.totalWords, wordsMismatchMessage);
+
+    const postsSummaryMessage = formatTemplate(verificationSummaryTemplate, {
+        ...sharedReplacements,
+        metric: metricPostsLabel,
+        value: aggregatedCount
+    });
+    const wordsSummaryMessage = formatTemplate(verificationSummaryTemplate, {
+        ...sharedReplacements,
+        metric: metricWordsLabel,
+        value: aggregatedWordTotal
+    });
+
+    console.info(postsSummaryMessage);
+    console.info(wordsSummaryMessage);
+
     const postsHeatmap = new CalHeatmap();
-    
-    // 设置年度时间范围
-    const startDate = new Date(currentYear, 0, 1); // 当前年份的1月1日
-    
+    const startDate = new Date(currentYear, 0, 1);
+
     await postsHeatmap.paint({
         itemSelector: '#posts-heatmap',
         range: 12,
@@ -76,7 +165,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             gutter: 4,
             label: { text: 'MMM', textAlign: 'start', position: 'top' }
         },
-        subDomain: { 
+        subDomain: {
             type: 'day',
             width: 12,
             height: 12,
@@ -100,12 +189,14 @@ document.addEventListener('DOMContentLoaded', async function() {
         tooltip: {
             enabled: true,
             text: function(date, value, dayjsDate) {
-                return `${dayjsDate.format('YYYY-MM-DD')}: ${value || 0} 篇文章`;
+                return formatTemplate(postsTooltipTemplate, {
+                    date: dayjsDate.format('YYYY-MM-DD'),
+                    count: value || 0
+                });
             }
         }
     });
-    
-    // 初始化字数热力图
+
     const wordsHeatmap = new CalHeatmap();
     await wordsHeatmap.paint({
         itemSelector: '#words-heatmap',
@@ -115,7 +206,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             gutter: 4,
             label: { text: 'MMM', textAlign: 'start', position: 'top' }
         },
-        subDomain: { 
+        subDomain: {
             type: 'day',
             width: 12,
             height: 12,
@@ -139,7 +230,10 @@ document.addEventListener('DOMContentLoaded', async function() {
         tooltip: {
             enabled: true,
             text: function(date, value, dayjsDate) {
-                return `${dayjsDate.format('YYYY-MM-DD')}: ${value || 0} 字`;
+                return formatTemplate(wordsTooltipTemplate, {
+                    date: dayjsDate.format('YYYY-MM-DD'),
+                    count: value || 0
+                });
             }
         }
     });

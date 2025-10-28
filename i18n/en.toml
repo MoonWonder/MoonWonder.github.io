@@ -1,0 +1,23 @@
+[heatmap.postsHeading]
+other = "Publication heatmap"
+
+[heatmap.wordsHeading]
+other = "Word count heatmap"
+
+[heatmap.postsTooltip]
+other = "{date}: {count} post(s)"
+
+[heatmap.wordsTooltip]
+other = "{date}: {count} words"
+
+[heatmap.metricPosts]
+other = "entry count"
+
+[heatmap.metricWords]
+other = "word total"
+
+[heatmap.verificationMessage]
+other = "Heatmap {metric} mismatch for {year} — expected {expected}, got {actual} (sections: {sections})"
+
+[heatmap.verificationSummary]
+other = "Heatmap {metric} verified for {year}: {value} across {days} days (sections: {sections})"
