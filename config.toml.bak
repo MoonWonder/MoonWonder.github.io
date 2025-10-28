@@ -1,4 +1,5 @@
 baseURL = "/"
+trailingSlash = true  # Ensure folder-style URLs when supported by Hugo
 # 网站语言
 languageCode = "zh"
 # [en, zh, ...] 设定主题的国际化
@@ -67,7 +68,8 @@ dateFormatToUse = "2019-07-29 05:32:21.263"
 
 # Permalinks 信息 (https://gohugo.io/content-management/urls/#permalinks)
 [Permalinks]
-  posts = ":sections/:year/:month/:filename"
+  posts = "/:sections/:slug/"
+  life = "/life/:year/:slug/"  # Older Hugo builds rely on these explicit trailing slashes
 
 # 菜单信息
 [menu]
@@ -342,8 +344,8 @@ dateFormatToUse = "2019-07-29 05:32:21.263"
 
 # 用于 Hugo 输出文档的设置
 [outputs]
-  home = ["HTML", "RSS"]
+  home = ["HTML", "RSS", "JSON", "JsonFeed"]
   page = ["HTML", "MarkDown"]
   section = ["HTML", "RSS"]
-  taxonomy = ["HTML", "RSS"]
-  taxonomyTerm = ["HTML"]
+  taxonomy = ["HTML", "RSS", "JSON"]
+  taxonomyTerm = ["HTML", "JSON"]
