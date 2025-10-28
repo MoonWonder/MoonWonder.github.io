@@ -1,3 +1,6 @@
 public/
 .vscode
 resources/
+.venv/
+reports/
+__pycache__/
