@@ -1,0 +1,1212 @@
+categories:
+- slug: provincial-camp-20190809
+  labels:
+    en: Provincial Camp — 2019-08-09
+    zh-cn: 省中集训 — 2019-08-09
+  synonyms:
+  - '20190809'
+  - camp-20190809
+  - 省中集训20190809
+- slug: provincial-camp-20190810
+  labels:
+    en: Provincial Camp — 2019-08-10
+    zh-cn: 省中集训 — 2019-08-10
+  synonyms:
+  - '20190810'
+  - camp-20190810
+  - 省中集训20190810
+- slug: provincial-camp-20190811
+  labels:
+    en: Provincial Camp — 2019-08-11
+    zh-cn: 省中集训 — 2019-08-11
+  synonyms:
+  - '20190811'
+  - camp-20190811
+  - 省中集训20190811
+- slug: courses
+  labels:
+    en: Courses
+    zh-cn: 课程
+  synonyms:
+  - course
+  - 课程
+- slug: drafts
+  labels:
+    en: Drafts
+    zh-cn: 草稿
+  synonyms:
+  - draft
+  - 草稿
+- slug: economy
+  labels:
+    en: Economy
+    zh-cn: 经济
+  synonyms:
+  - economy
+  - 经济
+- slug: life-log
+  labels:
+    en: Life Log
+    zh-cn: 生活日志
+  synonyms:
+  - Fighting
+  - life log
+  - 生活日志
+- slug: study-notes
+  labels:
+    en: Study Notes
+    zh-cn: 学习笔记
+  synonyms:
+  - notes
+  - 学习笔记
+- slug: olympiad-informatics
+  labels:
+    en: Olympiad in Informatics
+    zh-cn: 信息学竞赛
+  synonyms:
+  - OI
+  - oi
+  - 信息学竞赛
+- slug: reading-notes
+  labels:
+    en: Reading Notes
+    zh-cn: 阅读笔记
+  synonyms:
+  - reading
+  - 阅读笔记
+- slug: provincial-training-camp
+  labels:
+    en: Provincial Training Camp
+    zh-cn: 省中集训
+  synonyms:
+  - camp
+  - training camp
+  - 省中集训
+tags:
+- slug: '2000'
+  labels:
+    en: '2000'
+    zh-cn: '2000'
+  synonyms:
+  - '2000'
+- slug: '2002'
+  labels:
+    en: '2002'
+    zh-cn: '2002'
+  synonyms:
+  - '2002'
+- slug: '2004'
+  labels:
+    en: '2004'
+    zh-cn: '2004'
+  synonyms:
+  - '2004'
+- slug: '2005'
+  labels:
+    en: '2005'
+    zh-cn: '2005'
+  synonyms:
+  - '2005'
+- slug: '2006'
+  labels:
+    en: '2006'
+    zh-cn: '2006'
+  synonyms:
+  - '2006'
+- slug: '2007'
+  labels:
+    en: '2007'
+    zh-cn: '2007'
+  synonyms:
+  - '2007'
+- slug: '2008'
+  labels:
+    en: '2008'
+    zh-cn: '2008'
+  synonyms:
+  - '2008'
+- slug: '2009'
+  labels:
+    en: '2009'
+    zh-cn: '2009'
+  synonyms:
+  - '2009'
+- slug: '2010'
+  labels:
+    en: '2010'
+    zh-cn: '2010'
+  synonyms:
+  - '2010'
+- slug: '2011'
+  labels:
+    en: '2011'
+    zh-cn: '2011'
+  synonyms:
+  - '2011'
+- slug: '2012'
+  labels:
+    en: '2012'
+    zh-cn: '2012'
+  synonyms:
+  - '2012'
+- slug: '2013'
+  labels:
+    en: '2013'
+    zh-cn: '2013'
+  synonyms:
+  - '2013'
+- slug: '2014'
+  labels:
+    en: '2014'
+    zh-cn: '2014'
+  synonyms:
+  - '2014'
+- slug: '2015'
+  labels:
+    en: '2015'
+    zh-cn: '2015'
+  synonyms:
+  - '2015'
+- slug: '2016'
+  labels:
+    en: '2016'
+    zh-cn: '2016'
+  synonyms:
+  - '2016'
+- slug: '2017'
+  labels:
+    en: '2017'
+    zh-cn: '2017'
+  synonyms:
+  - '2017'
+- slug: '2018'
+  labels:
+    en: '2018'
+    zh-cn: '2018'
+  synonyms:
+  - '2018'
+- slug: '2019'
+  labels:
+    en: '2019'
+    zh-cn: '2019'
+  synonyms:
+  - '2019'
+- slug: '2020'
+  labels:
+    en: '2020'
+    zh-cn: '2020'
+  synonyms:
+  - '2020'
+- slug: 4000d
+  labels:
+    en: 4000 Days
+    zh-cn: 4000天
+  synonyms:
+  - 4000D
+  - 4000d
+  - 4000天
+- slug: ac自动机
+  labels:
+    en: AC自动机
+    zh-cn: AC自动机
+  synonyms:
+  - AC自动机
+- slug: ai
+  labels:
+    en: Artificial Intelligence
+    zh-cn: 人工智能
+  synonyms:
+  - AI
+  - ai
+  - 人工智能
+- slug: apio
+  labels:
+    en: APIO
+    zh-cn: APIO
+  synonyms:
+  - APIO
+- slug: cdq
+  labels:
+    en: cdq
+    zh-cn: cdq
+  synonyms:
+  - cdq
+- slug: cdq分治
+  labels:
+    en: cdq分治
+    zh-cn: cdq分治
+  synonyms:
+  - cdq分治
+- slug: china
+  labels:
+    en: China
+    zh-cn: 中国
+  synonyms:
+  - China
+  - 中国
+- slug: coci
+  labels:
+    en: COCI
+    zh-cn: COCI
+  synonyms:
+  - COCI
+- slug: compute
+  labels:
+    en: Compute
+    zh-cn: Compute
+  synonyms:
+  - Compute
+- slug: course
+  labels:
+    en: course
+    zh-cn: course
+  synonyms:
+  - course
+- slug: database
+  labels:
+    en: database
+    zh-cn: database
+  synonyms:
+  - database
+- slug: dfs
+  labels:
+    en: DFS
+    zh-cn: 深度优先搜索, DFS
+  synonyms:
+  - DFS
+  - 深度优先搜索
+  - 深度优先搜索, DFS
+  - 深度优先搜索,DFS
+- slug: dft
+  labels:
+    en: DFT
+    zh-cn: 快速傅里叶变换,DFT,FFT
+  synonyms:
+  - DFT
+  - FFT
+  - 快速傅里叶变换
+  - 快速傅里叶变换, DFT, FFT
+  - 快速傅里叶变换,DFT,FFT
+- slug: digital
+  labels:
+    en: digital
+    zh-cn: digital
+  synonyms:
+  - digital
+- slug: dp
+  labels:
+    en: Dynamic Programming
+    zh-cn: 动态规划
+  synonyms:
+  - Dynamic Programming
+  - dp
+  - dp/区间dp
+  - dp/数位dp
+  - 动态规划
+  - 动态规划, 动规, dp
+  - 动规
+  - 区间dp
+  - 数位dp
+- slug: draft
+  labels:
+    en: draft
+    zh-cn: draft
+  synonyms:
+  - draft
+- slug: dsu
+  labels:
+    en: dsu
+    zh-cn: dsu
+  synonyms:
+  - dsu
+- slug: dsu-on-tree
+  labels:
+    en: dsu_on_tree
+    zh-cn: dsu_on_tree
+  synonyms:
+  - dsu_on_tree
+- slug: economy
+  labels:
+    en: Economy
+    zh-cn: 经济
+  synonyms:
+  - economy
+  - 经济
+- slug: gcd
+  labels:
+    en: gcd
+    zh-cn: 最大公约数,gcd
+  synonyms:
+  - gcd
+  - 最大公约数
+  - 最大公约数,gcd
+- slug: hash
+  labels:
+    en: HASH
+    zh-cn: 哈希,HASH
+  synonyms:
+  - HASH
+  - 哈希
+  - 哈希,HASH
+- slug: ioi
+  labels:
+    en: IOI
+    zh-cn: IOI
+  synonyms:
+  - IOI
+- slug: k-d-tree
+  labels:
+    en: K-D Tree
+    zh-cn: K-D Tree
+  synonyms:
+  - K-D Tree
+- slug: kmp
+  labels:
+    en: KMP
+    zh-cn: KMP
+  synonyms:
+  - KMP
+- slug: lca
+  labels:
+    en: Lowest Common Ancestor
+    zh-cn: 最近公共祖先
+  synonyms:
+  - LCA
+  - lca
+  - 图论/lca
+  - 最近公共祖先
+  - 最近公共祖先, LCA
+  - 最近公共祖先,LCA
+- slug: life
+  labels:
+    en: Life
+    zh-cn: 生活
+  synonyms:
+  - life
+  - 生活
+- slug: linear-attention
+  labels:
+    en: Linear Attention
+    zh-cn: Linear Attention
+  synonyms:
+  - Linear Attention
+- slug: manacher算法
+  labels:
+    en: Manacher算法
+    zh-cn: Manacher算法
+  synonyms:
+  - Manacher算法
+- slug: math
+  labels:
+    en: math
+    zh-cn: math
+  synonyms:
+  - Math
+  - math
+- slug: noip提高组
+  labels:
+    en: NOIp提高组
+    zh-cn: NOIp提高组
+  synonyms:
+  - NOIp提高组
+- slug: noi系列
+  labels:
+    en: NOI系列
+    zh-cn: NOI系列
+  synonyms:
+  - NOI系列
+- slug: note
+  labels:
+    en: note
+    zh-cn: note
+  synonyms:
+  - note
+- slug: notebooks-oi-oj-luogu
+  labels:
+    en: Notebooks/OI/OJ/Luogu
+    zh-cn: Notebooks/OI/OJ/Luogu
+  synonyms:
+  - Luogu
+  - Notebooks
+  - Notebooks/OI/OJ/Luogu
+  - OI
+  - OJ
+- slug: o2优化
+  labels:
+    en: O2优化
+    zh-cn: O2优化
+  synonyms:
+  - O2优化
+- slug: optimize
+  labels:
+    en: optimize
+    zh-cn: optimize
+  synonyms:
+  - optimize
+- slug: os
+  labels:
+    en: OS
+    zh-cn: OS
+  synonyms:
+  - OS
+- slug: physics
+  labels:
+    en: Physics
+    zh-cn: Physics
+  synonyms:
+  - Physics
+- slug: poi
+  labels:
+    en: POI
+    zh-cn: POI
+  synonyms:
+  - POI
+- slug: reading
+  labels:
+    en: reading
+    zh-cn: reading
+  synonyms:
+  - reading
+- slug: rmq
+  labels:
+    en: RMQ
+    zh-cn: RMQ
+  synonyms:
+  - RMQ
+- slug: sa
+  labels:
+    en: SA
+    zh-cn: 后缀数组,SA
+  synonyms:
+  - SA
+  - 后缀数组
+  - 后缀数组,SA
+- slug: sam
+  labels:
+    en: Suffix Automaton
+    zh-cn: 后缀自动机
+  synonyms:
+  - SAM
+  - 后缀自动机
+  - 后缀自动机,SAM
+- slug: special-judge
+  labels:
+    en: Special Judge
+    zh-cn: Special Judge
+  synonyms:
+  - Special Judge
+- slug: splay
+  labels:
+    en: Splay
+    zh-cn: Splay
+  synonyms:
+  - Splay
+- slug: st表-稀疏表
+  labels:
+    en: st表,稀疏表
+    zh-cn: st表,稀疏表
+  synonyms:
+  - st表
+  - st表,稀疏表
+  - 稀疏表
+- slug: summary
+  labels:
+    en: summary
+    zh-cn: summary
+  synonyms:
+  - summary
+- slug: system
+  labels:
+    en: Systems
+    zh-cn: 系统
+  synonyms:
+  - system
+  - systems
+  - 系统
+- slug: tarjan
+  labels:
+    en: Tarjan
+    zh-cn: Tarjan
+  synonyms:
+  - Tarjan
+- slug: usaco
+  labels:
+    en: USACO
+    zh-cn: USACO
+  synonyms:
+  - USACO
+- slug: wc
+  labels:
+    en: WC
+    zh-cn: WC/CTSC/集训队
+  synonyms:
+  - CTSC
+  - WC
+  - WC/CTSC/集训队
+  - 集训队
+- slug: 上海
+  labels:
+    en: 上海
+    zh-cn: 上海
+  synonyms:
+  - 上海
+- slug: 主席树
+  labels:
+    en: 主席树
+    zh-cn: 主席树
+  synonyms:
+  - 主席树
+- slug: 二分图
+  labels:
+    en: 二分图
+    zh-cn: 二分图
+  synonyms:
+  - 二分图
+- slug: 二分查找
+  labels:
+    en: 二分查找
+    zh-cn: 二分查找
+  synonyms:
+  - 二分查找
+- slug: 二分答案
+  labels:
+    en: 二分答案
+    zh-cn: 二分答案
+  synonyms:
+  - 二分答案
+- slug: 二叉堆
+  labels:
+    en: 二叉堆
+    zh-cn: 二叉堆
+  synonyms:
+  - 二叉堆
+- slug: 位运算-按位
+  labels:
+    en: 位运算, 按位
+    zh-cn: 位运算, 按位
+  synonyms:
+  - 位运算
+  - 位运算, 按位
+  - 按位
+- slug: 倍增
+  labels:
+    en: 倍增
+    zh-cn: 倍增
+  synonyms:
+  - 倍增
+- slug: 凸完全单调性-凸单调
+  labels:
+    en: 凸完全单调性,凸单调
+    zh-cn: 凸完全单调性,凸单调
+  synonyms:
+  - 凸单调
+  - 凸完全单调性
+  - 凸完全单调性,凸单调
+- slug: 分块
+  labels:
+    en: 分块
+    zh-cn: 分块
+  synonyms:
+  - 分块
+- slug: 分治
+  labels:
+    en: 分治
+    zh-cn: 分治
+  synonyms:
+  - 分治
+- slug: 前缀和
+  labels:
+    en: 前缀和
+    zh-cn: 前缀和
+  synonyms:
+  - 前缀和
+- slug: 北京
+  labels:
+    en: 北京
+    zh-cn: 北京
+  synonyms:
+  - 北京
+- slug: 区间dp
+  labels:
+    en: 区间dp
+    zh-cn: 区间dp
+  synonyms:
+  - 区间dp
+- slug: 区间动规-区间dp
+  labels:
+    en: 区间动规,区间dp
+    zh-cn: 区间动规,区间dp
+  synonyms:
+  - 区间dp
+  - 区间动规
+  - 区间动规, 区间dp
+  - 区间动规,区间dp
+- slug: 单调队列
+  labels:
+    en: 单调队列
+    zh-cn: 单调队列
+  synonyms:
+  - 单调队列
+- slug: 博弈论
+  labels:
+    en: 博弈论
+    zh-cn: 博弈论
+  synonyms:
+  - 博弈论
+- slug: 各省省选
+  labels:
+    en: 各省省选
+    zh-cn: 各省省选
+  synonyms:
+  - 各省省选
+- slug: 同余-中国剩余定理
+  labels:
+    en: 同余,中国剩余定理
+    zh-cn: 同余,中国剩余定理
+  synonyms:
+  - 中国剩余定理
+  - 同余
+  - 同余,中国剩余定理
+- slug: 后缀树
+  labels:
+    en: 后缀树
+    zh-cn: 后缀树
+  synonyms:
+  - 后缀树
+- slug: 启发式
+  labels:
+    en: 启发式
+    zh-cn: 启发式
+  synonyms:
+  - 启发式
+- slug: 四川
+  labels:
+    en: 四川
+    zh-cn: 四川
+  synonyms:
+  - 四川
+- slug: 四边形不等式
+  labels:
+    en: 四边形不等式
+    zh-cn: 四边形不等式
+  synonyms:
+  - 四边形不等式
+- slug: 回文自动机pam
+  labels:
+    en: 回文自动机PAM
+    zh-cn: 回文自动机PAM
+  synonyms:
+  - 回文自动机PAM
+- slug: 图论
+  labels:
+    en: 图论
+    zh-cn: 图论
+  synonyms:
+  - 图论
+- slug: 图论-最小生成树
+  labels:
+    en: 图论/最小生成树
+    zh-cn: 图论/最小生成树
+  synonyms:
+  - 图论
+  - 图论/最小生成树
+  - 最小生成树
+- slug: 图论-树上差分
+  labels:
+    en: 图论/树上差分
+    zh-cn: 图论/树上差分
+  synonyms:
+  - 图论
+  - 图论/树上差分
+  - 树上差分
+- slug: 天津
+  labels:
+    en: 天津
+    zh-cn: 天津
+  synonyms:
+  - 天津
+- slug: trie
+  labels:
+    en: Trie
+    zh-cn: 字典树
+  synonyms:
+  - Trie
+  - Trie树
+  - 字典树
+  - 字典树,Trie树
+- slug: 字符串
+  labels:
+    en: 字符串
+    zh-cn: 字符串
+  synonyms:
+  - 字符串
+- slug: 安徽
+  labels:
+    en: 安徽
+    zh-cn: 安徽
+  synonyms:
+  - 安徽
+- slug: 容斥
+  labels:
+    en: 容斥
+    zh-cn: 容斥
+  synonyms:
+  - 容斥
+- slug: 导数
+  labels:
+    en: 导数
+    zh-cn: 导数
+  synonyms:
+  - 导数
+- slug: 山东
+  labels:
+    en: 山东
+    zh-cn: 山东
+  synonyms:
+  - 山东
+- slug: 差分
+  labels:
+    en: 差分
+    zh-cn: 差分
+  synonyms:
+  - 差分
+- slug: 差分约束
+  labels:
+    en: 差分约束
+    zh-cn: 差分约束
+  synonyms:
+  - 差分约束
+- slug: 平衡树
+  labels:
+    en: 平衡树
+    zh-cn: 平衡树
+  synonyms:
+  - 平衡树
+- slug: 并查集
+  labels:
+    en: 并查集
+    zh-cn: 并查集
+  synonyms:
+  - 并查集
+- slug: 建图
+  labels:
+    en: 建图
+    zh-cn: 建图
+  synonyms:
+  - 建图
+- slug: 归并排序
+  labels:
+    en: 归并排序
+    zh-cn: 归并排序
+  synonyms:
+  - 归并排序
+- slug: 快速数论变换ntt
+  labels:
+    en: 快速数论变换NTT
+    zh-cn: 快速数论变换NTT
+  synonyms:
+  - 快速数论变换NTT
+- slug: 思维
+  labels:
+    en: 思维
+    zh-cn: 思维
+  synonyms:
+  - 思维
+- slug: 扩展域并查集
+  labels:
+    en: 扩展域并查集
+    zh-cn: 扩展域并查集
+  synonyms:
+  - 扩展域并查集
+- slug: 排列组合
+  labels:
+    en: 排列组合
+    zh-cn: 排列组合
+  synonyms:
+  - 排列组合
+- slug: 排序
+  labels:
+    en: 排序
+    zh-cn: 排序
+  synonyms:
+  - 排序
+- slug: 搜索
+  labels:
+    en: 搜索
+    zh-cn: 搜索
+  synonyms:
+  - 搜索
+- slug: 数位dp
+  labels:
+    en: 数位dp
+    zh-cn: 数位dp
+  synonyms:
+  - 数位dp
+- slug: 数学
+  labels:
+    en: 数学
+    zh-cn: 数学
+  synonyms:
+  - 数学
+- slug: 数据结构-堆
+  labels:
+    en: 数据结构/堆
+    zh-cn: 数据结构/堆
+  synonyms:
+  - 堆
+  - 数据结构
+  - 数据结构/堆
+- slug: 数论-数学
+  labels:
+    en: 数论,数学
+    zh-cn: 数论,数学
+  synonyms:
+  - 数学
+  - 数论
+  - 数论, 数学
+  - 数论,数学
+- slug: 整体二分
+  labels:
+    en: 整体二分
+    zh-cn: 整体二分
+  synonyms:
+  - 整体二分
+- slug: 斜率优化
+  labels:
+    en: 斜率优化
+    zh-cn: 斜率优化
+  synonyms:
+  - 斜率优化
+- slug: 新云端
+  labels:
+    en: 新云端
+    zh-cn: 新云端
+  synonyms:
+  - 新云端
+- slug: 暴力数据结构
+  labels:
+    en: 暴力数据结构
+    zh-cn: 暴力数据结构
+  synonyms:
+  - 暴力数据结构
+- slug: 最大流
+  labels:
+    en: 最大流
+    zh-cn: 最大流
+  synonyms:
+  - 最大流
+- slug: 最短路
+  labels:
+    en: 最短路
+    zh-cn: 最短路
+  synonyms:
+  - 最短路
+- slug: 期望
+  labels:
+    en: 期望
+    zh-cn: 期望
+  synonyms:
+  - 期望
+- slug: 条件概率
+  labels:
+    en: 条件概率
+    zh-cn: 条件概率
+  synonyms:
+  - 条件概率
+- slug: 构造
+  labels:
+    en: 构造
+    zh-cn: 构造
+  synonyms:
+  - 构造
+- slug: 枚举-暴力
+  labels:
+    en: 枚举,暴力
+    zh-cn: 枚举,暴力
+  synonyms:
+  - 暴力
+  - 枚举
+  - 枚举, 暴力
+  - 枚举,暴力
+- slug: 栈
+  labels:
+    en: 栈
+    zh-cn: 栈
+  synonyms:
+  - 栈
+- slug: 树套树
+  labels:
+    en: 树套树
+    zh-cn: 树套树
+  synonyms:
+  - 树套树
+- slug: 树形动规
+  labels:
+    en: 树形动规
+    zh-cn: 树形动规
+  synonyms:
+  - 树形动规
+- slug: 树状数组
+  labels:
+    en: 树状数组
+    zh-cn: 树状数组
+  synonyms:
+  - 树状数组
+- slug: 树的直径
+  labels:
+    en: 树的直径
+    zh-cn: 树的直径
+  synonyms:
+  - 树的直径
+- slug: 树链剖分-树剖
+  labels:
+    en: 树链剖分,树剖
+    zh-cn: 树链剖分,树剖
+  synonyms:
+  - 树剖
+  - 树链剖分
+  - 树链剖分,树剖
+- slug: 概率论-统计
+  labels:
+    en: 概率论,统计
+    zh-cn: 概率论,统计
+  synonyms:
+  - 概率论
+  - 概率论,统计
+  - 统计
+- slug: 模拟
+  labels:
+    en: 模拟
+    zh-cn: 模拟
+  synonyms:
+  - 模拟
+- slug: 模拟退火
+  labels:
+    en: 模拟退火
+    zh-cn: 模拟退火
+  synonyms:
+  - 模拟退火
+- slug: 次小生成树
+  labels:
+    en: 次小生成树
+    zh-cn: 次小生成树
+  synonyms:
+  - 次小生成树
+- slug: 欧拉回路
+  labels:
+    en: 欧拉回路
+    zh-cn: 欧拉回路
+  synonyms:
+  - 欧拉回路
+- slug: 江苏
+  labels:
+    en: 江苏
+    zh-cn: 江苏
+  synonyms:
+  - 江苏
+- slug: 河南
+  labels:
+    en: 河南
+    zh-cn: 河南
+  synonyms:
+  - 河南
+- slug: 洛谷原创
+  labels:
+    en: 洛谷原创
+    zh-cn: 洛谷原创
+  synonyms:
+  - 洛谷原创
+- slug: 浙江
+  labels:
+    en: 浙江
+    zh-cn: 浙江
+  synonyms:
+  - 浙江
+- slug: 湖南
+  labels:
+    en: 湖南
+    zh-cn: 湖南
+  synonyms:
+  - 湖南
+- slug: 点分治
+  labels:
+    en: 点分治
+    zh-cn: 点分治
+  synonyms:
+  - 点分治
+- slug: 状态压缩-状压
+  labels:
+    en: 状态压缩, 状压
+    zh-cn: 状态压缩, 状压
+  synonyms:
+  - 状压
+  - 状态压缩
+  - 状态压缩, 状压
+  - 状态压缩,状压
+- slug: 环套树
+  labels:
+    en: 环套树
+    zh-cn: 环套树
+  synonyms:
+  - 环套树
+- slug: 生成函数
+  labels:
+    en: 生成函数
+    zh-cn: 生成函数
+  synonyms:
+  - 生成函数
+- slug: 生成树
+  labels:
+    en: 生成树
+    zh-cn: 生成树
+  synonyms:
+  - 生成树
+- slug: 省中集训
+  labels:
+    en: 省中集训
+    zh-cn: 省中集训
+  synonyms:
+  - 省中集训
+- slug: 积分
+  labels:
+    en: 积分
+    zh-cn: 积分
+  synonyms:
+  - 积分
+- slug: 素数判断-质数-筛法
+  labels:
+    en: 素数判断, 质数, 筛法
+    zh-cn: 素数判断, 质数, 筛法
+  synonyms:
+  - 筛法
+  - 素数判断
+  - 素数判断, 质数, 筛法
+  - 素数判断,质数,筛法
+  - 质数
+- slug: 线性代数
+  labels:
+    en: 线性代数
+    zh-cn: 线性代数
+  synonyms:
+  - 线性代数
+- slug: 线段树
+  labels:
+    en: 线段树
+    zh-cn: 线段树
+  synonyms:
+  - 线段树
+- slug: 线段树分治
+  labels:
+    en: 线段树分治
+    zh-cn: 线段树分治
+  synonyms:
+  - 线段树分治
+- slug: 结论
+  labels:
+    en: 结论
+    zh-cn: 结论
+  synonyms:
+  - 结论
+- slug: 网络流
+  labels:
+    en: 网络流
+    zh-cn: 网络流
+  synonyms:
+  - 网络流
+- slug: 背包
+  labels:
+    en: 背包
+    zh-cn: 背包
+  synonyms:
+  - 背包
+- slug: 荣枯鉴
+  labels:
+    en: 荣枯鉴
+    zh-cn: 荣枯鉴
+  synonyms:
+  - 荣枯鉴
+- slug: 莫比乌斯反演
+  labels:
+    en: 莫比乌斯反演
+    zh-cn: 莫比乌斯反演
+  synonyms:
+  - 莫比乌斯反演
+- slug: 虚树
+  labels:
+    en: 虚树
+    zh-cn: 虚树
+  synonyms:
+  - 虚树
+- slug: 计数
+  labels:
+    en: 计数
+    zh-cn: 计数
+  synonyms:
+  - 计数
+- slug: 贪心
+  labels:
+    en: 贪心
+    zh-cn: 贪心
+  synonyms:
+  - 贪心
+- slug: 连通块
+  labels:
+    en: 连通块
+    zh-cn: 连通块
+  synonyms:
+  - 连通块
+- slug: 逆元
+  labels:
+    en: 逆元
+    zh-cn: 逆元
+  synonyms:
+  - 逆元
+- slug: 递归
+  labels:
+    en: 递归
+    zh-cn: 递归
+  synonyms:
+  - 递归
+- slug: 递推
+  labels:
+    en: 递推
+    zh-cn: 递推
+  synonyms:
+  - 递推
+- slug: 重庆
+  labels:
+    en: 重庆
+    zh-cn: 重庆
+  synonyms:
+  - 重庆
+- slug: 链表
+  labels:
+    en: 链表
+    zh-cn: 链表
+  synonyms:
+  - 链表
+- slug: 队列
+  labels:
+    en: 队列
+    zh-cn: 队列
+  synonyms:
+  - 队列
+- slug: 高性能
+  labels:
+    en: 高性能
+    zh-cn: 高性能
+  synonyms:
+  - 高性能
+- slug: 高斯消元
+  labels:
+    en: 高斯消元
+    zh-cn: 高斯消元
+  synonyms:
+  - 高斯消元
+- slug: 高精
+  labels:
+    en: 高精
+    zh-cn: 高精
+  synonyms:
+  - 高精
+series: []
