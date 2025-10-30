@@ -1,12 +1,11 @@
 ---
-title: Chapter2
+title: JavaScript 语法速通：ES6+ 新特性
 subtitle:
 date: 2025-10-26T21:30:04+08:00
 description:
 keywords:
 draft: false
 ---
-### 第 2 章 JavaScript 语法速通：ES6+ 新特性
 
 在上一章初步认识了 JavaScript，现在我们以幽默的方式来一场 “语法大串讲”，快速浏览现代 JavaScript（ES6 及以上）中的核心特性。你将看到，曾经让 Java 开发者头疼的繁琐代码，可以用几种巧妙的语法糖大幅简化。
 

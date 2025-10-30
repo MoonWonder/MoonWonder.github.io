@@ -1,13 +1,11 @@
 ---
-title: Chapter3
+title: 深入 JavaScript：搞定闭包、原型与 `this`
 subtitle:
 date: 2025-10-26T21:32:27+08:00
 description:
 keywords:
 draft: false
 ---
-
-### 第 3 章 深入 JavaScript：搞定闭包、原型与 `this`
 
 本章我们聚焦 JavaScript 的核心概念和一些 “奇妙” 特性，包括闭包、`this` 和原型继承。这些概念经常令初学者困惑，但对于有工程经验的你来说，只需一点类比就能豁然开朗。
 
