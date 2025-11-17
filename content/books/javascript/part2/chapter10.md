@@ -37,7 +37,7 @@ export default function HelloPage({ message }) {
     
     例如：
     
-    ```
+    ```ts
     export async function getStaticPaths() {
       const paths = [
         { params: { id: '1' } },
@@ -53,7 +53,7 @@ export default function HelloPage({ message }) {
     
     例如：
     
-    ```
+    ```ts
     export async function getStaticProps({ params }) {
       const data = await fetch(`https://example.com/posts/${params.id}.json`);
       return { props: { post: data } };
@@ -70,7 +70,7 @@ export default function HelloPage({ message }) {
 
 *   首先，准备数据源。为简单起见，我们在项目中新建文件 `data/posts.json`，内容：
     
-    ```
+    ```json
     [
       { "id": 1, "title": "Next.js 入门", "content": "欢迎学习 Next.js 全栈开发！" },
       { "id": 2, "title": "拥抱 TypeScript", "content": "在 Next.js 中使用 TypeScript 提升安全性和开发体验。" }
@@ -81,7 +81,7 @@ export default function HelloPage({ message }) {
     
 *   创建博客列表页：在 `pages` 下新建 `posts/index.tsx`。作为列表页，它将列出所有文章标题并链接到详情页。
     
-    ```
+    ```ts
     import Link from 'next/link';
     import posts from '../../data/posts.json';
     
@@ -109,11 +109,11 @@ export default function HelloPage({ message }) {
     }
     ```
     
-    这里我们在 `getStaticProps` 中导入了本地 JSON 列表，将其作为 props 提供给页面组件。页面组件遍历 posts 数组，生成链接列表。`<Link href={`/posts/${post.id}`}>` 指向对应详情页路径。
+    这里我们在 `getStaticProps` 中导入了本地 JSON 列表，将其作为 props 提供给页面组件。页面组件遍历 posts 数组，生成链接列表。`<Link href={/posts/${post.id}}>` 指向对应详情页路径。
     
 *   创建博客详情页：新建文件 `pages/posts/[id].tsx`。这是动态路由页面，每篇文章一个路径。
     
-    ```
+    ```ts
     import posts from '../../data/posts.json';
     
     export async function getStaticPaths() {
@@ -150,7 +150,7 @@ export default function HelloPage({ message }) {
     
 *   将博客列表页链接纳入导航：修改 `_app.tsx` 增加导航项：
     
-    ```
+    ```ts
     <Link href="/posts"><a class>博客</a></Link>
     ```
     
