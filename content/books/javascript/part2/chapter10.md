@@ -4,7 +4,7 @@ subtitle: 构建博客列表
 date: 2025-11-13T09:09:21+08:00
 description:
 keywords:
-draft: true
+draft: false
 ---
 
 通过前面章节，我们已经可以开发静态页面并实现客户端交互了。但现代 Web 应用往往需要与数据交互，呈现动态内容。本章将深入讲解 Next.js 的**静态站点生成 (Static Site Generation, SSG)**，并结合**动态路由**实现一个简单博客模块，演示如何预渲染带参数的多页面应用。
