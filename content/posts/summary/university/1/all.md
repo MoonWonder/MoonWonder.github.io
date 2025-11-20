@@ -17,7 +17,7 @@ tags:
   - summary
   - life
 categories:
-  - draft
+  - summary
 hiddenFromHomePage: false
 hiddenFromSearch: false
 hiddenFromRelated: false
